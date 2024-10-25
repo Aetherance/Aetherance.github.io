@@ -58,16 +58,16 @@ kramdown:
 
 # 评论系统
 # Disqus（https://disqus.com/）
-# disqus_username: otone
+# disqus_username: 
 
 # Gitalk
 gitalk:
   enable: true    #是否开启Gitalk评论
   clientID: 1628acd4584b56ed9b40                            #生成的clientID
   clientSecret: 16b70af1ac573e1609bb84a604b4504a18cf7bcd    #生成的clientSecret
-  repo: FujishiroOtone.github.io    #仓库名称
-  owner: FujishiroOtone    #github用户名
-  admin: FujishiroOtone
+  repo: Aetherance.github.io    #仓库名称
+  owner: Aetherance    #github用户名
+  admin: Aetherance
   distractionFreeMode: true #是否启用类似FB的阴影遮罩
 
 
@@ -79,7 +79,7 @@ gitalk:
 
 # Google Analytics
 ga_track_id: 'UA-124497414-1'            # Format: UA-xxxxxx-xx
-ga_domain: blog.fujishiro.cn               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
+ga_domain: auto               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
 
 
 
