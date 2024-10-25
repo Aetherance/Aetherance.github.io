@@ -1,18 +1,18 @@
 # Site settings
-title: Fujishiro Otone
-SEOTitle: Otoneの小屋
+title: The_INK's Space
+SEOTitle: The_INK's Space
 header-img: img/index.jpg
-email: kurumi.zsy@gmail.com
-description: "青春如遊戲，只是不能再讀檔"
-keyword: "Otone, Otone Blog, 前端, 动漫, 游戏"
-url: "http://FujishiroOtone.github.io"          # your host, for absolute URL
+email: 123
+description: "line"
+keyword: "keyword"
+url: "http://Aetherance.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
-github_repo: "https://github.com/FujishiroOtone/FujishiroOtone.github.io" # you code repository
-home_repo: "http://fujishiro.cn"
+github_repo: "https://github.com/Aetherance/Aetherance.github.io" # you code repository
+home_repo: " "
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "大切な人といつかまた巡り会えますように"
+sidebar-about-description: "sidebar-about-description"
 sidebar-avatar: /img/about-Otone.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
@@ -100,22 +100,22 @@ service-worker: true
 # links
 links: [
     {
-        title: "个人のGitHub",
-        href: "https://github.com/FujishiroOtone	"
+        title: "GitHub",
+        href: "https://github.com/Aetherance"
     },{
-        title: "简书·Otone",
-        href: "https://www.jianshu.com/u/3bf62aac1afc"
+        title: "",
+        href: ""
     },{
-        title: "Twitter",
-        href: "https://twitter.com/osuHatsuneMiku"
+        title: "",
+        href: ""
     },{
-        title: "个人のbilibili",
-        href: "https://space.bilibili.com/1880573/#/"
+        title: "",
+        href: ""
     },{
-        title: "asdfv1929",
+        title: "",
         href: "https://asdfv1929.github.io/"
     },{
-        title: "月小水长",
-        href: "https://inspurer.github.io/"
+        title: "",
+        href: ""
     }
 ]
