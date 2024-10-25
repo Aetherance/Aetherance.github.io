@@ -4,7 +4,7 @@ title:      西邮Linux兴趣小组2024纳新题
 subtitle:   
 date:       2024-10-26
 author:     Otone
-header-img: img/post-10-26-1.jpg
+header-img: img/linux01.jpg
 catalog: true
 tags:
     - 西邮Linux兴趣小组2024纳新题
