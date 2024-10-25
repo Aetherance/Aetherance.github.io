@@ -1,4 +1,15 @@
-﻿# 西邮Linux兴趣小组2024纳新题
+---
+layout:     post
+title:      西邮Linux兴趣小组2024纳新题
+subtitle:   
+date:       2024-10-26
+author:     Otone
+header-img: img/post-10-26-1.jpg
+catalog: true
+tags:
+    - 西邮Linux兴趣小组2024纳新题
+---
+ # 西邮Linux兴趣小组2024纳新题
 * 本题目只作为西邮 Linux 兴趣小组 2024 纳新面试的有限参考。
 * 为节省版面，本试题的程序源码省去了 #include 指令。
 * 本试题中的程序源码仅用于考察 C 语言基础，不应当作为 C 语言「代码风格」的范例。
