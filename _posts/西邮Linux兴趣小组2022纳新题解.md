@@ -1,0 +1,376 @@
+﻿# 西邮Linux兴趣小组2022纳新面试题
+
+感谢 [Zhilu](https://github.com/L33Z22L11) 重新录入题目原件。好人一生平安。
+
+- 本题目只作为`Xiyou Linux兴趣小组`2022纳新面试的有限参考。
+- 为节省版面，本试题的程序源码省去了`#include`指令。
+- 本试题中的程序源码仅用于考察C语言基础，不应当作为C语言「代码风格」的范例。
+- 题目难度随机排列。
+- 所有题目编译并运行于`x86_64 GNU/Linux`环境。
+
+> 学长寄语：
+> 长期以来，西邮Linux兴趣小组的面试题以难度之高名扬西邮校内。我们作为出题人也清楚的知道这份试题略有难度。请别担心。**若有同学能完成一半的题目，就已经十分优秀。** 其次，相比于题目的答案，我们对你的思路和过程更感兴趣，或许你的答案略有瑕疵，但你正确的思路和对知识的理解足以为你赢得绝大多数的分数。最后，做题的过程也是学习和成长的过程，相信本试题对你更加熟悉的掌握C语言的一定有所帮助。祝你好运。我们FZ103见！
+
+Copyright © 2022 西邮Linux兴趣小组, All Rights Reserved.
+本试题使用采用 [知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-sa/4.0/) 进行许可。
+
+## 0. 我的计算器坏了？！
+
+`2^10 = 1024`对应于十进制的4位，那么`2^10000`对应于十进制的多少位呢?
+>lg[2]=0.301029..
+>
+`2^10 = 1024`  =>	`lg(2^10) = 10 * lg2`=>`lg(2^10) = 3`
+`2^10000 ` => `lg(2^10000) = 10000 * lg2 = 3010`
+又因为`2^10 = 1024`对应十进制的位	&emsp;所以`2^10000 `对应二进制的`3011`位
+## 1. printf还能这么玩？
+
+尝试着解释程序的输出。
+
+```c
+int main(void) {
+    if ((3 + 2 < 2) > (3 + 2 > 2))
+        printf("Welcome to Xiyou Linux Group\n");
+    else
+        printf("%d\n", printf("Xiyou Linux Group - 2%d", printf("")));
+}
+```
+`()`的优先级最高，先计算`()`里的内容。`+`的优先级高于`<`和`>`所以先计算`3 + 2`
+`3 + 2 < 2`为假，返回 0。`3 + 2 > 2`为真，返回 1。`0 > 1`为假，进入`else`语句。
+`printf`的返回值是成功打印的字节数。`printf("")`成功打印了 0 个 字节，返回 0 。
+返回的 0 又作为 中间的 `printf()`的参数，打印出 **Xiyou Linux Group - 20**，并且返回成功打印的字节数 22。22 作为最外层`printf()`的参数被打印出来。
+最终打印的结果为：
+```c
+Xiyou Linux Group - 2022
+```
+
+## 2. 你好你好你好呀！
+
+- 程序的输出有点奇怪，请尝试解释一下程序的输出吧。
+- 请谈谈对`sizeof()`及`strlen()`的理解吧。
+
+```c
+int main(void) {
+    char p0[] = "Hello,Linux";
+    char *p1 = "Hello,Linux";
+    char p2[11] = "Hello,Linux";
+    printf("p0 == p1: %d, strcmp(p0, p2): %d\n", p0 == p1, strcmp(p0, p2));
+    printf("sizeof(p0): %zu, sizeof(p1): %zu, sizeof(*p2): %zu\n",
+           sizeof(p0), sizeof(p1), sizeof(*p2));
+    printf("strlen(p0): %zu, strlen(p1): %zu\n", strlen(p0), strlen(p1));
+}
+```
+>sizeof()与strlen()的不同：
+>sizeof()`所计算出的是变量的大小 以字节为单位
+>`strlen()`所计算出的是字符串的长度 遇到'\0'时结束 不包含'\0'
+`strcmp()`函数用于比较两个以'\0'结束的字符串 如果相同则返回 ***0***     
+
+`p0 == p1`比较的是两者的地址，两个不同局部变量的地址是不同的，所以返回 0。`strcmp()`比较的是两个以'\0'结尾的字符串(ascll码)是否相同，相同返回0。如果返回值大于0,则表示第一个字符串大于第二个字符串，如果返回值小于0,则表示第一个字符串小于第二个字符串。此处p2没有以`\0`结尾。p2中与p1中的`\0`对应的值是一个数组外的随机值，所以strcmp的返回值也是一个随机的值。
+`sizeof(p0)`求出的是字符串包含`\0`的大小&ensp;`sizeof(p1)`求出的指针的大小&ensp; `sizeof(*p2)`求出的是一个字符的大小 &ensp;`strlen(p0)`求出的是p0的长度 &ensp;`strlen(p1)`求出的是字符串p1的长度。
+
+## 3. 换个变量名不行吗？
+
+请结合本题，分别谈谈你对C语言中「全局变量」和「局部变量」的「生命周期」理解。
+
+```c
+int a = 3;
+void test() {
+    int a = 1;
+    a += 1;
+    {
+        int a = a + 1;
+        printf("a = %d\n", a);
+    }
+    printf("a = %d\n", a);
+}
+int main(void) {
+    test();
+    printf("a= %d\n", a);
+}
+```
+在函数`test()`中优先使用在函数`test()`中定义的变量，在块{}里优先使用块{}里定义的变量。在块{}里，`int a = a + 1`的a都是在块{}里定义的a，由于a没有初始值，所以`a = a + 1`的结果不确定，第一个`printf()`打印的a的值不确定。 第二个`printf()`打印的就是在`test()`里块{}外定义的a。 `main()`里打印的是全局变量a。
+## 4. 内存对不齐
+
+`union`与`struct`各有什么特点呢，你了解他们的内存分配模式吗。
+
+```c
+typedef union {
+    long l;
+    int i[5];
+    char c;
+} UNION;
+typedef struct {
+    int like;
+    UNION coin;
+    double collect;
+} STRUCT;
+int main(void) {
+    printf("sizeof (UNION) = %zu\n", sizeof(UNION)); 
+    printf("sizeof (STRUCT) = %zu\n", sizeof(STRUCT));
+}
+```
+union是共用体，struct是结构体。
+>结构体变量的内存需要对齐 每个成员都有一个对齐数 对齐数等于默认对齐数和该成员大小的较小值
+
+>联合体中的成员公用同一块内存空间
+## 5. Bitwise
+
+- 请使用纸笔推导出程序的输出结果。
+- 请谈谈你对位运算的理解。
+
+```c
+int main(void) {
+    unsigned char a = 4 | 7;
+    a <<= 3;
+    unsigned char b = 5 & 7;
+    b >>= 3;
+    unsigned char c = 6 ^ 7;
+    c = ~c;
+    unsigned short d = (a ^ c) << 3;
+    signed char e = -63;
+    e <<= 2;
+    printf("a: %d, b: %d, c: %d, d: %d\n", a, b, c, (char)d);
+    printf("e: %#x\n", e);
+}
+```
+```c
+4			00000100 			5			00000101				6			00000110
+7			00000111			7			00000111				7			00000111
+a			00000111 (7)		b			00000101 (5)			c			00000001 (1)
+a(<<=3)		00111000 (56)		b(>>=3)		00000000 (0)			c(=~c)		11111110 (254)
+
+a			00111000						e 10000001		
+c			11111110							
+a^c			0000000011000110				e 10000100 (4)
+d			0000011000110000 (1584)				
+(char)d		00110000 (48)						
+```
+故 打印的结果为
+```c
+a: 56, b: 0, c: 254, d: 48
+e: 0x4
+```
+## 6. 英译汉
+
+请说说下面数据类型的含义，谈谈`const`的作用。
+1. `char *const p`。
+2. `char const *p`。
+3. `const char *p`。 
+
+const修饰指针时，指针存储的地址不可改变。
+const修饰变量时，变量的值不可改变。 
+`char *const p`定义了一个`char`类型的指针常量 它存储的地址不可修改
+`char const *p`定义了一个`char`类型的常量指针 它存储的地址对应的变量值不可改变
+ `const char *p`相当于`char const *p`
+## 7. 汉译英
+
+请用变量`p`给出下面的定义:
+1. 含有10个指向`int`的指针的数组。
+2. 指向含有10个`int`数组的指针。
+3. 含有3个「指向函数的指针」的数组，被指向的函数有1个`int`参数并返回`int`。
+```c
+int *p[10];
+int (*P)[10];
+int (*p[3])(int);
+```
+## 8. 混乱中建立秩序
+
+你对排序算法了解多少呢?  
+请谈谈你所了解的排序算法的思想、稳定性、时间复杂度、空间复杂度。
+
+提示：动动你的小手敲出来更好哦~
+例：[冒泡排序](https://github.com/itcharge/LeetCode-Py/blob/main/Contents/01.Array/02.Array-Sort/01.Array-Bubble-Sort.md)
+```c
+void Bubble_Sort(int arr[],int len)
+{
+    for(int i = 0;i<len;i++)
+        for(int j = 0;j<len - i - 1;j++)
+            if(arr[j]>arr[j+1])
+            {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+}
+```
+>冒泡排序（Bubble Sort）基本思想：
+>经过多次迭代，通过相邻元素之间的比较与交换，使值较小的元素逐步从后面移到前面，值较大的元素从前面移到后面。
+
+>稳定性的定义：排序前后两个相等的数相对位置不变，则算法稳定。
+
+冒泡排序的交换发生在相邻两个大小不同的元素之间，是稳定排序算法。
+>算法的时间复杂度（time complexity）是一个函数，它定性描述该算法的运行时间。
+>算法的时间复杂度由算法中基本操作的执行次数来表示。
+[时间复杂度](https://www.bilibili.com/video/BV1f44y1A7rx?spm_id_from=333.788.videopod.episodes&vd_source=846bedf36429526f07cbc22bb584b100&p=3)
+
+冒泡排序的时间复杂度 ： 最好情况为O (n)	&emsp;最差情况O(n^2)
+>空间复杂度（space complexity）用于衡量算法占用内存空间随着数据量变大时的增长趋势。  
+>[空间复杂度](https://www.hello-algo.com/chapter_computational_complexity/space_complexity/) 
+
+冒泡排序不需要额外的空间，因此冒泡排序的空间复杂度为O(1)
+## 9. 手脑并用
+
+请实现ConvertAndMerge函数：  
+拼接输入的两个字符串，并翻转拼接后得到的新字符串中所有字母的大小写。
+
+提示:你需要为新字符串分配空间。
+
+```c
+char* convertAndMerge(/*补全签名*/);
+int main(void) {
+    char words[2][20] = {"Welcome to Xiyou ", "Linux Group 2022"};
+    printf("%s\n", words[0]);
+    printf("%s\n", words[1]);
+    char *str = convertAndMerge(words);
+    printf("str = %s\n", str);
+    free(str);
+}
+```
+代码
+```c
+#include<stdlib.h>
+#include<string.h>
+char* convertAndMerge(char words[][20])
+{
+    int len1 = strlen(words[0]),len2 = strlen(words[1]);
+    char * result = (char *)malloc((len1+len2)*sizeof(char)); //分配内存
+    sprintf(result,"%s%s",words[0],words[1]);//利用sprintf将两个字符串打印到一个字符串里实现拼接
+    for(int i = 0;i<len1+len2;i++)
+    {
+        if(result[i]>='a'&&result[i]<='z')
+            result[i]-=32;
+        else if(result[i]>='A'&&result[i]<='Z')
+            result[i]+=32;
+            //反转大小写
+    }
+    return result;
+}
+```
+## 10. 给你我的指针，访问我的心声
+
+程序的输出有点奇怪，请尝试解释一下程序的输出吧。
+
+```c
+int main(int argc, char **argv) {
+    int arr[5][5];
+    int a = 0;
+    for (int i = 0; i < 5; i++) {
+        int *temp = *(arr + i);
+        for (; temp < arr[5]; temp++) *temp = a++;
+    }
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%d\t", arr[i][j]);
+        }
+    }
+}
+```
+`temp`先指向arr里的第一个数组，然后进入第二层for循环。在第二层for循环里循环25次，指针移动25次,a递增25次,arr[0]中记录的元素是前五次循环时a的值。arr[0]中的元素分别为0,1,2,3,4。同理arr[1],arr[2],arr[3],arr[4]记录的内容为 `25      26      27      28      29，5     46       47      48      49`,`60      61      62      63      64`,`70      71      72      73      74`所以打印的结果为
+```c
+0       1       2       3       4       25      26      27      28      29      45      46      47      48      49      60      6162       63      64      70      71      72      73      74
+```
+## 11. 奇怪的参数
+
+你了解argc和argv吗？  
+直接运行程序argc的值为什么是1？  
+程序会出现死循环吗？
+
+```c
+#include <stdio.h>
+int main(int argc, char **argv) {
+    printf("argc = %d\n", argc);
+    while (1) {
+        argc++;
+        if (argc < 0) {
+            printf("%s\n", (char *)argv[0]);
+            break;
+        }
+    }
+}
+```
+>argv是**命令行参数** argc是参数的个数
+程序至少有一个参数 **文件名** 所以在不提供其他参数的前提下，直接运行argc的值是1。
+```c
+ while (1) {
+        argc++;
+        if (argc < 0) {
+            printf("%s\n", (char *)argv[0]);
+            break;
+        }
+    }
+```
+会导致argc先递增，后溢出为`-2147483648`。然后会进入if，打印`argv[0]`,然后break，不会出现死循环。
+
+## 12. 奇怪的字符
+
+程序的输出有点奇怪，请尝试解释一下程序的输出吧。
+
+```c
+int main(int argc, char **argv) {
+    int data1[2][3] = {{0x636c6557, 0x20656d6f, 0x58206f74},
+                       {0x756f7969, 0x6e694c20, 0x00000000}};
+    int data2[] = {0x47207875, 0x70756f72, 0x32303220, 0x00000a32};
+    char *a = (char *)data1;
+    char *b = (char *)data2;
+    char buf[1024];
+    strcpy(buf, a);
+    strcat(buf, b);
+    printf("%s \n", buf);
+}
+```
+将`data1`强转为`(char*)`类型后，`data1`的数据被翻译为字符串，计算机通常采用小段储存，所以从第一个数据的最后一位开始翻译，直到`'\0'`为止。`data1`翻译的结果为`Welcome to Xiyou Lin` `data2`翻译的结果为`ux Group 2022`经过`strcpy(buf, a); strcat(buf, b);`的操作后，buf里存储的值为`Welcome to Xiyou Linux Group 2022`
+打印结果为
+```c
+Welcome to Xiyou Linux Group 2022
+```
+## 13. 小试宏刀
+
+- 请谈谈你对`#define`的理解。
+- 请尝试着解释程序的输出。
+
+```c
+#define SWAP(a, b, t) t = a; a = b; b = t
+#define SQUARE(a) a *a
+#define SWAPWHEN(a, b, t, cond) if (cond) SWAP(a, b, t)
+int main() {
+    int tmp;
+    int x = 1;
+    int y = 2;
+    int z = 3;
+    int w = 3;
+    SWAP(x, y, tmp);
+    printf("x = %d, y = %d, tmp = %d\n", x, y, tmp);
+    if (x y) SWAP(x, y, tmp);
+    printf("x = %d, y = %d, tmp = %d\n", x, y, tmp);
+    SWAPWHEN(x, y, tmp, SQUARE(1 + 2 + z++ + ++w) == 100);
+    printf("x = %d, y = %d\n", x, y, tmp);
+    printf("z = %d, w = %d, tmp = %d\n", z, w, tmp);
+}
+```
+[宏定义相关知识](https://blog.csdn.net/EleganceJiaBao/article/details/141252278?fromshare=blogdetail&sharetype=blogdetail&sharerId=141252278)
+#define定义别名是在预处理时直接在文本中替换 如果没有加()，替换后的语句可能会和别的语句混在一起，输出意想不到的结果。
+```c
+输出
+x = 2, y = 1, tmp = 1
+x = 1, y = 2, tmp = 2
+x = 2, y = 2
+z = 5, w = 5, tmp = 2
+```
+## 14. GNU/Linux命令 (选做)
+
+你知道以下命令的含义和用法吗：
+
+注：
+嘿！你或许对Linux命令不是很熟悉，甚至你没听说过Linux。  
+但别担心，这是选做题，不会对你的面试产生很大的影响！  
+了解Linux是加分项，但不了解也不扣分哦！
+- `ls`——列出工作目录
+- `rm`——用于删除一个文件或者目录
+- `whoami`——用于查找当前用户名
+
+请问你还了解哪些GNU/Linux的命令呢。
+
+> 恭喜你做到这里！你的坚持战胜了绝大多数看到这份试题的同学。  
+> 或许你自己对答题的表现不满意,但别担心，请自信一点呐。  
+> 坚持到达这里已经证明了你的优秀。  
+> 还在等什么,快带上你的笔记本电脑，来FZ103面试吧!
+
