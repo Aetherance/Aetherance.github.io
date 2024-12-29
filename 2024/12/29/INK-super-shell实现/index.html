@@ -107,6 +107,7 @@
 <li>实现输入输出重定向（也就是 &lt; &gt; &gt;&gt;）</li>
 <li>要求在管道组合命令的两端实现重定向运算符</li>
 </ul>
+<p><a target="_blank" rel="noopener" href="https://plan.xiyoulinux.com/project/shell/">PLAN</a></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 需要实现的功能</span><br><span class="line">cat &lt; <span class="number">1.</span>txt | grep -C <span class="number">10</span> abc | grep -Lefd | tac &gt;&gt; <span class="number">2.</span>txt</span><br><span class="line"># 不需要实现的功能</span><br><span class="line">cat &lt; <span class="number">1.</span>txt | grep -C <span class="number">10</span> abc &gt; test1.txt | test2.txt &gt; grep -L efd | tac &gt;&gt; <span class="number">2.</span>txt</span><br></pre></td></tr></table></figure>
 <ul>
 <li>实现后台运行（也就是 &amp;）</li>
