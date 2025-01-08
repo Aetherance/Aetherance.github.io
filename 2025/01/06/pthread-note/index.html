@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    
+
+    
+<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
+    
+
+<meta charset="utf-8" >
+
+<title>pthread_note</title>
+<meta name="keywords" content="pthread_note, Hello!👋 The_INK&#39;s here">
+<meta name="description" content="线程学习笔记为什么要使用线程
+线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。
+创建进程时使用的系统调用fork()代价高，创建线程使用的系统调用clone()比fork()通常快10倍不止。
+
+线程共享的属">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="pthread_note">
+<meta property="og:description" content="线程学习笔记为什么要使用线程
+线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。
+创建进程时使用的系统调用fork()代价高，创建线程使用的系统调用clone()比fork()通常快10倍不止。
+
+线程共享的属">
+
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+  <meta name="generator" content="Hexo 7.3.0"></head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="http://aetherance.github.io">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="http://aetherance.github.io">
+        <h1 class="site-title">Hello!👋 The_INK&#39;s here</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/" class="menu purple-link">
+        首页
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        标签
+      </a>
+    
+  
+    
+      <a href="/archives" class="menu purple-link">
+        归档
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        关于
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">pthread_note</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2025-01-06</span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <h1 id="线程学习笔记"><a href="#线程学习笔记" class="headerlink" title="线程学习笔记"></a>线程学习笔记</h1><h1 id="为什么要使用线程"><a href="#为什么要使用线程" class="headerlink" title="为什么要使用线程"></a>为什么要使用线程</h1><ol>
+<li>线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。</li>
+<li>创建进程时使用的系统调用<code>fork()</code>代价高，创建线程使用的系统调用<code>clone()</code>比<code>fork()</code>通常快10倍不止。</li>
+</ol>
+<h1 id="线程共享的属性"><a href="#线程共享的属性" class="headerlink" title="线程共享的属性"></a>线程共享的属性</h1><ol>
+<li>全局内存</li>
+<li>进程ID 父进程ID</li>
+<li>进程组ID与会话ID</li>
+<li>控制终端</li>
+<li>打开的文件描述符</li>
+<li>信号处置</li>
+<li>某些时候的栈 (?)</li>
+<li>…<br>每个线程都有存放局部变量的私有栈。</li>
+</ol>
+<h1 id="Pthreads函数返回值"><a href="#Pthreads函数返回值" class="headerlink" title="Pthreads函数返回值"></a>Pthreads函数返回值</h1><p>与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。</p>
+<h1 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h1><p>程序启动时，一个进程中只有一条称为<em>主线程</em>的线程。</p>
+<p>调用<code>pthread_create()</code>将创建一个线程。</p>
+<p><code>pthread_create()</code>的第一个参数是一个指向<code>pthread_t</code>类型的指针,线程ID将被写入该类型中</p>
+<p>第二个参数是一个 const pthread _attr_t类型的指针 用于定制不同的线程属性，通常直接设为<code>NULL</code></p>
+<p>第三个参数是一个函数指针，指向线程的start函数。线程从此函数开始运行。</p>
+<p>第四个函数是一个指向start函数参数的指针。</p>
+<h1 id="终止线程"><a href="#终止线程" class="headerlink" title="终止线程"></a>终止线程</h1><ul>
+<li>主线程调用<code>main</code>函数中的<code>return</code>语句会终止所有线程</li>
+<li>任意线程调用<code>exit()</code>语句会终止所有线程</li>
+<li>线程执行<code>start</code>函数的<code>return</code>语句只会终止调用的线程自身</li>
+<li>线程调用<code>pthread_exit()</code>语句<code>只</code>会终止调用的线程自身，不论这个线进程是不是主线程</li>
+<li>调用<code>pthread_cancle()</code>取消线程</li>
+</ul>
+<h1 id="线程ID"><a href="#线程ID" class="headerlink" title="线程ID"></a>线程ID</h1><p>在pthread函数中,线程ID由<code>pthread_t</code>定义。</p>
+<p><code>pthread_t</code>是一种<em>不透明数据类型</em> 在Linux实现中,pthread_t是无符号长整形,而在其他实现中有可能是指针或者结构体。</p>
+<p>因此，对于pthread_t的比较，应该使用pthread_equal函数而不是C语言中的<code>==</code>等操作符。</p>
+<h1 id="join线程"><a href="#join线程" class="headerlink" title="join线程"></a>join线程</h1><p>函数<code>pthread_join</code>会等待一个线程，直至其终止。线程终止时会立即返回。这种操作被称为<em>连接</em></p>
+<p>若函数<code>pthread_join</code>的第二个参数<code>retval</code>为一非空指针，将会保存线程终止时返回值的拷贝。即保存了线程调用<code>return</code>或<code>pthread_exit</code>时所指定的值</p>
+<p>向函数<code>pthread_join</code>传入已经join过的线程id的结果未知</p>
+<p>调用<code>pthread_join</code>的线程会阻塞，直到对应线程执行完毕 相当于对进程使用<code>wait()</code>系统调用 不同的是，<code>wait()</code>只能由父进程调用</p>
+<h1 id="分离线程"><a href="#分离线程" class="headerlink" title="分离线程"></a>分离线程</h1><p>线程具有可连接和已分离两个状态。调用<code>pthread_detach()</code>可以使线程分离，即使其不可连接。</p>
+<p>线程一旦处于分离状态，便不能再调用join来与其连接，也不能再重使其返回可连接状态。<code>pthread_detach()</code>的调用是不可逆的。</p>
+<p>不论线程是否已分离，调用<code>exit()</code>或主进程执行<code>return</code>时，所有线程都会立即终止。</p>
+<h1 id="线程属性"><a href="#线程属性" class="headerlink" title="线程属性"></a>线程属性</h1><p>利用<code>pthread_create()</code>的第二个参数可以设置线程的属性。</p>
+<h1 id="多线程使用笔记"><a href="#多线程使用笔记" class="headerlink" title="多线程使用笔记"></a>多线程使用笔记</h1><h2 id="create"><a href="#create" class="headerlink" title="create"></a>create</h2><p>在多线程的使用中，可能会出现主线程先结束使其他线程也终止的情况</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span>* <span class="title">thread_func</span><span class="params">(<span class="type">void</span> *)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;func()调用  线程ID -&gt; &quot;</span>&lt;&lt;<span class="built_in">pthread_self</span>()&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">thread_func</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,thread_func,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只输出了主线程的调用</p>
+<p>需要让主线程’等待’其他线程结束。 可以使用 <code>pthread_join()</code>或让主线程sleep 使用while()等待也是可行的 </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span>* <span class="title">thread_func</span><span class="params">(<span class="type">void</span> *)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;func()调用  线程ID -&gt; &quot;</span>&lt;&lt;<span class="built_in">pthread_self</span>()&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">thread_func</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,thread_func,<span class="literal">NULL</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">pthread_join</span>(ptd,<span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">//sleep(3);</span></span><br><span class="line">    <span class="comment">//while(1);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以调用<code>pthread_exit</code>让主线程退出，其他线程会继续运行。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span>* <span class="title">thread_func</span><span class="params">(<span class="type">void</span> *)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;func()调用  线程ID -&gt; &quot;</span>&lt;&lt;<span class="built_in">pthread_self</span>()&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">thread_func</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,thread_func,<span class="literal">NULL</span>);   </span><br><span class="line">    </span><br><span class="line">    <span class="built_in">pthread_exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="join和detach"><a href="#join和detach" class="headerlink" title="join和detach"></a>join和detach</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">pthread_test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;test()调用&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,(<span class="type">void</span>*(*)(<span class="type">void</span>*))pthread_test,<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">pthread_detach</span>(ptd);</span><br><span class="line">    <span class="built_in">pthread_join</span>(ptd,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// pthread_exit(0);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个已经detach的线程是无法join的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">pthread_test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;test()调用&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,(<span class="type">void</span>*(*)(<span class="type">void</span>*))pthread_test,<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">pthread_detach</span>(ptd);</span><br><span class="line">    <span class="built_in">pthread_join</span>(ptd,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// pthread_exit(0);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+          
+        <div class="top-div">
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="top-box-text">线程学习笔记</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%BA%BF%E7%A8%8B"><span class="top-box-text">为什么要使用线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程共享的属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#Pthreads%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="top-box-text">Pthreads函数返回值</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="top-box-text">创建线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BB%88%E6%AD%A2%E7%BA%BF%E7%A8%8B"><span class="top-box-text">终止线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8BID"><span class="top-box-text">线程ID</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#join%E7%BA%BF%E7%A8%8B"><span class="top-box-text">join线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%86%E7%A6%BB%E7%BA%BF%E7%A8%8B"><span class="top-box-text">分离线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0"><span class="top-box-text">多线程使用笔记</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#create"><span class="top-box-text">create</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#join%E5%92%8Cdetach"><span class="top-box-text">join和detach</span></a></li></ol></li></ol>
+        </div>
+          
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2025/01/05/C++Note/">
+          <h3 class="post-title">
+            下一篇：C++ Note
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+        <a aria-label="跳转至github" href="https://github.com/Aetherance" target="_blank">
+          <i class="icon icon-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+    </div>
+    
+<script id="hexo-configurations"> window.theme_config = {"image":{"lazyload_enable":true,"photo_zoom":"simple-lightbox"}}; window.is_post = true; </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
