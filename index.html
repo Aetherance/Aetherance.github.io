@@ -80,10 +80,18 @@
 <section class="post-item">
     <div class="content">
       <a href="/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
-        <h2 class="post-title">多线程归并排序与clock()记录时间的本质</h2>
+        <h2 class="post-title">多线程归并排序与clock()的真面目</h2>
       </a>
       <a href="/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
           <div class="post-abstract">
+            
+			    多线程排序PLAN
+因为归并排序本身具有“分而治之”的思想，很适合用多线程优化，因此选择归并排序。
+首先定义一个vector容器arr来存储要排序的数据。
+1vector&lt;int&gt;arr;
+
+然后写一个最基础的归并排序
+1234
             
           </div>
       </a>
