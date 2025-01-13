@@ -9,8 +9,8 @@
 
 <meta charset="utf-8" >
 
-<title>pthread_note</title>
-<meta name="keywords" content="pthread_note, Hello!👋 The_INK&#39;s here">
+<title>Hello!👋 The_INK&#39;s here</title>
+<meta name="keywords" content="Hello!👋 The_INK&#39;s here, Hello!👋 The_INK&#39;s here">
 <meta name="description" content="线程学习笔记为什么要使用线程
 线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。
 创建进程时使用的系统调用fork()代价高，创建线程使用的系统调用clone()比fork()通常快10倍不止。
@@ -19,7 +19,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:title" content="pthread_note">
+<meta property="og:title" content="Hello!👋 The_INK&#39;s here">
 <meta property="og:description" content="线程学习笔记为什么要使用线程
 线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。
 创建进程时使用的系统调用fork()代价高，创建线程使用的系统调用clone()比fork()通常快10倍不止。
@@ -84,9 +84,9 @@
   <div class="content-container">
     <div class="post-detail">
       
-      <h2 class="post-title">pthread_note</h2>
+      <h2 class="post-title"></h2>
       <div class="post-info post-detail-info">
-        <span><i class="icon icon-calendar-outline"></i> 2025-01-06</span>
+        <span><i class="icon icon-calendar-outline"></i> 2025-01-08</span>
         
       </div>
       <div class="post-content-wrapper">
@@ -126,16 +126,13 @@
 <p>若函数<code>pthread_join</code>的第二个参数<code>retval</code>为一非空指针，将会保存线程终止时返回值的拷贝。即保存了线程调用<code>return</code>或<code>pthread_exit</code>时所指定的值</p>
 <p>向函数<code>pthread_join</code>传入已经join过的线程id的结果未知</p>
 <p>调用<code>pthread_join</code>的线程会阻塞，直到对应线程执行完毕 相当于对进程使用<code>wait()</code>系统调用 不同的是，<code>wait()</code>只能由父进程调用</p>
+<p>为了防止线程成为<code>僵尸线程</code>，一定要对其进行join操作</p>
 <h1 id="分离线程"><a href="#分离线程" class="headerlink" title="分离线程"></a>分离线程</h1><p>线程具有可连接和已分离两个状态。调用<code>pthread_detach()</code>可以使线程分离，即使其不可连接。</p>
 <p>线程一旦处于分离状态，便不能再调用join来与其连接，也不能再重使其返回可连接状态。<code>pthread_detach()</code>的调用是不可逆的。</p>
 <p>不论线程是否已分离，调用<code>exit()</code>或主进程执行<code>return</code>时，所有线程都会立即终止。</p>
 <h1 id="线程属性"><a href="#线程属性" class="headerlink" title="线程属性"></a>线程属性</h1><p>利用<code>pthread_create()</code>的第二个参数可以设置线程的属性。</p>
 <h1 id="互斥量"><a href="#互斥量" class="headerlink" title="互斥量"></a>互斥量</h1><p>为了防止两个线程同时对某一共享资源进行修改，或者同时对其进行读写操作，要使用互斥量来确保同时只有一个线程访问共享资源。</p>
-<p>例如，对于一个线程AB都可访问的全局变量，线程A在访问时将其‘锁’住，可以防止B访问，减少错误的发生。</p>
-<p>互斥量的数据类型是<code>pthread_mutex_t</code> 使用前应当初始化。</p>
-<p>互斥量的初始化分为分为静态和动态两种。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> mtx = PTHREAD_MUTEX_INITIALIZER;    <span class="comment">// 静态初始化</span></span><br></pre></td></tr></table></figure>
-
+<p>例如，对于一个线程AB都可访问的全局变量，线程A在访问时将其‘锁’住，可以防止B访问，减少错误的发生。<br>果父线程没有调用 pthread_join()，该线程的资源仍然不会被完全回收，这可能导致僵</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> mtx;</span><br><span class="line"><span class="built_in">pthread_mutex_init</span>(&amp;mtx,<span class="literal">NULL</span>);  <span class="comment">// 动态初始化</span></span><br></pre></td></tr></table></figure>
 
 <p><code>pthread_mutex_lock()</code>会尝试获取一个互斥量，如果该互斥量已被其他线程锁定，本线程会阻塞等待，直到对应线程对互斥量解锁。<code>pthread_mutex_trylock()</code>与之类似，不同的是<code>trylock</code>在互斥量已被锁定的情况下不会等待，而是返回一个错误码<code>EBUSY</code></p>
@@ -153,6 +150,38 @@
 <p>必须由一个循环语句来控制<code>pthread_cond_wait()</code>的调用，因为可能存在<code>假唤醒</code> 即线程被唤醒的时候条件未改变，所以应该一直检测</p>
 <h2 id="通知条件变量"><a href="#通知条件变量" class="headerlink" title="通知条件变量"></a>通知条件变量</h2><p><code>pthread_cond_signal()</code>和<code>pthread_cond_broadcast()</code>都可以通知条件变量使之状态改变。</p>
 <p>两者的区别是：前者将随机唤醒至少一条线程，而后者会唤醒所有的线程。</p>
+<h1 id="线程安全和每线程存储"><a href="#线程安全和每线程存储" class="headerlink" title="线程安全和每线程存储"></a>线程安全和每线程存储</h1><p>线程安全函数 即能在多线程调用时保证线程安全的函数。</p>
+<h2 id="可重入和不可重入函数"><a href="#可重入和不可重入函数" class="headerlink" title="可重入和不可重入函数"></a>可重入和不可重入函数</h2><p>由于互斥量的加锁和解锁也具有一定开销，所以使用临界区实现线程安全的效率并不高。所以可重入函数的使用具有一定意义。</p>
+<p>可重入函数不访问全局或静态变量，其信息都存在调用者分配的缓冲区里。然而，不是所有函数都可改写为可重入函数。</p>
+<p>例如 <code>malloc()</code>类函数必须访问全局变量。它的线程安全是由互斥量实现的。</p>
+<p>一些函数会返回一个指向静态分配的缓冲区的指针，同样不可改写为可重入函数。</p>
+<p>一些不可重入函数具有“可重入的替身”，以后缀<code>_r</code>结尾。 例如 <code>readdir_r()</code> <code>rand_r()</code> <code>strtok_r()</code></p>
+<h2 id="一次性初始化"><a href="#一次性初始化" class="headerlink" title="一次性初始化"></a>一次性初始化</h2><p>对于库函数，不能指望在main函数中初始化一些量，而这些量又必须且只能初始化一次。此时需要一个对任意调用线程，都只进行一次量的初始化的库函数。</p>
+<p><code>pthread_once()</code>就有这样的功能。</p>
+<p><code>pthread_once()</code>的第一个参数是指向<code>pthread_once_t</code>类型的地址<code>once_control</code>,通过<code>once_control</code>的状态可判断是否是第一次执行。</p>
+<p>第二个参数是一个指向自定义的函数的指针。该函数无参无返。初始化的函数应该置于该函数体内。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void func()</span><br><span class="line">&#123;</span><br><span class="line">    // 将初始化函数置于此处</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>pthread_once_t 的变量应静态初始化。</p>
+<h2 id="线程特有数据"><a href="#线程特有数据" class="headerlink" title="线程特有数据"></a>线程特有数据</h2><p>线程特有数据使得函数为每个调用线程都创建一个特有缓冲区，维护一份线程的副本。这个副本是长期存在的。函数可以向每个调用线程返回各自的缓冲区。</p>
+<p>使用线程特有数据的函数会为调用线程分配单独的存储，且只在该线程初次调用时分配一次。</p>
+<p>在同一线程的后续调用该函数时，都会获取初次调用所分配的缓冲区地址。</p>
+<h1 id="线程取消"><a href="#线程取消" class="headerlink" title="线程取消"></a>线程取消</h1><p><code>pthread_cancel()</code>会向线程发送一个取消请求，该过程中，发送信号的线程不会等待被发送信号的线程。</p>
+<h2 id="取消状态及类型"><a href="#取消状态及类型" class="headerlink" title="取消状态及类型"></a>取消状态及类型</h2><p><code>pthread_setcancelstate()</code>和<code>pthread_setcanceltpye()</code>会设定标志，控制线程对线程取消的响应过程。</p>
+<p><code>pthread_setcancelstate()</code>和<code>pthread_setcanceltpye()</code>会将线程的取消性状态设置为第一个参数对应的值。<br>线程原有的取消类型将返回到第二个参数指向的地方。</p>
+<p>使用<code>fork()</code>创建新进程时，子进程会继承调用线程的取消性及状态。某线程调用<code>exec()</code>会将取消状态和取消类型重置为默认值。</p>
+<p>当取消类型为<code>PTHREAD_CANCEL_DEFERED</code>时，取消请求将挂起，直到到达取消点。（延迟取消）</p>
+<p><code>pthread_testcancel()</code>可以产生一个取消点</p>
+<p>线程的默认取消属性是可以取消，默认取消类型是延迟取消。</p>
+<p>收到取消信息的启用了取消性状态并延迟取消的线程，应该由其他线程join()，否则可能变为<code>僵尸线程</code></p>
+<h2 id="清理函数"><a href="#清理函数" class="headerlink" title="清理函数"></a>清理函数</h2><p>每个线程拥有一个清理函数栈，栈中存放清理函数指针。当线程取消时，会从栈顶开始执行清理函数，当所有函数都执行完毕时，线程终止。</p>
+<p>使用<code>pthread_cleanup_push()</code>来向栈中增加清理函数。</p>
+<p>使用<code>pthread_cleanup_pop()</code>来删除清理函数。 该函数只有一个参数<code>execute</code> 如果其非0 那么这个清理函数一定会被执行。</p>
+<p><code>push()</code>与<code>pop()</code>必须同处于同一代码块({}) 才能正确执行。 <strong>每一个push都得对应一个pop</strong> 并且pop的时候才会执行。</p>
+<p>调用<code>pthread_exit()</code>终止线程会导致清理函数栈中的所有函数被执行，而执行<code>return</code>语句不会。(?)</p>
+<h1 id="线程和进程"><a href="#线程和进程" class="headerlink" title="线程和进程"></a>线程和进程</h1><h2 id="线程和exec"><a href="#线程和exec" class="headerlink" title="线程和exec()"></a>线程和<code>exec()</code></h2><p>任意线程调用了<code>exec()</code>函数，除调用线程以外的所有线程都会消失。既不会对线程特有数据执行解构函数，也不会执行清理函数。该线程的互斥量和条件变量都会立即消失。并且最终的线程ID是不确定的。</p>
+<h2 id="线程和fork"><a href="#线程和fork" class="headerlink" title="线程和fork()"></a>线程和<code>fork()</code></h2><p>任意线程调用了<code>fork()</code>函数，除调用线程以外的所有线程都会消失。既不会对线程特有数据执行解构函数，也不会执行清理函数。调用fork()的线程ID会被复制到新进程中。互斥量和条件变量都得以保留，然而，互斥量和条件变量的状态不会刷新，可能会引起许多问题。</p>
+<p>可能会导致子进程的内存泄漏。</p>
+<p>如果在fork()后马上调用exec()，可能会解决非主线程调用<code>fork()</code>导致的问题。或者，调用<code>pthread_atfork()</code>也可以解决。</p>
 <h1 id="多线程使用笔记"><a href="#多线程使用笔记" class="headerlink" title="多线程使用笔记"></a>多线程使用笔记</h1><h2 id="create"><a href="#create" class="headerlink" title="create"></a>create</h2><p>在多线程的使用中，可能会出现主线程先结束使其他线程也终止的情况</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span>* <span class="title">thread_func</span><span class="params">(<span class="type">void</span> *)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;func()调用  线程ID -&gt; &quot;</span>&lt;&lt;<span class="built_in">pthread_self</span>()&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">thread_func</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">pthread_t</span> ptd;</span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;ptd,<span class="literal">NULL</span>,thread_func,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -170,7 +199,7 @@
         </div>
           
         <div class="top-div">
-          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="top-box-text">线程学习笔记</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%BA%BF%E7%A8%8B"><span class="top-box-text">为什么要使用线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程共享的属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#Pthreads%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="top-box-text">Pthreads函数返回值</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="top-box-text">创建线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BB%88%E6%AD%A2%E7%BA%BF%E7%A8%8B"><span class="top-box-text">终止线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8BID"><span class="top-box-text">线程ID</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#join%E7%BA%BF%E7%A8%8B"><span class="top-box-text">join线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%86%E7%A6%BB%E7%BA%BF%E7%A8%8B"><span class="top-box-text">分离线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%BA%92%E6%96%A5%E9%87%8F"><span class="top-box-text">互斥量</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">条件变量</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%AD%89%E5%BE%85%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">等待条件变量</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E9%80%9A%E7%9F%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">通知条件变量</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0"><span class="top-box-text">多线程使用笔记</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#create"><span class="top-box-text">create</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#join%E5%92%8Cdetach"><span class="top-box-text">join和detach</span></a></li></ol></li></ol>
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="top-box-text">线程学习笔记</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%BA%BF%E7%A8%8B"><span class="top-box-text">为什么要使用线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程共享的属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#Pthreads%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="top-box-text">Pthreads函数返回值</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="top-box-text">创建线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BB%88%E6%AD%A2%E7%BA%BF%E7%A8%8B"><span class="top-box-text">终止线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8BID"><span class="top-box-text">线程ID</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#join%E7%BA%BF%E7%A8%8B"><span class="top-box-text">join线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%86%E7%A6%BB%E7%BA%BF%E7%A8%8B"><span class="top-box-text">分离线程</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7"><span class="top-box-text">线程属性</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%BA%92%E6%96%A5%E9%87%8F"><span class="top-box-text">互斥量</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">条件变量</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%AD%89%E5%BE%85%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">等待条件变量</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E9%80%9A%E7%9F%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="top-box-text">通知条件变量</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E5%92%8C%E6%AF%8F%E7%BA%BF%E7%A8%8B%E5%AD%98%E5%82%A8"><span class="top-box-text">线程安全和每线程存储</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E5%92%8C%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%85%A5%E5%87%BD%E6%95%B0"><span class="top-box-text">可重入和不可重入函数</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E4%B8%80%E6%AC%A1%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="top-box-text">一次性初始化</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E7%89%B9%E6%9C%89%E6%95%B0%E6%8D%AE"><span class="top-box-text">线程特有数据</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%8F%96%E6%B6%88"><span class="top-box-text">线程取消</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%8F%96%E6%B6%88%E7%8A%B6%E6%80%81%E5%8F%8A%E7%B1%BB%E5%9E%8B"><span class="top-box-text">取消状态及类型</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%B8%85%E7%90%86%E5%87%BD%E6%95%B0"><span class="top-box-text">清理函数</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B"><span class="top-box-text">线程和进程</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8Cexec"><span class="top-box-text">线程和exec()</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8Cfork"><span class="top-box-text">线程和fork()</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0"><span class="top-box-text">多线程使用笔记</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#create"><span class="top-box-text">create</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#join%E5%92%8Cdetach"><span class="top-box-text">join和detach</span></a></li></ol></li></ol>
         </div>
           
       </div>
