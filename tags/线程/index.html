@@ -77,7 +77,7 @@
 
   <div class="current-tag-container">
     <h2 class="title">
-      <i class="icon icon-pricetags-outline"></i> Linux系统编程
+      <i class="icon icon-pricetags-outline"></i> 线程
     </h2>
   </div>
 
@@ -85,61 +85,30 @@
 
 <section class="post-item">
     <div class="content">
-      <a href="/2025/01/07/pthread-note/">
-        <h2 class="post-title">pthread_notes</h2>
+      <a href="/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
+        <h2 class="post-title">多线程归并排序与clock()</h2>
       </a>
-      <a href="/2025/01/07/pthread-note/">
+      <a href="/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">
           <div class="post-abstract">
             
-			    线程学习笔记为什么要使用线程
-线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。
-创建进程时使用的系统调用fork()代价高，创建线程使用的系统调用clone()比fork()通常快10倍不止。
+			    多线程排序PLAN
+因为归并排序本身具有“分而治之”的思想，很适合用多线程优化，因此选择归并排序。
+首先定义一个vector容器arr来存储要排序的数据。
+1vector&lt;int&gt;arr;
 
-线程共享的属
+然后写一个最基础的归并排序
+1234
             
           </div>
       </a>
       <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2025-01-07</span>
+        <span><i class="icon icon-calendar-outline"></i> 2025-01-08</span>
         
           <span>
             <i class="icon icon-pricetags-outline"></i>
             
 
-                Linux系统编程
-                
-            
-          </span>
-        
-      </div>
-    </div>
-  </section>
-
-
-
-<section class="post-item">
-    <div class="content">
-      <a href="/2024/12/29/ls%E5%AE%9E%E7%8E%B0/">
-        <h2 class="post-title">ls实现</h2>
-      </a>
-      <a href="/2024/12/29/ls%E5%AE%9E%E7%8E%B0/">
-          <div class="post-abstract">
-            
-			    实现自己的 ls 命令PLAN
-任务说明ls 是 GNU&#x2F;Linux 操作系统中常见的命令。 请使用 C 语言，基于 GNU&#x2F;Linux 操作系统，编程实现 ls 命令的部分功能。
-验收要求
-实现 ls 的 -a、-l、
-            
-          </div>
-      </a>
-      <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2024-12-29</span>
-        
-          <span>
-            <i class="icon icon-pricetags-outline"></i>
-            
-
-                Linux系统编程
+                线程
                 
             
           </span>
