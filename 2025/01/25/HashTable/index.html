@@ -11,16 +11,16 @@
 
 <title>哈希表原理及实现</title>
 <meta name="keywords" content="哈希表原理及实现, Hello!👋 The_INK&#39;s here">
-<meta name="description" content="哈希表通过键值(key)来查找数据(value) 通常可以以极低的时间复杂度查找数据。
+<meta name="description" content="简介哈希表通过键值(key)来查找数据(value) 通常可以以极低的时间复杂度查找数据。
 哈希表的底层通常是支持随机访问的容器。由于键值和数据值一一对应，哈希表支持以table[key]的形式访问数据。
-为了减少空白位置造成的空间浪费，哈希表">
+为了减少空白位置造成的空间浪费，哈">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="哈希表原理及实现">
-<meta property="og:description" content="哈希表通过键值(key)来查找数据(value) 通常可以以极低的时间复杂度查找数据。
+<meta property="og:description" content="简介哈希表通过键值(key)来查找数据(value) 通常可以以极低的时间复杂度查找数据。
 哈希表的底层通常是支持随机访问的容器。由于键值和数据值一一对应，哈希表支持以table[key]的形式访问数据。
-为了减少空白位置造成的空间浪费，哈希表">
+为了减少空白位置造成的空间浪费，哈">
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style/main.css">
@@ -97,7 +97,7 @@
       </div>
       <div class="post-content-wrapper">
         <div class="post-content">
-          <p>哈希表通过键值(<code>key</code>)来查找数据(<code>value</code>) 通常可以以极低的时间复杂度查找数据。</p>
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>哈希表通过键值(<code>key</code>)来查找数据(<code>value</code>) 通常可以以极低的时间复杂度查找数据。</p>
 <p>哈希表的底层通常是支持随机访问的容器。由于键值和数据值一一对应，哈希表支持以<code>table[key]</code>的形式访问数据。</p>
 <p>为了减少空白位置造成的空间浪费，哈希表通过哈希函数将键映射到表中的一个索引位置。 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_20853741/article/details/112464621">哈希函数</a></p>
 <p>当两个不同的键通过哈希函数映射到相同的数组索引位置时，就会发生哈希冲突。</p>
@@ -109,11 +109,35 @@
 <p>链式法在哈希表的每个位置存储一个链表，冲突的元素会被插入链表。</p>
 <p>开放定址法会在数组中找一个空位存放冲突的元素。</p>
 <p>本文实现的哈希表使用除留余数法映射键值，使用链式地址法处理哈希冲突。</p>
+<h1 id="哈希表类的使用"><a href="#哈希表类的使用" class="headerlink" title="哈希表类的使用"></a>哈希表类的使用</h1><p>通过哈希表的构造函数创建一个哈希表对象</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">hashtable <span class="title">h1</span><span class="params">(<span class="number">12</span>)</span></span>; <span class="comment">// 创建一个大小为传入参数Size的哈希表</span></span><br></pre></td></tr></table></figure>
 
+<p>调用哈希表对象的成员函数<code>Insert</code>向哈希表内插入一个节点</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h<span class="number">1.</span><span class="built_in">Insert</span>(<span class="number">10</span>,<span class="number">25</span>);</span><br></pre></td></tr></table></figure>
+<p>如果键值已经存在，将替换原来的值。</p>
+<p><code>GetValue()</code>会返回哈希表中键值(key)对应的值(value) 如果键值不存在，则返回-1</p>
+<p><code>GetKeyNode()</code>会返回对应键值的节点(Hnode) 如果键值不存在，返回<code>nullptr</code></p>
+<p>哈希表类重载了<code>[]</code>操作符，可以通过<code>h1[key]</code>的形式访问数据</p>
+<p>哈希表类的析构函数会在对象销毁时自动释放对象开辟的内存。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>哈希表类定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">hashtable</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">hashtable</span>(<span class="type">int</span>);</span><br><span class="line">    ~<span class="built_in">hashtable</span>();</span><br><span class="line">    <span class="function">Hnode* <span class="title">GetKeyNode</span><span class="params">(<span class="type">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">GetValue</span><span class="params">(<span class="type">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Insert</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> <span class="keyword">operator</span>[](<span class="type">int</span>);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Hnode**data;</span><br><span class="line">    <span class="type">int</span> HashNum;</span><br><span class="line">    <span class="type">int</span> Size;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">hash</span><span class="params">(<span class="type">int</span>)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>哈希表构造函数实现</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hashtable::<span class="built_in">hashtable</span>(<span class="type">int</span> Size) &#123;</span><br><span class="line">    data = <span class="keyword">new</span> Hnode*[Size]();</span><br><span class="line">    HashNum = Size;</span><br><span class="line">    <span class="keyword">this</span>-&gt;Size = Size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建一个哈希表对象时，构造函数会根据传入的参数Size开辟底层数组data，并初始化成员变量HashNum和Size</p>
+<p>本实现使用除留余数法实现哈希函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">hashtable::hash</span><span class="params">(<span class="type">int</span> key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % HashNum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GetKeyNode()</code>函数在key对应的序列中查找并返回对应key值的节点。如果没有找到，返回<code>nullptr</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Hnode*<span class="title">hashtable::GetKeyNode</span><span class="params">(<span class="type">int</span> key)</span> </span>&#123;</span><br><span class="line">    Hnode * target = data[<span class="built_in">hash</span>(key)];</span><br><span class="line">    <span class="keyword">if</span>(target == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (target-&gt;next!=<span class="literal">nullptr</span>&amp;&amp;target-&gt;key!=key) &#123;</span><br><span class="line">        target = target-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> target-&gt;key == key ? target : <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Insert()</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">hashtable::Insert</span><span class="params">(<span class="type">int</span> key,<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">    Hnode * key_node;</span><br><span class="line">    <span class="keyword">if</span>(key_node = <span class="built_in">GetKeyNode</span>(key)) &#123;</span><br><span class="line">        key_node-&gt;key = key;</span><br><span class="line">        key_node-&gt;val = val;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    key_node = data[<span class="built_in">hash</span>(key)];</span><br><span class="line">    Hnode * newnode = <span class="built_in">BuyNewnode</span>(key,val);</span><br><span class="line">    <span class="keyword">if</span>(key_node==<span class="literal">nullptr</span>) &#123;</span><br><span class="line">        data[<span class="built_in">hash</span>(key)] = newnode;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (key_node-&gt;next) &#123;</span><br><span class="line">        key_node = key_node-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    key_node-&gt;next = newnode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
           
         <div class="top-div">
-          
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%AE%80%E4%BB%8B"><span class="top-box-text">简介</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="top-box-text">哈希表类的使用</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%AE%9E%E7%8E%B0"><span class="top-box-text">实现</span></a></li></ol>
         </div>
           
       </div>
