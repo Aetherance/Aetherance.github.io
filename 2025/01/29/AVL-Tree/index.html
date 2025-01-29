@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    
+
+    
+<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
+    
+
+<meta charset="utf-8" >
+
+<title>AVL-Tree</title>
+<meta name="keywords" content="AVL-Tree, Hello!👋 The_INK&#39;s here">
+<meta name="description" content="简介链表较低的查找效率推动了二叉搜索树的诞生。二叉搜索树可以以对数级别的时间复杂度进行查找。
+然而二叉搜索树在某些特定情况时(数据有序插入)会退化成类似于链表的结构，导致其搜索时的时间复杂度变为O(n)。
+AVL树可以解决二叉树搜索树退化的">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="AVL-Tree">
+<meta property="og:description" content="简介链表较低的查找效率推动了二叉搜索树的诞生。二叉搜索树可以以对数级别的时间复杂度进行查找。
+然而二叉搜索树在某些特定情况时(数据有序插入)会退化成类似于链表的结构，导致其搜索时的时间复杂度变为O(n)。
+AVL树可以解决二叉树搜索树退化的">
+
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+  <meta name="generator" content="Hexo 7.3.0"></head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="http://aetherance.github.io">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="http://aetherance.github.io">
+        <h1 class="site-title">Hello!👋 The_INK&#39;s here</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/" class="menu purple-link">
+        首页
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        标签
+      </a>
+    
+  
+    
+      <a href="/archives" class="menu purple-link">
+        归档
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        关于
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">AVL-Tree</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2025-01-29</span>
+        
+          <span>
+          <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+              数据结构
+                
+              </a>
+            
+          </span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>链表较低的查找效率推动了二叉搜索树的诞生。二叉搜索树可以以对数级别的时间复杂度进行查找。</p>
+<p>然而二叉搜索树在某些特定情况时(数据有序插入)会退化成类似于链表的结构，导致其搜索时的时间复杂度变为O(n)。</p>
+<p>AVL树可以解决二叉树搜索树退化的问题。 它通过判断二叉树<strong>是否失衡</strong>，并在失衡时通过<strong>旋转</strong>将失衡的二叉树置为平衡状态，以防止其变为链表。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>AVL树的旋转方式有两种 —— 左旋和右旋</p>
+<p>左旋使失衡节点(左右子树高度差的绝对值大于1的节点)围绕将成为新根的节点向左(逆时针)旋转，成为新根节点的左孩子，如果新根节点已经有了左孩子，则将其插到失衡节点的右边。</p>
+<p>右旋使失衡节点(左右子树高度差的绝对值大于1的节点)围绕将成为新根的节点向右(顺时针)旋转，成为新根节点的右孩子，如果新根节点已经有了右孩子，则将其插到失衡节点的左边。</p>
+<p>AVL树引入平衡因子的概念描述树的平衡状态。平衡因子是左边的节点高度减右边的节点高度。</p>
+<p>AVL树有四种失衡状态</p>
+<ol>
+<li>LL型 失衡节点的平衡因子是2 其左孩子的平衡因子是1 需要右旋</li>
+<li>RR型 失衡节点的平衡因子是-2 其左孩子的平衡因子是-1 需要左旋</li>
+<li>LR型 失衡节点的平衡因子是2 其左孩子的平衡因子是-1 需要先左旋左孩子再右旋失衡节点</li>
+<li>RL型 失衡节点的平衡因子是-2 其左孩子的平衡因子是1 需要先右旋右孩子再左旋失衡节点</li>
+</ol>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AVL树节点实现</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="type">int</span> height;</span><br><span class="line">    Node * left;</span><br><span class="line">    Node * right;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">int</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node::<span class="built_in">Node</span>(<span class="type">int</span> val) &#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;height = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;val = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">getHeight</span><span class="params">(Node * target)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取树的高度 (处理nullptr)</span></span><br><span class="line">    <span class="keyword">if</span>(target == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> target-&gt;height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">updateHeight</span><span class="params">(Node * target)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 更新高度</span></span><br><span class="line">    target-&gt;height = <span class="built_in">max</span>(<span class="built_in">getHeight</span>(target-&gt;left),<span class="built_in">getHeight</span>(target-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getBalance</span><span class="params">(Node * target)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取平衡因子</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">getHeight</span>(target-&gt;left) - <span class="built_in">getHeight</span>(target-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>遍历</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用中序遍历以验证二叉搜索树的性质没有被破坏</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">InOrder</span><span class="params">(Node * root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">InOrder</span>(root-&gt;left);</span><br><span class="line">    cout&lt;&lt;root-&gt;val&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">InOrder</span>(root-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>旋转</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 左旋</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LeftRotate</span><span class="params">(Node ** root)</span> </span>&#123;</span><br><span class="line">    Node * new_root = (*root)-&gt;right;   <span class="comment">// 新根节点</span></span><br><span class="line">    Node * T = new_root-&gt;left;  <span class="comment">// 冲突子树</span></span><br><span class="line"></span><br><span class="line">    new_root-&gt;left = *root;</span><br><span class="line">    (*root)-&gt;right = T;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">updateHeight</span>(*root);    <span class="comment">// 更新高度</span></span><br><span class="line">    <span class="built_in">updateHeight</span>(new_root);</span><br><span class="line"></span><br><span class="line">    *root = new_root;    <span class="comment">// 改变根节点</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 右旋</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">RightRotate</span><span class="params">(Node ** root)</span> </span>&#123;</span><br><span class="line">    Node * new_root = (*root)-&gt;left;</span><br><span class="line">    Node * T = new_root-&gt;right;</span><br><span class="line"></span><br><span class="line">    new_root-&gt;right = (*root);</span><br><span class="line">    (*root)-&gt;left = T;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">updateHeight</span>(*root);</span><br><span class="line">    <span class="built_in">updateHeight</span>(new_root);</span><br><span class="line"></span><br><span class="line">    *root = new_root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>插入</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Insert</span><span class="params">(Node ** root,<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 找到合适空位置后插入</span></span><br><span class="line">    <span class="keyword">if</span>(*root == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        *root = <span class="keyword">new</span> <span class="built_in">Node</span>(val);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 防止重复插入</span></span><br><span class="line">    <span class="keyword">if</span>(val == (*root)-&gt;val) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断大小，递归寻找</span></span><br><span class="line">    <span class="keyword">if</span>(val&lt;(*root)-&gt;val) &#123;</span><br><span class="line">        <span class="built_in">Insert</span>(&amp;(*root)-&gt;left,val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(val&gt;(*root)-&gt;val) &#123;</span><br><span class="line">        <span class="built_in">Insert</span>(&amp;(*root)-&gt;right,val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新高度</span></span><br><span class="line">    <span class="built_in">updateHeight</span>(*root);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取平衡因子</span></span><br><span class="line">    <span class="type">int</span> balance = <span class="built_in">getBalance</span>(*root);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断是否失衡并旋转</span></span><br><span class="line">    <span class="keyword">if</span>(balance == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">getBalance</span>((*root)-&gt;left) == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">RightRotate</span>(root);</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">getBalance</span>((*root)-&gt;left) == <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="built_in">LeftRotate</span>(&amp;(*root)-&gt;left);</span><br><span class="line">            <span class="built_in">RightRotate</span>(&amp;(*root));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(balance == <span class="number">-2</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">getBalance</span>((*root)-&gt;right) == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">RightRotate</span>(&amp;(*root)-&gt;right);</span><br><span class="line">            <span class="built_in">LeftRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">getBalance</span>((*root)-&gt;right) == <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="built_in">LeftRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>删除</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除左右都不为空时的节点时需要获取左子树最大值节点 (或右子树最小节点)</span></span><br><span class="line"><span class="function">Node * <span class="title">findLeftMax</span><span class="params">(Node * root)</span> </span>&#123;</span><br><span class="line">    Node * max = root-&gt;left;</span><br><span class="line">    <span class="keyword">while</span> (max &amp;&amp; max-&gt;right) &#123;</span><br><span class="line">        max = max-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(Node ** root,<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 防止空指针解引用</span></span><br><span class="line">    <span class="keyword">if</span>(*root == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 寻找</span></span><br><span class="line">    <span class="keyword">if</span>(val&lt;(*root)-&gt;val) &#123;</span><br><span class="line">        <span class="built_in">remove</span>(&amp;(*root)-&gt;left,val); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(val &gt; (*root)-&gt;val) &#123;</span><br><span class="line">        <span class="built_in">remove</span>(&amp;(*root)-&gt;right,val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 如果找到对应值，开始删除</span></span><br><span class="line">        <span class="comment">// 删除有三种情况</span></span><br><span class="line">        <span class="comment">// 1.左右都是空 直接删除即可</span></span><br><span class="line">        <span class="comment">// 2.左右有一个是空 和链表删除类似</span></span><br><span class="line">        <span class="comment">// 3.左右都不是空 要找到子树中刚好比该节点大或小的节点 即左子树的最大节点或者右子树的最小节点</span></span><br><span class="line">        <span class="comment">// 此处用 findLeftMax找到左子树的最大节点，然后用其值替换删除节点，最后删除左子树的最大节点</span></span><br><span class="line">        Node * temp = *root;</span><br><span class="line">        <span class="keyword">if</span>(!(*root)-&gt;left &amp;&amp; !(*root)-&gt;right) &#123;</span><br><span class="line">            <span class="keyword">delete</span> *root;</span><br><span class="line">            *root = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>((*root)-&gt;left &amp;&amp; !(*root)-&gt;right) &#123;</span><br><span class="line">            *root = (*root)-&gt;left;</span><br><span class="line">            <span class="keyword">delete</span> temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>((*root)-&gt;right &amp;&amp; !(*root)-&gt;left) &#123;</span><br><span class="line">            *root = (*root)-&gt;right;</span><br><span class="line">            <span class="keyword">delete</span> temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            Node * leftMax = <span class="built_in">findLeftMax</span>(*root);</span><br><span class="line">            (*root)-&gt;val = leftMax-&gt;val;</span><br><span class="line">            <span class="built_in">remove</span>(&amp;(*root)-&gt;left,leftMax-&gt;val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(*root == <span class="literal">nullptr</span> ) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="comment">// 删除后可能出现空指针</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">updateHeight</span>(*root);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 与插入类似的失衡判断</span></span><br><span class="line">    <span class="type">int</span> balance = <span class="built_in">getBalance</span>(*root);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(balance == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="type">int</span> lb = <span class="built_in">getBalance</span>((*root)-&gt;left);</span><br><span class="line">        <span class="keyword">if</span>(lb == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">RightRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(lb == <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="built_in">LeftRotate</span>(&amp;(*root)-&gt;left);</span><br><span class="line">            <span class="built_in">RightRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(balance == <span class="number">-2</span>) &#123;</span><br><span class="line">        <span class="type">int</span> rb = <span class="built_in">getBalance</span>((*root)-&gt;right);</span><br><span class="line">        <span class="keyword">if</span>(rb == <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="built_in">LeftRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(rb == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">RightRotate</span>(&amp;(*root)-&gt;right);</span><br><span class="line">            <span class="built_in">LeftRotate</span>(root);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/Aetherance/DataStruct/blob/master/Tree/MyAVL.cpp">完整代码</a></p>
+
+        </div>
+          
+        <div class="top-div">
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%AE%80%E4%BB%8B"><span class="top-box-text">简介</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%8E%9F%E7%90%86"><span class="top-box-text">原理</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%AE%9E%E7%8E%B0"><span class="top-box-text">实现</span></a></li></ol>
+        </div>
+          
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2025/01/25/HashTable/">
+          <h3 class="post-title">
+            下一篇：哈希表原理及实现
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+        <a aria-label="跳转至github" href="https://github.com/Aetherance" target="_blank">
+          <i class="icon icon-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+    </div>
+    
+<script id="hexo-configurations"> window.theme_config = {"image":{"lazyload_enable":true,"photo_zoom":"simple-lightbox"}}; window.is_post = true; </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
