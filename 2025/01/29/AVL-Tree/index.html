@@ -106,10 +106,10 @@ AVL树可以解决二叉树搜索树退化的">
 <p>AVL树引入平衡因子的概念描述树的平衡状态。平衡因子是左边的节点高度减右边的节点高度。</p>
 <p>AVL树有四种失衡状态</p>
 <ol>
-<li>LL型 失衡节点的平衡因子是2 其左孩子的平衡因子是1 需要右旋</li>
-<li>RR型 失衡节点的平衡因子是-2 其左孩子的平衡因子是-1 需要左旋</li>
-<li>LR型 失衡节点的平衡因子是2 其左孩子的平衡因子是-1 需要先左旋左孩子再右旋失衡节点</li>
-<li>RL型 失衡节点的平衡因子是-2 其左孩子的平衡因子是1 需要先右旋右孩子再左旋失衡节点</li>
+<li><strong>LL型</strong> 失衡节点的平衡因子是2 其<em>左</em>孩子的平衡因子是1 需要右旋</li>
+<li><strong>RR型</strong> 失衡节点的平衡因子是-2 其<em>右</em>孩子的平衡因子是-1 需要左旋</li>
+<li><strong>LR型</strong> 失衡节点的平衡因子是2 其<em>左</em>孩子的平衡因子是-1 需要先左旋左孩子再右旋失衡节点</li>
+<li><strong>RL型</strong> 失衡节点的平衡因子是-2 其<em>右</em>孩子的平衡因子是1 需要先右旋右孩子再左旋失衡节点</li>
 </ol>
 <h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AVL树节点实现</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="type">int</span> height;</span><br><span class="line">    Node * left;</span><br><span class="line">    Node * right;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">int</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node::<span class="built_in">Node</span>(<span class="type">int</span> val) &#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;height = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">this</span>-&gt;val = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
