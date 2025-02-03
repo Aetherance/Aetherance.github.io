@@ -11,12 +11,22 @@
 
 <title>cout和printf差异</title>
 <meta name="keywords" content="cout和printf差异, Hello!👋 The_INK&#39;s here">
-<meta name="description" content="">
+<meta name="description" content="在并发程序中调用cout和printf()时可以发现它们的微小差异
+多个线程同时打印时,cout的打印通常是混乱的，而printf()的打印总是完整的
+例如:并发打印以下内容
+12This is Task AHere is Task B
+
+">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="cout和printf差异">
-<meta property="og:description" content="">
+<meta property="og:description" content="在并发程序中调用cout和printf()时可以发现它们的微小差异
+多个线程同时打印时,cout的打印通常是混乱的，而printf()的打印总是完整的
+例如:并发打印以下内容
+12This is Task AHere is Task B
+
+">
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style/main.css">
@@ -83,7 +93,25 @@
       </div>
       <div class="post-content-wrapper">
         <div class="post-content">
-          
+          <p>在并发程序中调用<code>cout</code>和<code>printf()</code>时可以发现它们的微小差异</p>
+<p>多个线程同时打印时,<code>cout</code>的打印通常是混乱的，而<code>printf()</code>的打印总是完整的</p>
+<p>例如:并发打印以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">This is Task A</span><br><span class="line">Here is Task B</span><br></pre></td></tr></table></figure>
+
+<p>cout可能会打印成这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThiHere is is Ta Task Bsk A</span><br></pre></td></tr></table></figure>
+
+<p>而printf()总是完整地打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">This is Task A</span><br><span class="line">Here is Task B</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++cout是基于流(Stream)实现的</strong></p>
+<p>C++最常用的头文件<code>&lt;iostream&gt;</code>定义了<code>ostream</code>和<code>istream</code>两个流,cout是<code>ostream</code>流的全局对象</p>
+<p>cout内部具有缓冲机制，要输出至标准输出的数据先写入cout对象内部的缓冲区，当缓冲区满时或手动刷新时会输出。</p>
+<p>cout默认为行缓冲，<code>endl</code>也会使缓冲区清空，这个行为也会消耗一定的性能。</p>
+<p>基于其特性，<code>cout</code>并不是一次性将所有内容输出完的，所以不适合在并发输出环境使用。并且这个因素也会使cout的性能有所降低。</p>
+<p><code>printf()</code>会将处理后的字符串一起打印到屏幕上，不会出现混乱。</p>
+<p>在Linux&#x2F;Unix系统，<code>cout</code>和<code>printf()</code>都是通过<code>write()</code>将数据写入<code>STDOUT_FILENO</code>来实现输出效果的。</p>
+
         </div>
           
         <div class="top-div">

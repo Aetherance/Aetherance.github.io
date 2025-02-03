@@ -85,6 +85,13 @@
       <a href="/2025/02/01/cout%E5%92%8Cprintf%E5%B7%AE%E5%BC%82/">
           <div class="post-abstract">
             
+			    在并发程序中调用cout和printf()时可以发现它们的微小差异
+多个线程同时打印时,cout的打印通常是混乱的，而printf()的打印总是完整的
+例如:并发打印以下内容
+12This is Task AHere is Task B
+
+
+            
           </div>
       </a>
       <div class="post-info">
