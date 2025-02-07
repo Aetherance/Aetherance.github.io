@@ -11,12 +11,16 @@
 
 <title>TCP三次握手四次挥手</title>
 <meta name="keywords" content="TCP三次握手四次挥手, Hello!👋 The_INK&#39;s here">
-<meta name="description" content="">
+<meta name="description" content="TCP&#x2F;IP协议是一个分层联网协议。它包含IP和位于其上的其他协议层。
+TCP&#x2F;IP协议具有一个重要原则——封装。其关键概念为：低层不会对高层传来的信息进行解释。
+当信息从高层传向低层，会加一层本层的头信息。而信息从低层">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="TCP三次握手四次挥手">
-<meta property="og:description" content="">
+<meta property="og:description" content="TCP&#x2F;IP协议是一个分层联网协议。它包含IP和位于其上的其他协议层。
+TCP&#x2F;IP协议具有一个重要原则——封装。其关键概念为：低层不会对高层传来的信息进行解释。
+当信息从高层传向低层，会加一层本层的头信息。而信息从低层">
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style/main.css">
@@ -93,11 +97,33 @@
       </div>
       <div class="post-content-wrapper">
         <div class="post-content">
-          
+          <p>TCP&#x2F;IP协议是一个分层联网协议。它包含IP和位于其上的其他协议层。</p>
+<p>TCP&#x2F;IP协议具有一个重要原则——<strong>封装</strong>。其关键概念为：低层不会对高层传来的信息进行解释。</p>
+<p>当信息从高层传向低层，会加一层本层的头信息。而信息从低层传向高层时，会有一个解包的过程。</p>
+<p>一个应用A向应用B传输信息的大致过程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">             封装为 包      封装为 帧               检查 IP 头部 若匹配，剥离 IP 头部，将段交给传输层。</span><br><span class="line">             添加 IP 头部   添加 帧头和帧尾          若不匹配且本机为路由器，则重新路由转发</span><br><span class="line">             |             |                     |</span><br><span class="line">应用A-&gt;传输层-&gt;网络层-&gt;数据链路层-&gt;网络介质-&gt;数据链路层-&gt;网络层-&gt;传输层-&gt;应用B(接收数据)</span><br><span class="line">       |                       |       |                |</span><br><span class="line">       添加 传输层头部           比特流   剥离帧头和帧尾      检查端口号，确定目标应用    </span><br><span class="line">       封装为 段 或 数据报。              校验帧完整性       剥离传输层头部，将原始数据交给应用层。</span><br><span class="line">高层                        低层      低层                        高层</span><br></pre></td></tr></table></figure>
+
+<p>IP是一种<code>无连接</code>和<code>不可靠</code>的协议。它不保证包到达的顺序和发送的顺序一致。也不保证不会重复发送和到达接收者。网络的可靠性由如TCP一样的可靠传输层协议维护。</p>
+<p>TCP是一种面向连接的、可靠的传输协议。 它需要先建立连接，后传输数据。</p>
+<p>TCP通过<code>三次握手</code>建立连接，通过<code>四次挥手</code>终止连接</p>
+<h1 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h1><ol>
+<li>客户端向服务器发送一个带有标志位<code>SYN</code>的数据包，表明自己希望与服务器建立连接。 客户端的TCP状态变为<code>SYN_SENT</code></li>
+<li>服务器回复一个带有标志位<code>SYN</code>和<code>ACK</code>的数据包，表示同意建立连接。 服务器的TCP状态变为<code> SYN_RECEIVED</code></li>
+<li>客户端接收到服务器的<code>SYN-ACK</code>包后，回应一个<code>ACK</code>包，表示连接建立。 服务器和客户端的TCP状态都变为<code>ESTABLISHED</code>，连接建立。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">三次握手</span><br><span class="line">服务器: 	LISTEN -&gt; SYN_RCVD -&gt; ESTABLISHED</span><br><span class="line">客户端:     CLOSED -&gt; SYN_SENT -&gt; ESTABLISHED</span><br></pre></td></tr></table></figure>
+
+<h1 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h1><ol>
+<li>主动方向被动方发送一个带标志位<code>FIN</code>的数据包，表示自己想要终止连接。 主动方进入<code>FIN_WAIT_1</code>状态。</li>
+<li>被动方收到<code>FIN</code>包，回应一个<code>ACK</code>包，表示确认收到关闭请求。 被动关闭方进入<code>CLOSE_WAIT</code>状态。 主动方接收ACK后进入<code>FIN_WAIT_2</code>状态</li>
+<li>被动方在数据发送完毕后，向主动方发送一个带<code>FIN</code>标识位的数据包，表示被动方也要终止连接。 被动方进入<code>LAST_ACK</code>状态。</li>
+<li>主动方收到<code>FIN</code>包后，向被动方发送一个<code>ACK</code>包，并进入<code>TIME_WAIT</code>状态。被动方接收<code>ACK</code>后终止连接，主动方一段时间后终止连接。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">                        发送FIN          接收ACK        接收FIN并发送ACK</span><br><span class="line">四次挥手                    |             |             |</span><br><span class="line">主动方:     ESTABLISHED -&gt; FIN_WAIT_1 -&gt; FIN_WAIT_2 -&gt; TIME_WAIT -&gt; CLOSED</span><br><span class="line">被动方:     ESTABLISHED -&gt; CLOSE_WAIT -&gt; LAST_ACK   -&gt; CLOSED</span><br><span class="line">                         |              |           |</span><br><span class="line">                        接收FIN,回应ACK  数据发送完毕   接收ACK </span><br></pre></td></tr></table></figure>
         </div>
           
         <div class="top-div">
-          
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="top-box-text">三次握手</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="top-box-text">四次挥手</span></a></li></ol>
         </div>
           
       </div>
