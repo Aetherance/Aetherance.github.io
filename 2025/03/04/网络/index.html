@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    
+
+    
+<script>!function(){document.documentElement.classList.toggle("dark",!0)}()</script>
+    
+
+<meta charset="utf-8" >
+
+<title>TCP/IP</title>
+<meta name="keywords" content="TCP/IP, Hello!👋 The_INK&#39;s here">
+<meta name="description" content="TCP&#x2F;IP网络模型TCP&#x2F;IP协议将网络分为4层
+从上到下依次是 应用层 传输层 网络层 数据链路层
+TCP&#x2F;IP 分别为传输层和网络层的协议。
+
+IP12IP（Internet Protocol，互联网协议">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="TCP/IP">
+<meta property="og:description" content="TCP&#x2F;IP网络模型TCP&#x2F;IP协议将网络分为4层
+从上到下依次是 应用层 传输层 网络层 数据链路层
+TCP&#x2F;IP 分别为传输层和网络层的协议。
+
+IP12IP（Internet Protocol，互联网协议">
+
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+  <link rel="stylesheet" href="/style/simple-lightbox.min.css"><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Hello!👋 The_INK's here" type="application/atom+xml">
+</head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="http://aetherance.github.io">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="http://aetherance.github.io">
+        <h1 class="site-title">Hello!👋 The_INK&#39;s here</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/" class="menu purple-link">
+        首页
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        标签
+      </a>
+    
+  
+    
+      <a href="/archives" class="menu purple-link">
+        归档
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        关于
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">TCP/IP</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2025-03-04</span>
+        
+          <span>
+          <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+              网络编程
+                
+              </a>
+            
+          </span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <h1 id="TCP-IP网络模型"><a href="#TCP-IP网络模型" class="headerlink" title="TCP&#x2F;IP网络模型"></a>TCP&#x2F;IP网络模型</h1><p>TCP&#x2F;IP协议将网络分为4层</p>
+<p>从上到下依次是 应用层 传输层 网络层 数据链路层</p>
+<p>TCP&#x2F;IP 分别为传输层和网络层的协议。</p>
+<p><a class="simple-lightbox" href="/../res/TCP-IP.png"><img   src="/images/loading.svg" data-src="/../res/TCP-IP.png"  lazyload></a></p>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IP（Internet Protocol，互联网协议）是用于在计算机网络中标识和定位设备的一组规则。</span><br><span class="line">它是互联网通信的基础协议之一，主要作用是为每个连接到网络的设备分配一个唯一的地址（称为IP地址），确保数据能够准确地在设备之间传输。</span><br></pre></td></tr></table></figure>
+
+<p>IP协议是一种 <strong>无连接</strong> 和 <strong>不可靠</strong> 的协议。</p>
+<p>无连接：IP协议在发送数据之前不会建立连接。</p>
+<p>不可靠：IP协议不保证数据按顺序到达，不保证数据不重复，也不保证数据不丢失。</p>
+<p>IP协议会通过IP地址标识网络中的设备，在一个网络中，设备的IP地址是唯一的。</p>
+<p>IP协议会根据网络最大传输单元(MTU)拆分数据包，并在接收端重组。</p>
+<p>IP会将数据包封装成有固定20字节头部的数据包</p>
+<p><a class="simple-lightbox" href="/../res/ipv4head.png"><img   src="/images/loading.svg" data-src="/../res/ipv4head.png"  lazyload></a></p>
+<p>IP协议的两个版本</p>
+<ol>
+<li>IPv4</li>
+<li>IPv6</li>
+</ol>
+<p>IPv4地址由32位二进制数组成，可表示约43亿地址。为方便阅读，IPv4地址可用点分十进制表示。如<code>192.168.0.1</code></p>
+<p>IPv4目前是主流的IP表示方案，但也存在着能够表示的地址不够的问题。</p>
+<p>IPv6解决了这一问题。其地址为128位的二进制数，可以表示约<code>3.4×10³⁸</code>地址个地址。</p>
+<p>IPv6的头部为固定的40字节，每个设备都可以有公网地址。IPv6的地址还可以表示为十六进制冒号分隔的形式 如 <code>2001:0db8:85a3::8a2e:0370:7334</code>。</p>
+<h2 id="IP核心机制"><a href="#IP核心机制" class="headerlink" title="IP核心机制"></a>IP核心机制</h2><h3 id="1-分片和重组机制"><a href="#1-分片和重组机制" class="headerlink" title="1. 分片和重组机制"></a>1. 分片和重组机制</h3><p>IP会将数据包分片与重组，当数据包的大小超过MTU，数据包会被拆分成多个分片，到达接收端后，数据包会被根据标志和片位移重组。</p>
+<h3 id="2-TTL机制"><a href="#2-TTL机制" class="headerlink" title="2. TTL机制"></a>2. TTL机制</h3><p>TTL，即<code>Time to Live</code>(生存时间)。没经过一个路由器，TTL值会减1。当一个数据包的TTL值为0时，这个数据包会被路由器丢弃。</p>
+<p>设定TTL值并在其为0时丢弃是为了防止数据包在网络中无限循环。</p>
+<h3 id="3-路由机制"><a href="#3-路由机制" class="headerlink" title="3. 路由机制"></a>3. 路由机制</h3><p>每个路由器都有一张路由表，存储目标网络和下一跳的映射。</p>
+<p>如果目标IP和路由器在同一个子网，数据包会被直接发给目标设备。</p>
+<p>如果目标IP和路由器不在同一个子网，数据包会被发送到默认网关。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">判断是否在同一子网——子网掩码</span><br><span class="line"></span><br><span class="line">IPv4地址 = 网络地址 + 主机号</span><br><span class="line">如果两个IP的网络地址相同，那么可以确定这两个IP在同一个子网</span><br><span class="line">通过子网掩码便可以确定一个IP地址的网络地址。</span><br><span class="line"></span><br><span class="line">网络地址 = IP地址 &amp; 子网掩码</span><br></pre></td></tr></table></figure>
+
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><p>TCP是一种 <strong>面向连接</strong> 的 <strong>可靠</strong> 传输协议。 并且TCP协议支持流量控制和拥塞控制，可以进行全双工通信。</p>
+<p>使用TCP协议通信前需要先建立连接，通信结束后也需要断开连接。</p>
+<h3 id="可靠传输机制"><a href="#可靠传输机制" class="headerlink" title="可靠传输机制"></a>可靠传输机制</h3><ol>
+<li>校验和</li>
+</ol>
+<p>每个TCP报文都带校验和字段，通过校验和可以验证数据的完整性。</p>
+<ol start="2">
+<li>确认应答机制</li>
+</ol>
+<p>接收方在成功接收数据后，会向发送方发送一个带ACK标志位的数据包，该数据包中包含了<code>确认号</code></p>
+<p>确认号是成功接收的这个数据包下一个数据包的序列号，表示以确认号为序列号的数据包之前的数据包都收到了。</p>
+<ol start="3">
+<li>超时重传机制</li>
+</ol>
+<p>在一定时间后，如果还没有收到某个数据包的ACK，发送方会重传该数据包。</p>
+<ul>
+<li>快速重传：接收方检测到乱序包，会重新发送前一个ACK。当发送方收到三次重复ACK时，会立即重传。</li>
+</ul>
+<ol start="4">
+<li>滑动窗口</li>
+</ol>
+<p>使用TCP协议的发送方和接收方各维护了一个滑动窗口。 通过这两个滑动窗口TCP可以实现流量控制和拥塞控制。</p>
+<p><a class="simple-lightbox" href="/../res/tcphead.png"><img   src="/images/loading.svg" data-src="/../res/tcphead.png"  lazyload></a></p>
+<h3 id="TCP三次握手四次挥手"><a href="#TCP三次握手四次挥手" class="headerlink" title="TCP三次握手四次挥手"></a>TCP三次握手四次挥手</h3><h4 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h4><ol>
+<li>客户端向服务器发送一个带有标志位SYN的数据包，表明自己希望与服务器建立连接。 客户端的TCP状态变为SYN_SENT</li>
+<li>服务器回复一个带有标志位SYN和ACK的数据包，表示同意建立连接。 服务器的TCP状态变为SYN_RECEIVED</li>
+<li>客户端接收到服务器的SYN-ACK包后，回应一个ACK包，表示连接建立。 服务器和客户端的TCP状态都变为ESTABLISHED，连接建立。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">三次握手</span><br><span class="line">服务器: 	LISTEN -&gt; SYN_R可靠传输四大机制、握手/挥手状态转换、滑动窗口原理CVD -&gt; ESTABLISHED</span><br><span class="line">客户端:     CLOSED -&gt; SYN_SENT -&gt; ESTABLISHED</span><br></pre></td></tr></table></figure>
+
+<p><a class="simple-lightbox" href="/../res/tcp-connect.png"><img   src="/images/loading.svg" data-src="/../res/tcp-connect.png"  lazyload></a></p>
+<h4 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h4><ol>
+<li>主动方向被动方发送一个带标志位FIN的数据包，表示自己想要终止连接。 主动方进入FIN_WAIT_1状态。</li>
+<li>被动方收到FIN包，回应一个ACK包，表示确认收到关闭请求。 被动关闭方进入CLOSE_WAIT状态。 主动方接收ACK后进入FIN_WAIT_2状态</li>
+<li>被动方在数据发送完毕后，向主动方发送一个带FIN标识位的数据包，表示被动方也要终止连接。 被动方进入LAST_ACK状态。</li>
+<li>主动方收到FIN包后，向被动方发送一个ACK包，并进入TIME_WAIT状态。被动方接收ACK后终止连接，主动方一段时间后终止连接。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">                        发送FIN          接收ACK        接收FIN并发送ACK</span><br><span class="line">四次挥手                    |             |             |</span><br><span class="line">主动方:     ESTABLISHED -&gt; FIN_WAIT_1 -&gt; FIN_WAIT_2 -&gt; TIME_WAIT -&gt; CLOSED</span><br><span class="line">被动方:     ESTABLISHED -&gt; CLOSE_WAIT -&gt; LAST_ACK   -&gt; CLOSED</span><br><span class="line">                         |              |           |</span><br><span class="line">                        接收FIN,回应ACK  数据发送完毕   接收ACK </span><br></pre></td></tr></table></figure>
+
+<p><a class="simple-lightbox" href="/../res/tcp-disconnect.png"><img   src="/images/loading.svg" data-src="/../res/tcp-disconnect.png"  lazyload></a></p>
+<p>利用TCP&#x2F;IP协议，我们可以实现服务器和客户端之间的通信。</p>
+<p>服务器：</p>
+<figure class="highlight cc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;memory.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> lfd = <span class="built_in">socket</span>(AF_INET,SOCK_STREAM,<span class="number">0</span>);</span><br><span class="line">    sockaddr_in sin;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;sin,<span class="number">0</span>,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line">    sin.sin_family = AF_INET;</span><br><span class="line">    sin.sin_port = <span class="built_in">htons</span>(<span class="number">1234</span>);</span><br><span class="line">    sin.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">bind</span>(lfd,(sockaddr*)&amp;sin,<span class="built_in">sizeof</span>(sockaddr_in)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;bind&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">listen</span>(lfd,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    sockaddr_in client_sin;</span><br><span class="line">    <span class="type">socklen_t</span> client_sin_len = <span class="built_in">sizeof</span>(sockaddr_in);</span><br><span class="line">    <span class="type">int</span> sock = <span class="built_in">accept</span>(lfd,(sockaddr*)&amp;client_sin,&amp;client_sin_len);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">send</span>(sock,<span class="string">&quot;Hello World!&quot;</span>,<span class="number">13</span>,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(sock);</span><br><span class="line">    <span class="built_in">close</span>(lfd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端：</p>
+<figure class="highlight cc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;memory.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sockaddr_in sin;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;sin,<span class="number">0</span>,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line">    sin.sin_family = AF_INET;</span><br><span class="line">    sin.sin_port = <span class="built_in">htons</span>(<span class="number">1234</span>);</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET,<span class="string">&quot;localhost&quot;</span>,&amp;sin.sin_addr);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> sock = <span class="built_in">socket</span>(AF_INET,SOCK_STREAM,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">connect</span>(sock,(sockaddr*)&amp;sin,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> buff[<span class="number">13</span>] = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">recv</span>(sock,buff,<span class="number">13</span>,<span class="number">0</span>);</span><br><span class="line">    std::cout&lt;&lt;buff;    </span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(sock);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过TCP&#x2F;IP协议，服务器可以向客户端发送一条消息<code>Hello World!</code>。客户端接收<code>Hello World!</code>后将其打印在客户端的屏幕上。</p>
+<p><a class="simple-lightbox" href="/../res/socket.png"><img   src="/images/loading.svg" data-src="/../res/socket.png"  lazyload></a></p>
+
+        </div>
+          
+        <div class="top-div">
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#TCP-IP%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="top-box-text">TCP&#x2F;IP网络模型</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#IP"><span class="top-box-text">IP</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#IP%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6"><span class="top-box-text">IP核心机制</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#1-%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84%E6%9C%BA%E5%88%B6"><span class="top-box-text">1. 分片和重组机制</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#2-TTL%E6%9C%BA%E5%88%B6"><span class="top-box-text">2. TTL机制</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#3-%E8%B7%AF%E7%94%B1%E6%9C%BA%E5%88%B6"><span class="top-box-text">3. 路由机制</span></a></li></ol></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#TCP"><span class="top-box-text">TCP</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6"><span class="top-box-text">可靠传输机制</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="top-box-text">TCP三次握手四次挥手</span></a></li></ol></li></ol></li></ol>
+        </div>
+          
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2025/02/24/C-lr-val/">
+          <h3 class="post-title">
+            下一篇：C++左右值
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+        <a aria-label="跳转至github" href="https://github.com/Aetherance" target="_blank">
+          <i class="icon icon-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+    </div>
+    
+<script id="hexo-configurations"> window.theme_config = {"image":{"lazyload_enable":true,"photo_zoom":"simple-lightbox"}}; window.is_post = true; </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+  <script src="/js/simple-lightbox.min.js"></script><script>document.addEventListener('DOMContentLoaded', function() {new SimpleLightbox('.post-detail .simple-lightbox', {fileExt: false,captionsData:'alt'});});</script></body>
+</html>
+
