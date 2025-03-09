@@ -15,7 +15,8 @@
 从上到下依次是 应用层 传输层 网络层 数据链路层
 TCP&#x2F;IP 分别为传输层和网络层的协议。
 
-IP12IP（Internet Protocol，互联网协议">
+一个应用A向应用B传输信息的大致过程
+12345678   ">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +25,8 @@ IP12IP（Internet Protocol，互联网协议">
 从上到下依次是 应用层 传输层 网络层 数据链路层
 TCP&#x2F;IP 分别为传输层和网络层的协议。
 
-IP12IP（Internet Protocol，互联网协议">
+一个应用A向应用B传输信息的大致过程
+12345678   ">
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style/main.css">
@@ -106,6 +108,9 @@ IP12IP（Internet Protocol，互联网协议">
 <p>从上到下依次是 应用层 传输层 网络层 数据链路层</p>
 <p>TCP&#x2F;IP 分别为传输层和网络层的协议。</p>
 <p><a class="simple-lightbox" href="/../res/TCP-IP.png"><img   src="/images/loading.svg" data-src="/../res/TCP-IP.png"  lazyload></a></p>
+<p>一个应用A向应用B传输信息的大致过程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">             封装为 包      封装为 帧               检查 IP 头部 若匹配，剥离 IP 头部，将段交给传输层。</span><br><span class="line">             添加 IP 头部   添加 帧头和帧尾          若不匹配且本机为路由器，则重新路由转发</span><br><span class="line">             |             |                     |</span><br><span class="line">应用A-&gt;传输层-&gt;网络层-&gt;数据链路层-&gt;网络介质-&gt;数据链路层-&gt;网络层-&gt;传输层-&gt;应用B(接收数据)</span><br><span class="line">       |                       |       |                |</span><br><span class="line">       添加 传输层头部           比特流   剥离帧头和帧尾      检查端口号，确定目标应用    </span><br><span class="line">       封装为 段 或 数据报。              校验帧完整性       剥离传输层头部，将原始数据交给应用层。</span><br><span class="line">高层                        低层      低层                        高层</span><br></pre></td></tr></table></figure>
+
 <h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IP（Internet Protocol，互联网协议）是用于在计算机网络中标识和定位设备的一组规则。</span><br><span class="line">它是互联网通信的基础协议之一，主要作用是为每个连接到网络的设备分配一个唯一的地址（称为IP地址），确保数据能够准确地在设备之间传输。</span><br></pre></td></tr></table></figure>
 
 <p>IP协议是一种 <strong>无连接</strong> 和 <strong>不可靠</strong> 的协议。</p>
@@ -132,7 +137,71 @@ IP12IP（Internet Protocol，互联网协议">
 <p>如果目标IP和路由器不在同一个子网，数据包会被发送到默认网关。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">判断是否在同一子网——子网掩码</span><br><span class="line"></span><br><span class="line">IPv4地址 = 网络地址 + 主机号</span><br><span class="line">如果两个IP的网络地址相同，那么可以确定这两个IP在同一个子网</span><br><span class="line">通过子网掩码便可以确定一个IP地址的网络地址。</span><br><span class="line"></span><br><span class="line">网络地址 = IP地址 &amp; 子网掩码</span><br></pre></td></tr></table></figure>
 
-<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><p>TCP是一种 <strong>面向连接</strong> 的 <strong>可靠</strong> 传输协议。 并且TCP协议支持流量控制和拥塞控制，可以进行全双工通信。</p>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<strong>连接方式</strong></td>
+<td>面向连接（三次握手建立，四次挥手释放   ）</td>
+<td>无连接，直接发送数据</td>
+</tr>
+<tr>
+<td>​<strong>可靠性</strong></td>
+<td>可靠传输（确认、重传、校验）</td>
+<td>不可靠传输（无确认、无重传）</td>
+</tr>
+<tr>
+<td>​<strong>流量控制</strong></td>
+<td>通过滑动窗口动态调节发送速率</td>
+<td>无流量控制</td>
+</tr>
+<tr>
+<td>​<strong>拥塞控制</strong></td>
+<td>有（慢启动、拥塞避免等算法）</td>
+<td>无</td>
+</tr>
+<tr>
+<td>​<strong>数据顺序</strong></td>
+<td>保证数据按顺序到达</td>
+<td>不保证顺序</td>
+</tr>
+<tr>
+<td>​<strong>头部开销</strong></td>
+<td>较大（20 字节固定 + 可选字段）</td>
+<td>较小（固定 8 字节）</td>
+</tr>
+<tr>
+<td>​<strong>传输方式</strong></td>
+<td>基于字节流（无明确边界）</td>
+<td>基于数据报（有明确边界）</td>
+</tr>
+<tr>
+<td>​<strong>传输效率</strong></td>
+<td>低（握手、重传、控制机制）</td>
+<td>高（无额外控制）</td>
+</tr>
+<tr>
+<td>​<strong>延迟</strong></td>
+<td>较高（可靠性机制引入延迟）</td>
+<td>较低（适合实时应用）</td>
+</tr>
+<tr>
+<td>​<strong>广播&#x2F;多播支持</strong></td>
+<td>仅支持单播</td>
+<td>支持广播和多播</td>
+</tr>
+<tr>
+<td>​<strong>典型应用场景</strong></td>
+<td>HTTP、FTP、电子邮件、文件传输</td>
+<td>视频流、在线游戏、DNS、VoIP、实时通信</td>
+</tr>
+</tbody></table>
+<p>TCP是一种 <strong>面向连接</strong> 的 <strong>可靠</strong> 传输协议。 并且TCP协议支持流量控制和拥塞控制，可以进行全双工通信。</p>
 <p>使用TCP协议通信前需要先建立连接，通信结束后也需要断开连接。</p>
 <h3 id="可靠传输机制"><a href="#可靠传输机制" class="headerlink" title="可靠传输机制"></a>可靠传输机制</h3><ol>
 <li>校验和</li>
@@ -173,13 +242,13 @@ IP12IP（Internet Protocol，互联网协议">
 
 <p><a class="simple-lightbox" href="/../res/tcp-disconnect.png"><img   src="/images/loading.svg" data-src="/../res/tcp-disconnect.png"  lazyload></a></p>
 <p>利用TCP&#x2F;IP协议，我们可以实现服务器和客户端之间的通信。</p>
+<p><a class="simple-lightbox" href="/../res/socket.png"><img   src="/images/loading.svg" data-src="/../res/socket.png"  lazyload></a></p>
 <p>服务器：</p>
 <figure class="highlight cc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;memory.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> lfd = <span class="built_in">socket</span>(AF_INET,SOCK_STREAM,<span class="number">0</span>);</span><br><span class="line">    sockaddr_in sin;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;sin,<span class="number">0</span>,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line">    sin.sin_family = AF_INET;</span><br><span class="line">    sin.sin_port = <span class="built_in">htons</span>(<span class="number">1234</span>);</span><br><span class="line">    sin.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">bind</span>(lfd,(sockaddr*)&amp;sin,<span class="built_in">sizeof</span>(sockaddr_in)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;bind&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">listen</span>(lfd,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    sockaddr_in client_sin;</span><br><span class="line">    <span class="type">socklen_t</span> client_sin_len = <span class="built_in">sizeof</span>(sockaddr_in);</span><br><span class="line">    <span class="type">int</span> sock = <span class="built_in">accept</span>(lfd,(sockaddr*)&amp;client_sin,&amp;client_sin_len);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">send</span>(sock,<span class="string">&quot;Hello World!&quot;</span>,<span class="number">13</span>,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(sock);</span><br><span class="line">    <span class="built_in">close</span>(lfd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>客户端：</p>
 <figure class="highlight cc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;memory.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sockaddr_in sin;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;sin,<span class="number">0</span>,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line">    sin.sin_family = AF_INET;</span><br><span class="line">    sin.sin_port = <span class="built_in">htons</span>(<span class="number">1234</span>);</span><br><span class="line">    <span class="built_in">inet_pton</span>(AF_INET,<span class="string">&quot;localhost&quot;</span>,&amp;sin.sin_addr);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> sock = <span class="built_in">socket</span>(AF_INET,SOCK_STREAM,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">connect</span>(sock,(sockaddr*)&amp;sin,<span class="built_in">sizeof</span>(sockaddr_in));</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> buff[<span class="number">13</span>] = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">recv</span>(sock,buff,<span class="number">13</span>,<span class="number">0</span>);</span><br><span class="line">    std::cout&lt;&lt;buff;    </span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(sock);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>通过TCP&#x2F;IP协议，服务器可以向客户端发送一条消息<code>Hello World!</code>。客户端接收<code>Hello World!</code>后将其打印在客户端的屏幕上。</p>
-<p><a class="simple-lightbox" href="/../res/socket.png"><img   src="/images/loading.svg" data-src="/../res/socket.png"  lazyload></a></p>
 
         </div>
           
