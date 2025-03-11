@@ -6,10 +6,48 @@
   <link href="http://aetherance.github.io/atom.xml" rel="self"/>
   
   <link href="http://aetherance.github.io/"/>
-  <updated>2025-03-09T08:25:27.738Z</updated>
+  <updated>2025-03-11T09:28:50.799Z</updated>
   <id>http://aetherance.github.io/</id>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>RAII</title>
+    <link href="http://aetherance.github.io/2025/03/11/RAII/"/>
+    <id>http://aetherance.github.io/2025/03/11/RAII/</id>
+    <published>2025-03-11T09:28:50.000Z</published>
+    <updated>2025-03-11T09:28:50.799Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>C++智能指针</title>
+    <link href="http://aetherance.github.io/2025/03/11/cppptr/"/>
+    <id>http://aetherance.github.io/2025/03/11/cppptr/</id>
+    <published>2025-03-11T02:28:25.000Z</published>
+    <updated>2025-03-11T13:11:30.137Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>C++提供了以下几种智能指针</p><ol><li><code>unique_ptr</code></li><li><code>shared_ptr</code></li><li><code>weak_ptr</code></li><li><code>auto_ptr</code></li></ol><p>其中<code>auto_ptr</code>由于过于抽象已被弃用，所以本文只讨论前三种智能指针。</p><h1 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h1><p><code>unique_ptr</code>遵循<code>独占所有权</code>语义。被<code>unique_ptr</code>持有的资源不能同时被其他任何<code>unique_ptr</code>持有,也不应被其他任何智能指针持有。</p><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p><code>unique_ptr</code>大致有以下几种初始化方式。</p><ul><li>直接使用构造函数</li><li>使用<code>make_unique</code></li><li>通过移动语义转移所有权</li><li>初始化为空</li></ul><p>对于动态开辟的数组，<code>unique_ptr</code>应当使用<code>T[]</code>模板，以便编译器调用<code>delete[]</code>作为删除器。或者，也可以自定义一个删除器。</p><p>删除器可以是函数指针，对象或lambda表达式。删除器的类型需要函数模板参数传入。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> deleter = [](<span class="type">int</span> * obj)&#123;</span><br><span class="line">    <span class="keyword">delete</span>[] obj;</span><br><span class="line">&#125;；</span><br><span class="line">unique_ptr&lt;<span class="type">int</span>[],<span class="keyword">decltype</span>(deleter)&gt;<span class="built_in">ptr</span>(<span class="keyword">new</span> <span class="type">int</span>[<span class="number">10</span>],deleter); <span class="comment">// decltype可推断出deleter的类型。</span></span><br></pre></td></tr></table></figure><h2 id="独占所有权"><a href="#独占所有权" class="headerlink" title="独占所有权"></a>独占所有权</h2><p><code>unique_ptr</code>的拷贝构造函数和赋值运算符被显式删除。因此<code>unique_ptr</code>无法被复制而产生一个新的实例。这使<code>unique_ptr</code>的所有权不会被分离到两个<code>unique_ptr</code>实例。</p><p><code>unique_ptr</code>可以通过<code>移动语义</code>来转移自身持有的资源。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将一个unique_ptr的资源转移到另一个unique_ptr</span></span><br><span class="line"></span><br><span class="line">unique_ptr&lt;string&gt;ptr1 = <span class="built_in">make_unique</span>&lt;string&gt;(str);</span><br><span class="line">unique_ptr&lt;string&gt;ptr2 = <span class="built_in">move</span>(ptr1);</span><br></pre></td></tr></table></figure><h1 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h1><h2 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h2><p><code>shared_ptr</code>的初始化与<code>unique_ptr</code>类似，但是也有所不同。</p><ul><li>与<code>unique_ptr</code>类似，<code>shared_ptr</code>可以使用<code>make_shared</code>初始化，这也是较安全的初始化方式。</li><li><code>shared_ptr</code>允许拷贝操作，这同时也会增加<code>shared_ptr</code>内部的引用计数器。</li><li>使用移动语义可以将<code>unique_ptr</code>的资源转移至<code>shared_ptr</code>。</li></ul><h2 id="共享资源机制"><a href="#共享资源机制" class="headerlink" title="共享资源机制"></a>共享资源机制</h2><p>多个<code>shared_ptr</code>可以指向同一个对象。</p><p><code>shared_ptr</code>内部维护了一个线程安全的计数器，其代表了<code>shared_ptr</code>指向的对象被不同<code>shared_ptr</code>实例引用的次数。</p><p>当该计数器归零时，<code>shared_ptr</code>指向的对象将被销毁，同时，对象的析构函数也会被调用。</p><p>虽然<code>shared_ptr</code>的引用计数是线程安全的，然而，对被<code>shared_ptr</code>管理的对象的操作却不是线程安全的。在多线程环境下操作<code>shared_ptr</code>管理的对象时，需要额外的同步机制。</p><p><code>shared_ptr</code>可以指定释放资源的方式，自定义删除方法。</p><p>每个<code>shared_ptr</code>会创建一个<code>控制块</code>，包括引用计数，弱引用计数，删除器和分配器。首次创建<code>shared_ptr</code>时，该控制块会被创建。</p><h2 id="控制块"><a href="#控制块" class="headerlink" title="控制块"></a>控制块</h2><p>控制块的内存和对象的内存同时开辟，并且为一次分配。这减少了内存开辟的次数，提高了效率。</p><p>内存块的引用计数是原子操作，保证线程安全。</p><p>只有在弱引用归0时，控制块的内存才会被释放。所以，对象和控制块的构造一定是同时的，但销毁不一定是同时的</p><h2 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h2><p><code>shared_ptr</code>使用不当会导致<code>循环引用</code>，即对象的成员变量<code>shared_ptr</code>引用了对象。这导致在对象析构之前，对象的<code>shared_ptr</code>成员变量会一直指向<code>shared_ptr</code>实例，等待对象析构，然而，对象析构的条件是没有一个<code>shared_ptr</code>实例指向该对象。最终对象和<code>shared_ptr</code>实例会陷入一种类似死锁的”僵持”，最终内存无法释放，导致内存泄露。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 两个类对象间的循环引用</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    shared_ptr&lt;B&gt;ptr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    shared_ptr&lt;A&gt;ptr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_ptr&lt;A&gt;ptr2 = <span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    shared_ptr&lt;B&gt;ptr1 = <span class="built_in">make_shared</span>&lt;B&gt;();</span><br><span class="line">    </span><br><span class="line">    ptr2-&gt;ptr = ptr1;</span><br><span class="line">    ptr1-&gt;ptr = ptr2;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>将其中一个类内的<code>shared_ptr</code>改为<code>weak_ptr</code>可以解决这个问题。</p><h1 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h1><p><code>weak_ptr</code>可以观察<code>shared_ptr</code>管理的资源，却不会增加引用计数，因此，<code>weak_ptr</code>可以解决循环引用的问题。</p><h2 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> shared = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line"><span class="function">std::weak_ptr&lt;<span class="type">int</span>&gt; <span class="title">weak1</span><span class="params">(shared)</span></span>;        <span class="comment">// 从 shared_ptr 构造</span></span><br><span class="line"><span class="function">std::weak_ptr&lt;<span class="type">int</span>&gt; <span class="title">weak2</span><span class="params">(weak1)</span></span>;         <span class="comment">// 从另一个 weak_ptr 拷贝构造</span></span><br></pre></td></tr></table></figure><p><code>weak_ptr</code>可以从<code>shared_ptr</code>构造，也可以从另一个<code>weak_ptr</code>拷贝。</p><h2 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h2><p><code>expired()</code>: 用于检查资源是否已被释放，如果已释放，返回<code>true</code>。</p><p><code>lock()</code>: 会返回一个<code>shared_ptr</code>，只有通过这个<code>shared_ptr</code>，<code>weak_ptr</code>才可以操作观察的资源。</p><p><code>use_count()</code>: 返回强引用计数。</p><h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>利用C++提供的智能指针，我们可以刚好地管理程序内的各种资源。</p><p>例如，线程池可以用<code>unique_ptr</code>管理，以确保程序中线程池实例独一无二。</p><p>在多线程环境下，使用<code>shared_ptr</code>也可以妥善管理那些全局共享的对象，以确保该对象不会在被使用时已经是被销毁的了。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;C++提供了以下几种智能指针&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;unique_ptr&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sha</summary>
+      
+    
+    
+    
+    
+    <category term="C++" scheme="http://aetherance.github.io/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>TCP/IP</title>
@@ -191,8 +229,8 @@
   
   <entry>
     <title>多线程归并排序与clock()</title>
-    <link href="http://aetherance.github.io/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/"/>
-    <id>http://aetherance.github.io/2025/01/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/</id>
+    <link href="http://aetherance.github.io/2025/01/08/thread-mergersort/"/>
+    <id>http://aetherance.github.io/2025/01/08/thread-mergersort/</id>
     <published>2025-01-08T14:47:54.000Z</published>
     <updated>2025-01-14T06:57:47.712Z</updated>
     
