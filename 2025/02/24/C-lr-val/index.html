@@ -11,12 +11,20 @@
 
 <title>C++左右值</title>
 <meta name="keywords" content="C++左右值, Hello!👋 The_INK&#39;s here">
-<meta name="description" content="">
+<meta name="description" content="C++中所有的值都可以分为左值和右值。
+左值左值是“有身份“的值。一个左值一定是能够被取地址的。
+12int x = 5;      // x 是左值int&amp; ref = x;   // ref 是左值引用，绑定到左值 x
+
+左值通">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="C++左右值">
-<meta property="og:description" content="">
+<meta property="og:description" content="C++中所有的值都可以分为左值和右值。
+左值左值是“有身份“的值。一个左值一定是能够被取地址的。
+12int x = 5;      // x 是左值int&amp; ref = x;   // ref 是左值引用，绑定到左值 x
+
+左值通">
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style/main.css">
@@ -94,11 +102,45 @@
       </div>
       <div class="post-content-wrapper">
         <div class="post-content">
-          
+          <p>C++中所有的值都可以分为<code>左值</code>和<code>右值</code>。</p>
+<h1 id="左值"><a href="#左值" class="headerlink" title="左值"></a>左值</h1><p>左值是“有身份“的值。一个左值一定是能够被取地址的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">5</span>;      <span class="comment">// x 是左值</span></span><br><span class="line"><span class="type">int</span>&amp; ref = x;   <span class="comment">// ref 是左值引用，绑定到左值 x</span></span><br></pre></td></tr></table></figure>
+
+<p>左值通常是程序中可持久化存在，能被频繁访问的对象。左值一定会被分配一个可操作的地址。</p>
+<p>左值的生命周期通常较长，一般超出单个表达式的作用域。</p>
+<h1 id="右值"><a href="#右值" class="headerlink" title="右值"></a>右值</h1><p>右值有两个核心特征： 可移动性 和 临时性。</p>
+<p>C++11 之后，右值也可以分为两类。</p>
+<ol>
+<li>纯右值</li>
+<li>将亡值</li>
+</ol>
+<h2 id="纯右值"><a href="#纯右值" class="headerlink" title="纯右值"></a>纯右值</h2><p>纯右值是纯粹的临时值，没有身份，不可以取地址。</p>
+<p>通常，纯右值用来表示计算结果，非引用返回值，构造函数调用生成的临时对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">thread</span>(func); <span class="comment">// 这样的一个值是纯右值。</span></span><br></pre></td></tr></table></figure>
+
+<p>一个纯右值如果没有一个左值来接收，那么这个纯右值将会立即死去。</p>
+<h2 id="将亡值"><a href="#将亡值" class="headerlink" title="将亡值"></a>将亡值</h2><p>将亡值是一个具有身份但即将被销毁的值。同样地，一个将亡值如果没有一个左值来接收，这个将亡值也会立即死去。</p>
+<p>将亡值通常是被<code>move</code>等标记过的值，或者右值引用返回值。</p>
+<p>通过将亡值，C++支持了<code>移动语义</code>。</p>
+<p>利用移动语义，我们可以将资源从一个实例<code>转移</code>到另一个实例。在某些情况下，这十分关键。</p>
+<p>例如，智能指针<code>unique_ptr</code>具有独占所有权的机制。所以在<code>unique_ptr</code>间转移资源时，移动语义非常有用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将一个unique_ptr的资源转移到另一个unique_ptr</span></span><br><span class="line"></span><br><span class="line">unique_ptr&lt;string&gt;ptr1 = <span class="built_in">make_unique</span>&lt;string&gt;(str);</span><br><span class="line">unique_ptr&lt;string&gt;ptr2 = <span class="built_in">move</span>(ptr1);</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>move()</code>的作用是让左值ptr1变成一个将亡值。</p>
+<h1 id="左值引用、右值引用与移动语义"><a href="#左值引用、右值引用与移动语义" class="headerlink" title="左值引用、右值引用与移动语义"></a>左值引用、右值引用与移动语义</h1><p>C++11后，编译器支持使用<code>&amp;&amp;</code>来表示一个右值引用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;         <span class="comment">// 左值</span></span><br><span class="line"><span class="type">int</span> &amp; ref = a;      <span class="comment">// 左值引用</span></span><br><span class="line"><span class="type">int</span> &amp;&amp; ref2 = a;    <span class="comment">// 右值引用</span></span><br></pre></td></tr></table></figure>
+
+<p><code>move</code>可以将一个左值转化为一个右值引用，以便触发移动构造函数，从而使用移动语义。</p>
+<p>与<code>拷贝构造函数</code>类似，<code>移动构造函数</code>也是通过不同的参数重载的构造函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span>(String&amp;&amp; other)</span><br><span class="line">        : <span class="built_in">data_</span>(other.data_), <span class="built_in">size_</span>(other.size_) &#123; <span class="comment">// 1. 窃取资源</span></span><br><span class="line">        <span class="comment">// 2. 置空源对象，避免重复释放</span></span><br><span class="line">        other.data_ = <span class="literal">nullptr</span>; </span><br><span class="line">        other.size_ = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在移动构造函数中，应该将管理资源的原裸指针置空。对于STL中的容器或者std::unique_ptr，应该使用move进行资源的移动。</p>
+<p>而对于其他内置数据类型，则不必过多关心。</p>
+
         </div>
           
         <div class="top-div">
-          
+          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%B7%A6%E5%80%BC"><span class="top-box-text">左值</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%8F%B3%E5%80%BC"><span class="top-box-text">右值</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%BA%AF%E5%8F%B3%E5%80%BC"><span class="top-box-text">纯右值</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%B0%86%E4%BA%A1%E5%80%BC"><span class="top-box-text">将亡值</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="top-box-text">左值引用、右值引用与移动语义</span></a></li></ol>
         </div>
           
       </div>
