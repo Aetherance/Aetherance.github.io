@@ -6,23 +6,10 @@
   <link href="http://aetherance.github.io/atom.xml" rel="self"/>
   
   <link href="http://aetherance.github.io/"/>
-  <updated>2025-03-11T09:28:50.799Z</updated>
+  <updated>2025-03-11T13:11:30.137Z</updated>
   <id>http://aetherance.github.io/</id>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>RAII</title>
-    <link href="http://aetherance.github.io/2025/03/11/RAII/"/>
-    <id>http://aetherance.github.io/2025/03/11/RAII/</id>
-    <published>2025-03-11T09:28:50.000Z</published>
-    <updated>2025-03-11T09:28:50.799Z</updated>
-    
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>C++智能指针</title>
