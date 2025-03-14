@@ -25,30 +25,17 @@
   </entry>
   
   <entry>
-    <title>抽象的万能引用</title>
+    <title>万能引用、完美转发和移动语义</title>
     <link href="http://aetherance.github.io/2025/03/12/cpp-ref-ref/"/>
     <id>http://aetherance.github.io/2025/03/12/cpp-ref-ref/</id>
     <published>2025-03-12T14:02:12.000Z</published>
-    <updated>2025-03-12T14:02:35.645Z</updated>
+    <updated>2025-03-14T02:17:50.420Z</updated>
     
     
     
     
     
     <category term="C++" scheme="http://aetherance.github.io/tags/C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C++thread</title>
-    <link href="http://aetherance.github.io/2025/03/12/cpp-thread/"/>
-    <id>http://aetherance.github.io/2025/03/12/cpp-thread/</id>
-    <published>2025-03-12T04:16:56.000Z</published>
-    <updated>2025-03-12T11:25:11.202Z</updated>
-    
-    
-    
-    
     
   </entry>
   
