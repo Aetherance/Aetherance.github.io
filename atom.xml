@@ -6,23 +6,10 @@
   <link href="http://aetherance.github.io/atom.xml" rel="self"/>
   
   <link href="http://aetherance.github.io/"/>
-  <updated>2025-03-13T14:52:48.748Z</updated>
+  <updated>2025-03-23T06:54:07.137Z</updated>
   <id>http://aetherance.github.io/</id>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>bind不支持完美转发</title>
-    <link href="http://aetherance.github.io/2025/03/13/bind%E4%B8%8D%E6%94%AF%E6%8C%81%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/"/>
-    <id>http://aetherance.github.io/2025/03/13/bind%E4%B8%8D%E6%94%AF%E6%8C%81%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/</id>
-    <published>2025-03-13T14:52:48.000Z</published>
-    <updated>2025-03-13T14:52:48.748Z</updated>
-    
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>万能引用、完美转发和移动语义</title>
