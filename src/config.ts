@@ -56,10 +56,10 @@ export const siteConfig = {
     },
   ],
   giscus: {
-    enabled: false,
+    enabled: true,
     repo: 'Aetherance/Aetherance.github.io',
-    repoId: '',
+    repoId: 'R_kgDOQAUOVA',
     category: 'Announcements',
-    categoryId: '',
+    categoryId: 'DIC_kwDOQAUOVM4DDfw5',
   },
 } as const;
