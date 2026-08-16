@@ -53,7 +53,7 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
               RSS
             </a>
           </nav>
-          <p class="profile-note">@{siteConfig.handle}<span aria-hidden="true">·</span>{lang === 'zh' ? '开源开发者' : 'Open-source developer'}</p>
+          <p class="profile-note"><strong>@{siteConfig.handle}</strong><span aria-hidden="true">·</span>{lang === 'zh' ? '开源开发者' : 'Open-source developer'}</p>
         </div>
       </div>
       <div class="side">
@@ -95,8 +95,9 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
   .profile-links a:hover { border-color: var(--glass-line); background: var(--glass-bg); color: var(--text); transform: translateY(-1px); }
   .profile-links svg { width: .95rem; height: .95rem; fill: currentColor; }
   .profile-links span { color: var(--accent); font-size: .7rem; }
-  .profile-note { display: flex; gap: .45rem; margin: .7rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .61rem; letter-spacing: .025em; }
-  .profile-note span { color: var(--line); }
+  .profile-note { display: flex; align-items: center; gap: .55rem; margin: .8rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .76rem; font-weight: 500; letter-spacing: .015em; line-height: 1.4; }
+  .profile-note strong { color: var(--text); font-weight: 650; }
+  .profile-note span { color: var(--accent); }
   .side { justify-self: end; width: min(100%, 20rem); min-width: 0; }
   .stats { display: flex; justify-content: space-between; gap: 1rem; margin-top: .65rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .6rem; letter-spacing: .04em; }
   .latest { padding-top: clamp(2.5rem, 6vw, 4rem); }
