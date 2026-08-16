@@ -53,7 +53,11 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
               RSS
             </a>
           </nav>
-          <p class="profile-note"><strong>@{siteConfig.handle}</strong><span aria-hidden="true">·</span>{lang === 'zh' ? '开源开发者' : 'Open-source developer'}</p>
+          <p class="profile-note">
+            <strong>@{siteConfig.handle}</strong>
+            <span class="separator" aria-hidden="true">·</span>
+            <span class="role">Open Source Developer</span>
+          </p>
         </div>
       </div>
       <div class="side">
@@ -95,9 +99,10 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
   .profile-links a:hover { border-color: var(--glass-line); background: var(--glass-bg); color: var(--text); transform: translateY(-1px); }
   .profile-links svg { width: .95rem; height: .95rem; fill: currentColor; }
   .profile-links span { color: var(--accent); font-size: .7rem; }
-  .profile-note { display: flex; align-items: center; gap: .55rem; margin: .8rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .76rem; font-weight: 500; letter-spacing: .015em; line-height: 1.4; }
+  .profile-note { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin: .8rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .76rem; font-weight: 500; letter-spacing: .015em; line-height: 1.4; }
   .profile-note strong { color: var(--text); font-weight: 650; }
-  .profile-note span { color: var(--accent); }
+  .profile-note .separator { color: var(--accent); }
+  .profile-note .role { padding: .12rem .42rem; border: 1px solid var(--glass-line); background: color-mix(in srgb, var(--accent-soft) 72%, transparent); color: var(--text); font-size: .76rem; font-weight: 700; letter-spacing: .055em; text-transform: uppercase; }
   .side { justify-self: end; width: min(100%, 20rem); min-width: 0; }
   .stats { display: flex; justify-content: space-between; gap: 1rem; margin-top: .65rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .6rem; letter-spacing: .04em; }
   .latest { padding-top: clamp(2.5rem, 6vw, 4rem); }
