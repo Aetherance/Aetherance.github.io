@@ -31,22 +31,30 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
         <p class="label">Index / {new Date().getFullYear()}</p>
         <h1>Hi! This is Aether<span aria-hidden="true">👋</span></h1>
         <p class="intro">{siteConfig.intro[lang]}</p>
-        <nav class="profile-links" aria-label={lang === 'zh' ? '个人链接' : 'Profile links'}>
-          <a href={siteConfig.social.github} rel="me noopener" target="_blank">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-            GitHub
-            <span aria-hidden="true">↗</span>
-          </a>
-          <a href="https://github.com/Aetherance/Aetherance.github.io" rel="noopener" target="_blank">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.7 16.6-4.6-4.6 4.6-4.6 1.4 1.4L6.9 12l3.2 3.2-1.4 1.4Zm6.6 0-1.4-1.4 3.2-3.2-3.2-3.2 1.4-1.4 4.6 4.6-4.6 4.6Z"/></svg>
-            {lang === 'zh' ? '博客源码' : 'Source'}
-            <span aria-hidden="true">↗</span>
-          </a>
-          <a href={`/${lang}/rss.xml`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4a15 15 0 0 1 15 15h-2.2A12.8 12.8 0 0 0 5 6.2V4Zm0 5a10 10 0 0 1 10 10h-2.2A7.8 7.8 0 0 0 5 11.2V9Zm1.6 7.2A1.8 1.8 0 1 1 6.6 20a1.8 1.8 0 0 1 0-3.6Z"/></svg>
-            RSS
-          </a>
-        </nav>
+        <div class="connect-panel">
+          <div class="connect-heading" aria-hidden="true">
+            <span>Connect</span>
+            <i></i>
+            <span class="status"><b></b> Online</span>
+          </div>
+          <nav class="profile-links" aria-label={lang === 'zh' ? '个人链接' : 'Profile links'}>
+            <a href={siteConfig.social.github} rel="me noopener" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              GitHub
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a href="https://github.com/Aetherance/Aetherance.github.io" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.7 16.6-4.6-4.6 4.6-4.6 1.4 1.4L6.9 12l3.2 3.2-1.4 1.4Zm6.6 0-1.4-1.4 3.2-3.2-3.2-3.2 1.4-1.4 4.6 4.6-4.6 4.6Z"/></svg>
+              {lang === 'zh' ? '博客源码' : 'Source'}
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a href={`/${lang}/rss.xml`}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4a15 15 0 0 1 15 15h-2.2A12.8 12.8 0 0 0 5 6.2V4Zm0 5a10 10 0 0 1 10 10h-2.2A7.8 7.8 0 0 0 5 11.2V9Zm1.6 7.2A1.8 1.8 0 1 1 6.6 20a1.8 1.8 0 0 1 0-3.6Z"/></svg>
+              RSS
+            </a>
+          </nav>
+          <p class="profile-note">@{siteConfig.handle}<span aria-hidden="true">·</span>{lang === 'zh' ? '开源开发者' : 'Open-source developer'}</p>
+        </div>
       </div>
       <div class="side">
         <MiniTerminal {lang} posts={posts.map((post) => ({ slug: postSlug(post), title: post.data.title, url: postPath(post) }))} />
@@ -76,11 +84,19 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
   h1 { margin: 1rem 0 .85rem; font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: -.06em; line-height: 1; }
   h1 span { display: inline-block; margin-left: .2em; font-size: .72em; transform: rotate(-8deg); }
   .intro { max-width: 32rem; margin: 0; color: var(--muted); font-size: .95rem; }
-  .profile-links { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
+  .connect-panel { position: relative; isolation: isolate; margin-top: 1.45rem; padding: .7rem 0 .25rem; }
+  .connect-panel::before { content: ''; position: absolute; z-index: -1; inset: .1rem -.8rem -.6rem; background-image: radial-gradient(circle, color-mix(in srgb, var(--muted) 36%, transparent) .7px, transparent .8px); background-size: 12px 12px; opacity: .42; -webkit-mask-image: linear-gradient(90deg, #000, transparent 96%); mask-image: linear-gradient(90deg, #000, transparent 96%); pointer-events: none; }
+  .connect-heading { display: grid; grid-template-columns: auto minmax(2rem, 1fr) auto; align-items: center; gap: .65rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .58rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+  .connect-heading > i { height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+  .status { display: inline-flex; align-items: center; gap: .4rem; letter-spacing: .08em; }
+  .status b { width: .38rem; height: .38rem; border-radius: 50%; background: #35c982; box-shadow: 0 0 0 0 rgb(53 201 130 / 45%); animation: status-pulse 2.4s ease-out infinite; }
+  .profile-links { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .75rem; }
   .profile-links a { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.35rem; padding: .4rem .7rem; border: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, monospace; font-size: .66rem; letter-spacing: .02em; text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease; }
   .profile-links a:hover { border-color: var(--glass-line); background: var(--glass-bg); color: var(--text); transform: translateY(-1px); }
   .profile-links svg { width: .95rem; height: .95rem; fill: currentColor; }
   .profile-links span { color: var(--accent); font-size: .7rem; }
+  .profile-note { display: flex; gap: .45rem; margin: .7rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .61rem; letter-spacing: .025em; }
+  .profile-note span { color: var(--line); }
   .side { justify-self: end; width: min(100%, 20rem); min-width: 0; }
   .stats { display: flex; justify-content: space-between; gap: 1rem; margin-top: .65rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .6rem; letter-spacing: .04em; }
   .latest { padding-top: clamp(2.5rem, 6vw, 4rem); }
@@ -94,5 +110,11 @@ const title = page > 1 ? (lang === 'zh' ? `文章 · 第 ${page} 页` : `Writing
   }
   @media (max-width: 460px) {
     h1 { font-size: 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status b { animation: none; }
+  }
+  @keyframes status-pulse {
+    70%, 100% { box-shadow: 0 0 0 .4rem rgb(53 201 130 / 0%); }
   }
 </style>
