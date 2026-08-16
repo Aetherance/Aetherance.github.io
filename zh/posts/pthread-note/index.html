@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.18.2"><meta name="description" content="与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。"><meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1018" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://aetherance.github.io/zh/posts/pthread-note/"><link rel="alternate" type="application/rss+xml" title="AETHER RSS" href="/zh/rss.xml"><meta property="og:type" content="article"><meta property="og:title" content="pthread_notes — AETHER"><meta property="og:description" content="与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。"><meta property="og:url" content="https://aetherance.github.io/zh/posts/pthread-note/"><meta property="og:site_name" content="AETHER"><meta property="og:locale" content="zh_CN"><meta property="article:published_time" content="2025-01-07T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="pthread_notes — AETHER"><meta name="twitter:description" content="与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。"><title>pthread_notes — AETHER</title><script>
+      (() => { const saved = localStorage.getItem('theme'); if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved; })();
+    </script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"pthread_notes","description":"与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。","datePublished":"2025-01-07T00:00:00.000Z","dateModified":"2025-01-14T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Aether"},"mainEntityOfPage":"https://aetherance.github.io/zh/posts/pthread-note/"}</script><link rel="stylesheet" href="/_astro/_slug_.DGYMTEON.css">
+<link rel="stylesheet" href="/_astro/index.BjjNL9zW.css"></head> <body> <a class="skip-link" href="#main">跳到正文</a> <header class="site-header" data-astro-cid-3ef6ksr2> <div class="container header-inner" data-astro-cid-3ef6ksr2> <a class="brand" href="/zh/" aria-label="AETHER — 首页" data-astro-cid-3ef6ksr2> <strong data-astro-cid-3ef6ksr2>AETHER</strong> </a> <nav aria-label="主导航" data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a> <a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a> <a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a> <a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a> <a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> <div class="actions" data-astro-cid-3ef6ksr2> <a class="language" href="/en/" hreflang="en" data-astro-cid-3ef6ksr2>English</a> <button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题" data-astro-cid-3ef6ksr2> <svg class="sun" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="4" data-astro-cid-3ef6ksr2></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" data-astro-cid-3ef6ksr2></path></svg> <svg class="moon" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" data-astro-cid-3ef6ksr2></path></svg> </button> <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav" data-astro-cid-3ef6ksr2><span data-astro-cid-3ef6ksr2></span><span data-astro-cid-3ef6ksr2></span></button> </div> </div> <nav id="mobile-nav" class="mobile-nav container" aria-label="移动导航" hidden data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a><a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a><a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a><a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a><a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> </header> <script type="module">const c=document.querySelector(".theme-toggle");c?.addEventListener("click",()=>{const e=document.documentElement,t=(e.dataset.theme??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark"?"light":"dark";e.dataset.theme=t,localStorage.setItem("theme",t),document.dispatchEvent(new CustomEvent("theme-change",{detail:t}))});const n=document.querySelector(".menu-toggle"),o=document.querySelector("#mobile-nav");n?.addEventListener("click",()=>{const e=n.getAttribute("aria-expanded")==="true";n.setAttribute("aria-expanded",String(!e)),o&&(o.hidden=e)});</script>  <main id="main">  <article data-pagefind-body data-astro-cid-exdr3erf> <span hidden data-pagefind-filter="lang:zh" data-astro-cid-exdr3erf>zh</span> <div class="reading-progress" data-reading-progress data-pagefind-ignore data-copy-label="复制" data-copied-label="已复制" data-copy-failed-label="复制失败" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-astro-cid-rjvcnvx7> <span data-astro-cid-rjvcnvx7></span> </div> <button class="back-to-top" data-back-to-top data-pagefind-ignore type="button" aria-label="返回顶部" aria-hidden="true" tabindex="-1" data-astro-cid-rjvcnvx7> <span aria-hidden="true" data-astro-cid-rjvcnvx7>↑</span> <small data-astro-cid-rjvcnvx7>TOP</small> </button> <script type="module">const n=document.querySelector("[data-reading-progress]"),p=n?.querySelector("span"),c=document.querySelector("[data-back-to-top]"),u=document.querySelector(".article-body .prose"),o={copy:n?.dataset.copyLabel??"Copy",copied:n?.dataset.copiedLabel??"Copied",failed:n?.dataset.copyFailedLabel??"Copy failed"};let d;const b=()=>{if(d=void 0,!u)return;const t=document.querySelector(".site-header")?.getBoundingClientRect().height??0,a=u.getBoundingClientRect(),e=window.scrollY+a.top,i=window.scrollY+a.bottom,r=e-t,y=Math.max(r+1,i-window.innerHeight),l=Math.min(1,Math.max(0,(window.scrollY-r)/(y-r))),w=Math.round(l*100);p&&(p.style.transform=`scaleX(${l})`),n?.setAttribute("aria-valuenow",String(w));const s=window.scrollY>Math.max(500,window.innerHeight*.8);c?.toggleAttribute("data-visible",s),c?.setAttribute("aria-hidden",String(!s)),c?.setAttribute("tabindex",s?"0":"-1")},m=()=>{d===void 0&&(d=requestAnimationFrame(b))};addEventListener("scroll",m,{passive:!0});addEventListener("resize",m,{passive:!0});b();c?.addEventListener("click",()=>{const t=matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:t?"auto":"smooth"})});for(const t of document.querySelectorAll(".article-body .prose pre")){if(t.parentElement?.classList.contains("code-block"))continue;const a=document.createElement("div");a.className="code-block",t.before(a),a.append(t);const e=document.createElement("button");e.className="code-copy",e.type="button",e.textContent=o.copy,e.setAttribute("aria-label",o.copy),e.setAttribute("aria-live","polite"),a.append(e);let i;e.addEventListener("click",async()=>{const r=t.querySelector("code")?.textContent??t.textContent??"";try{if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");await navigator.clipboard.writeText(r),e.textContent=o.copied,e.setAttribute("aria-label",o.copied)}catch{e.textContent=o.failed,e.setAttribute("aria-label",o.failed)}clearTimeout(i),i=setTimeout(()=>{e.textContent=o.copy,e.setAttribute("aria-label",o.copy)},1800)})}</script>  <header class="article-header article-width" data-astro-cid-exdr3erf> <div class="meta" data-astro-cid-exdr3erf> <time datetime="2025-01-07T00:00:00.000Z" data-astro-cid-exdr3erf>发布于 2025年1月7日</time> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span><span data-astro-cid-exdr3erf>更新于 2025年1月14日</span> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span> <span data-astro-cid-exdr3erf>10 分钟阅读</span> </div> <h1 data-pagefind-meta="title" data-astro-cid-exdr3erf>pthread_notes</h1> <p class="description" data-astro-cid-exdr3erf>与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。</p> <div class="post-actions" data-astro-cid-exdr3erf> <ul aria-label="文章标签" data-astro-cid-exdr3erf> <li data-astro-cid-exdr3erf><a href="/zh/tags/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" data-astro-cid-exdr3erf>#Linux系统编程</a></li> </ul>  </div> </header> <div class="article-width article-body" data-astro-cid-exdr3erf> <aside class="toc" aria-label="本文目录" data-astro-cid-xvrfupwn><details open data-astro-cid-xvrfupwn><summary data-astro-cid-xvrfupwn>本文目录</summary><ol data-astro-cid-xvrfupwn><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程学习笔记" data-astro-cid-xvrfupwn>线程学习笔记</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#为什么要使用线程" data-astro-cid-xvrfupwn>为什么要使用线程</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程共享的属性" data-astro-cid-xvrfupwn>线程共享的属性</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#pthreads函数返回值" data-astro-cid-xvrfupwn>Pthreads函数返回值</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#创建线程" data-astro-cid-xvrfupwn>创建线程</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#终止线程" data-astro-cid-xvrfupwn>终止线程</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程id" data-astro-cid-xvrfupwn>线程ID</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#join线程" data-astro-cid-xvrfupwn>join线程</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#分离线程" data-astro-cid-xvrfupwn>分离线程</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程属性" data-astro-cid-xvrfupwn>线程属性</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#互斥量" data-astro-cid-xvrfupwn>互斥量</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#条件变量" data-astro-cid-xvrfupwn>条件变量</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#等待条件变量" data-astro-cid-xvrfupwn>等待条件变量</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#通知条件变量" data-astro-cid-xvrfupwn>通知条件变量</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程安全和每线程存储" data-astro-cid-xvrfupwn>线程安全和每线程存储</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#可重入和不可重入函数" data-astro-cid-xvrfupwn>可重入和不可重入函数</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#一次性初始化" data-astro-cid-xvrfupwn>一次性初始化</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#线程特有数据" data-astro-cid-xvrfupwn>线程特有数据</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程取消" data-astro-cid-xvrfupwn>线程取消</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#取消状态及类型" data-astro-cid-xvrfupwn>取消状态及类型</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#清理函数" data-astro-cid-xvrfupwn>清理函数</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#线程和进程" data-astro-cid-xvrfupwn>线程和进程</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#线程和exec" data-astro-cid-xvrfupwn>线程和exec()</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#线程和fork" data-astro-cid-xvrfupwn>线程和fork()</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#多线程使用笔记" data-astro-cid-xvrfupwn>多线程使用笔记</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#create" data-astro-cid-xvrfupwn>create</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#join和detach" data-astro-cid-xvrfupwn>join和detach</a></li></ol></details></aside><script type="module">const s=Array.from(document.querySelectorAll("[data-toc-link]")),r=s.flatMap(i=>{const t=i.getAttribute("href")?.slice(1);if(!t)return[];let n=t;try{n=decodeURIComponent(t)}catch{}const e=document.getElementById(n);return e?[{heading:e,link:i}]:[]});let o;const a=()=>{if(o=void 0,!r.length)return;const t=(document.querySelector(".site-header")?.getBoundingClientRect().height??0)+24;let n=r[0];for(const e of r){if(e.heading.getBoundingClientRect().top>t)break;n=e}for(const e of r){const c=e===n;e.link.classList.toggle("active",c),c?e.link.setAttribute("aria-current","location"):e.link.removeAttribute("aria-current")}},d=()=>{o===void 0&&(o=requestAnimationFrame(a))};addEventListener("scroll",d,{passive:!0});addEventListener("resize",d,{passive:!0});a();</script> <div class="prose" data-astro-cid-exdr3erf><h2 id="线程学习笔记">线程学习笔记</h2>
+<h2 id="为什么要使用线程">为什么要使用线程</h2>
+<ol>
+<li>
+<p>线程之间共享全局区和堆内存，这使线程之间的信息共享较进程之间更为方便，代价更小。</p>
+</li>
+<li>
+<p>创建进程时使用的系统调用</p>
+<p>fork()</p>
+<p>代价高，创建线程使用的系统调用</p>
+<p>clone()</p>
+<p>比</p>
+<p>fork()</p>
+<p>通常快10倍不止。</p>
+</li>
+</ol>
+<h2 id="线程共享的属性">线程共享的属性</h2>
+<ol>
+<li>
+<p>全局内存</p>
+</li>
+<li>
+<p>进程ID 父进程ID</p>
+</li>
+<li>
+<p>进程组ID与会话ID</p>
+</li>
+<li>
+<p>控制终端</p>
+</li>
+<li>
+<p>打开的文件描述符</p>
+</li>
+<li>
+<p>信号处置</p>
+</li>
+<li>
+<p>某些时候的栈 (?)</p>
+</li>
+<li>
+<p>…</p>
+<p>每个线程都有存放局部变量的私有栈。</p>
+</li>
+</ol>
+<h2 id="pthreads函数返回值">Pthreads函数返回值</h2>
+<p>与传统函数返回-1代表失败不同的是，所有的Pthreads函数都是返回正值表示失败。</p>
+<h2 id="创建线程">创建线程</h2>
+<p>程序启动时，一个进程中只有一条称为<em>主线程</em>的线程。</p>
+<p>调用<code>pthread_create()</code>将创建一个线程。</p>
+<p><code>pthread_create()</code>的第一个参数是一个指向<code>pthread_t</code>类型的指针,线程ID将被写入该类型中</p>
+<p>第二个参数是一个 const pthread _attr_t类型的指针 用于定制不同的线程属性，通常直接设为<code>NULL</code></p>
+<p>第三个参数是一个函数指针，指向线程的start函数。线程从此函数开始运行。</p>
+<p>第四个函数是一个指向start函数参数的指针。</p>
+<h2 id="终止线程">终止线程</h2>
+<ul>
+<li>
+<p>主线程调用</p>
+<p>main</p>
+<p>函数中的</p>
+<p>return</p>
+<p>语句会终止所有线程</p>
+</li>
+<li>
+<p>任意线程调用</p>
+<p>exit()</p>
+<p>语句会终止所有线程</p>
+</li>
+<li>
+<p>线程执行</p>
+<p>start</p>
+<p>函数的</p>
+<p>return</p>
+<p>语句只会终止调用的线程自身</p>
+</li>
+<li>
+<p>线程调用</p>
+<p>pthread_exit()</p>
+<p>语句</p>
+<p>只</p>
+<p>会终止调用的线程自身，不论这个线进程是不是主线程</p>
+</li>
+<li>
+<p>调用</p>
+<p>pthread_cancle()</p>
+<p>取消线程</p>
+</li>
+</ul>
+<h2 id="线程id">线程ID</h2>
+<p>在pthread函数中,线程ID由<code>pthread_t</code>定义。</p>
+<p><code>pthread_t</code>是一种<em>不透明数据类型</em> 在Linux实现中,pthread_t是无符号长整形,而在其他实现中有可能是指针或者结构体。</p>
+<p>因此，对于pthread_t的比较，应该使用pthread_equal函数而不是C语言中的<code>==</code>等操作符。</p>
+<h2 id="join线程">join线程</h2>
+<p>函数<code>pthread_join</code>会等待一个线程，直至其终止。线程终止时会立即返回。这种操作被称为<em>连接</em></p>
+<p>若函数<code>pthread_join</code>的第二个参数<code>retval</code>为一非空指针，将会保存线程终止时返回值的拷贝。即保存了线程调用<code>return</code>或<code>pthread_exit</code>时所指定的值</p>
+<p>向函数<code>pthread_join</code>传入已经join过的线程id的结果未知</p>
+<p>调用<code>pthread_join</code>的线程会阻塞，直到对应线程执行完毕 相当于对进程使用<code>wait()</code>系统调用 不同的是，<code>wait()</code>只能由父进程调用</p>
+<p>为了防止线程成为<code>僵尸线程</code>，一定要对其进行join操作</p>
+<h2 id="分离线程">分离线程</h2>
+<p>线程具有可连接和已分离两个状态。调用<code>pthread_detach()</code>可以使线程分离，即使其不可连接。</p>
+<p>线程一旦处于分离状态，便不能再调用join来与其连接，也不能再重使其返回可连接状态。<code>pthread_detach()</code>的调用是不可逆的。</p>
+<p>不论线程是否已分离，调用<code>exit()</code>或主进程执行<code>return</code>时，所有线程都会立即终止。</p>
+<h2 id="线程属性">线程属性</h2>
+<p>利用<code>pthread_create()</code>的第二个参数可以设置线程的属性。</p>
+<h2 id="互斥量">互斥量</h2>
+<p>为了防止两个线程同时对某一共享资源进行修改，或者同时对其进行读写操作，要使用互斥量来确保同时只有一个线程访问共享资源。</p>
+<p>例如，对于一个线程AB都可访问的全局变量，线程A在访问时将其‘锁’住，可以防止B访问，减少错误的发生。<br>
+果父线程没有调用 pthread_join()，该线程的资源仍然不会被完全回收，这可能导致僵</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">pthread_mutex_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> mtx;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">pthread_mutex_init</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">mtx,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 动态初始化</span></span></code></pre>
+<p><code>pthread_mutex_lock()</code>会尝试获取一个互斥量，如果该互斥量已被其他线程锁定，本线程会阻塞等待，直到对应线程对互斥量解锁。<code>pthread_mutex_trylock()</code>与之类似，不同的是<code>trylock</code>在互斥量已被锁定的情况下不会等待，而是返回一个错误码<code>EBUSY</code></p>
+<p><code>pthread_mutex_unlock()</code>会对已锁定的互斥量解锁。不要忘记解锁互斥量，也不要对一个没有锁定的互斥量解锁。</p>
+<p>静态初始化的互斥量总为<code>默认属性</code> 而动态初始化的互斥量可以被定义为其他属性</p>
+<p>调用<code>pthread_mutex_init()</code>来动态初始化一个互斥量,动态初始化的互斥量应该最终被调用的<code>pthread_mutex_destroy()``销毁</code></p>
+<p>应该对所有可能进入临界区的线程使用互斥量，以保证临界区内的线程操作是线程安全的。</p>
+<p>同一线程不应对普通互斥量加锁两次。</p>
+<p>设定了<code>PTHREAD_MUTEX_RECURSIVE</code>属性的互斥量是<code>递归互斥量</code>，可以多次加锁。但是也必须解对应次数的锁才能被另一线程获取。否则，将导致“死锁”。</p>
+<p>互斥量确保只有一个线程可以进入临界区</p>
+<h2 id="条件变量">条件变量</h2>
+<p>互斥量防止多个线程同时访问同一共享变量。而条件变量可以使线程阻塞(等待)直到某一条件的改变。</p>
+<p>条件变量的类型是<code>pthread_t</code> 条件变量的初始化与互斥量类似。条件变量要和互斥量一起使用。</p>
+<h3 id="等待条件变量">等待条件变量</h3>
+<p><code>pthread_cond_wait()</code>函数使调用的线程等待，直到对应条件变量改变。</p>
+<p><code>pthread_cond_wait()</code>的调用应处于锁和解锁之间。 <code>pthread_cond_wait()</code>传入的互斥量在该函数调用之前一定是已经被锁定的，否则可能会产生错误。</p>
+<p>必须由一个循环语句来控制<code>pthread_cond_wait()</code>的调用，因为可能存在<code>假唤醒</code> 即线程被唤醒的时候条件未改变，所以应该一直检测</p>
+<h3 id="通知条件变量">通知条件变量</h3>
+<p><code>pthread_cond_signal()</code>和<code>pthread_cond_broadcast()</code>都可以通知条件变量使之状态改变。</p>
+<p>两者的区别是：前者将随机唤醒至少一条线程，而后者会唤醒所有的线程。</p>
+<h2 id="线程安全和每线程存储">线程安全和每线程存储</h2>
+<p>线程安全函数 即能在多线程调用时保证线程安全的函数。</p>
+<h3 id="可重入和不可重入函数">可重入和不可重入函数</h3>
+<p>由于互斥量的加锁和解锁也具有一定开销，所以使用临界区实现线程安全的效率并不高。所以可重入函数的使用具有一定意义。</p>
+<p>可重入函数不访问全局或静态变量，其信息都存在调用者分配的缓冲区里。然而，不是所有函数都可改写为可重入函数。</p>
+<p>例如 <code>malloc()</code>类函数必须访问全局变量。它的线程安全是由互斥量实现的。</p>
+<p>一些函数会返回一个指向静态分配的缓冲区的指针，同样不可改写为可重入函数。</p>
+<p>一些不可重入函数具有“可重入的替身”，以后缀<code>_r</code>结尾。 例如 <code>readdir_r()</code> <code>rand_r()</code> <code>strtok_r()</code></p>
+<h3 id="一次性初始化">一次性初始化</h3>
+<p>对于库函数，不能指望在main函数中初始化一些量，而这些量又必须且只能初始化一次。此时需要一个对任意调用线程，都只进行一次量的初始化的库函数。</p>
+<p><code>pthread_once()</code>就有这样的功能。</p>
+<p><code>pthread_once()</code>的第一个参数是指向<code>pthread_once_t</code>类型的地址<code>once_control</code>,通过<code>once_control</code>的状态可判断是否是第一次执行。</p>
+<p>第二个参数是一个指向自定义的函数的指针。该函数无参无返。初始化的函数应该置于该函数体内。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>void func()</span></span>
+<span class="line"><span>{</span></span>
+<span class="line"><span>    // 将初始化函数置于此处</span></span>
+<span class="line"><span>}</span></span></code></pre>
+<p>pthread_once_t 的变量应静态初始化。</p>
+<h3 id="线程特有数据">线程特有数据</h3>
+<p>线程特有数据使得函数为每个调用线程都创建一个特有缓冲区，维护一份线程的副本。这个副本是长期存在的。函数可以向每个调用线程返回各自的缓冲区。</p>
+<p>使用线程特有数据的函数会为调用线程分配单独的存储，且只在该线程初次调用时分配一次。</p>
+<p>在同一线程的后续调用该函数时，都会获取初次调用所分配的缓冲区地址。</p>
+<h2 id="线程取消">线程取消</h2>
+<p><code>pthread_cancel()</code>会向线程发送一个取消请求，该过程中，发送信号的线程不会等待被发送信号的线程。</p>
+<h3 id="取消状态及类型">取消状态及类型</h3>
+<p><code>pthread_setcancelstate()</code>和<code>pthread_setcanceltpye()</code>会设定标志，控制线程对线程取消的响应过程。</p>
+<p><code>pthread_setcancelstate()</code>和<code>pthread_setcanceltpye()</code>会将线程的取消性状态设置为第一个参数对应的值。<br>
+线程原有的取消类型将返回到第二个参数指向的地方。</p>
+<p>使用<code>fork()</code>创建新进程时，子进程会继承调用线程的取消性及状态。某线程调用<code>exec()</code>会将取消状态和取消类型重置为默认值。</p>
+<p>当取消类型为<code>PTHREAD_CANCEL_DEFERED</code>时，取消请求将挂起，直到到达取消点。（延迟取消）</p>
+<p><code>pthread_testcancel()</code>可以产生一个取消点</p>
+<p>线程的默认取消属性是可以取消，默认取消类型是延迟取消。</p>
+<p>收到取消信息的启用了取消性状态并延迟取消的线程，应该由其他线程join()，否则可能变为<code>僵尸线程</code></p>
+<h3 id="清理函数">清理函数</h3>
+<p>每个线程拥有一个清理函数栈，栈中存放清理函数指针。当线程取消时，会从栈顶开始执行清理函数，当所有函数都执行完毕时，线程终止。</p>
+<p>使用<code>pthread_cleanup_push()</code>来向栈中增加清理函数。</p>
+<p>使用<code>pthread_cleanup_pop()</code>来删除清理函数。 该函数只有一个参数<code>execute</code> 如果其非0 那么这个清理函数一定会被执行。</p>
+<p><code>push()</code>与<code>pop()</code>必须同处于同一代码块({}) 才能正确执行。 <strong>每一个push都得对应一个pop</strong> 并且pop的时候才会执行。</p>
+<p>调用<code>pthread_exit()</code>终止线程会导致清理函数栈中的所有函数被执行，而执行<code>return</code>语句不会。(?)</p>
+<h2 id="线程和进程">线程和进程</h2>
+<h3 id="线程和exec">线程和<code>exec()</code></h3>
+<p>任意线程调用了<code>exec()</code>函数，除调用线程以外的所有线程都会消失。既不会对线程特有数据执行解构函数，也不会执行清理函数。该线程的互斥量和条件变量都会立即消失。并且最终的线程ID是不确定的。</p>
+<h3 id="线程和fork">线程和<code>fork()</code></h3>
+<p>任意线程调用了<code>fork()</code>函数，除调用线程以外的所有线程都会消失。既不会对线程特有数据执行解构函数，也不会执行清理函数。调用fork()的线程ID会被复制到新进程中。互斥量和条件变量都得以保留，然而，互斥量和条件变量的状态不会刷新，可能会引起许多问题。</p>
+<p>可能会导致子进程的内存泄漏。</p>
+<p>如果在fork()后马上调用exec()，可能会解决非主线程调用<code>fork()</code>导致的问题。或者，调用<code>pthread_atfork()</code>也可以解决。</p>
+<h2 id="多线程使用笔记">多线程使用笔记</h2>
+<h3 id="create">create</h3>
+<p>在多线程的使用中，可能会出现主线程先结束使其他线程也终止的情况</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func()调用  线程ID -> "</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#6F42C1;--shiki-dark:#B392F0">pthread_self</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    pthread_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ptd;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_create</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,thread_func,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>只输出了主线程的调用</p>
+<p>需要让主线程’等待’其他线程结束。 可以使用 <code>pthread_join()</code>或让主线程sleep 使用while()等待也是可行的</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func()调用  线程ID -> "</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#6F42C1;--shiki-dark:#B392F0">pthread_self</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    pthread_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ptd;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_create</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,thread_func,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_join</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    //sleep(3);</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    //while(1);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>也可以调用<code>pthread_exit</code>让主线程退出，其他线程会继续运行。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func()调用  线程ID -> "</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#6F42C1;--shiki-dark:#B392F0">pthread_self</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    thread_func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    pthread_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ptd;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_create</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,thread_func,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);   </span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_exit</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<h3 id="join和detach">join和detach</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> pthread_test</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"test()调用"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    pthread_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ptd;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_create</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,(</span><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)(</span><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">))pthread_test,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_detach</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(ptd);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_join</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // pthread_exit(0);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>一个已经detach的线程是无法join的</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;iostream></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;pthread.h></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">using</span><span style="color:#D73A49;--shiki-dark:#F97583"> namespace</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> std</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> pthread_test</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"test()调用"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    pthread_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ptd;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_create</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,(</span><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)(</span><span style="color:#D73A49;--shiki-dark:#F97583">void*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">))pthread_test,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_detach</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(ptd);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    pthread_join</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(ptd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // pthread_exit(0);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></div> <nav class="post-nav" aria-label="文章导航" data-astro-cid-exdr3erf> <a href="/zh/posts/cnote/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>上一篇</small><strong data-astro-cid-exdr3erf>C++ Note</strong></a> <a class="next" href="/zh/posts/thread-mergersort/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>下一篇</small><strong data-astro-cid-exdr3erf>多线程归并排序与clock()</strong></a> </nav> <section class="comments" aria-labelledby="comments-title" data-astro-cid-jvxsf75u> <h2 id="comments-title" data-astro-cid-jvxsf75u>评论</h2>  </section> <script type="module">const t=e=>{document.querySelector("iframe.giscus-frame")?.contentWindow?.postMessage({giscus:{setConfig:{theme:e}}},"https://giscus.app")};document.addEventListener("theme-change",(e=>t(e.detail)));const s=new MutationObserver(()=>{if(!document.querySelector("iframe.giscus-frame"))return;const e=document.documentElement.dataset.theme;t(e==="light"||e==="dark"?e:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),s.disconnect()});s.observe(document.body,{childList:!0,subtree:!0});</script>  </div> </article> </main> <aside class="terminal terminal-floating is-stowed" data-terminal data-floating="true" data-lang="zh" data-about="Aether — 使用 Go 与 C++ 构建系统。" data-home="/zh/" data-archive="/zh/archive/" data-posts="[{&#34;slug&#34;:&#34;cpp-ref-ref&#34;,&#34;title&#34;:&#34;万能引用、完美转发和移动语义&#34;,&#34;url&#34;:&#34;/zh/posts/cpp-ref-ref/&#34;},{&#34;slug&#34;:&#34;smart-ptr&#34;,&#34;title&#34;:&#34;C++智能指针&#34;,&#34;url&#34;:&#34;/zh/posts/smart-ptr/&#34;},{&#34;slug&#34;:&#34;tcp-ip&#34;,&#34;title&#34;:&#34;TCP/IP&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-ip/&#34;},{&#34;slug&#34;:&#34;c-lr-val&#34;,&#34;title&#34;:&#34;C++左右值&#34;,&#34;url&#34;:&#34;/zh/posts/c-lr-val/&#34;},{&#34;slug&#34;:&#34;c-c-buff&#34;,&#34;title&#34;:&#34;小发现&#34;,&#34;url&#34;:&#34;/zh/posts/c-c-buff/&#34;},{&#34;slug&#34;:&#34;tcp-connect&#34;,&#34;title&#34;:&#34;TCP三次握手四次挥手&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-connect/&#34;},{&#34;slug&#34;:&#34;diff-cout-printf&#34;,&#34;title&#34;:&#34;cout和printf差异&#34;,&#34;url&#34;:&#34;/zh/posts/diff-cout-printf/&#34;},{&#34;slug&#34;:&#34;avl-tree&#34;,&#34;title&#34;:&#34;AVL-Tree&#34;,&#34;url&#34;:&#34;/zh/posts/avl-tree/&#34;},{&#34;slug&#34;:&#34;hashtable&#34;,&#34;title&#34;:&#34;哈希表原理及实现&#34;,&#34;url&#34;:&#34;/zh/posts/hashtable/&#34;},{&#34;slug&#34;:&#34;pthreads-pool&#34;,&#34;title&#34;:&#34;简单线程池(pthread实现)&#34;,&#34;url&#34;:&#34;/zh/posts/pthreads-pool/&#34;},{&#34;slug&#34;:&#34;thread-mergersort&#34;,&#34;title&#34;:&#34;多线程归并排序与clock()&#34;,&#34;url&#34;:&#34;/zh/posts/thread-mergersort/&#34;},{&#34;slug&#34;:&#34;pthread-note&#34;,&#34;title&#34;:&#34;pthread_notes&#34;,&#34;url&#34;:&#34;/zh/posts/pthread-note/&#34;},{&#34;slug&#34;:&#34;cnote&#34;,&#34;title&#34;:&#34;C++ Note&#34;,&#34;url&#34;:&#34;/zh/posts/cnote/&#34;},{&#34;slug&#34;:&#34;ink-super-shell实现&#34;,&#34;title&#34;:&#34;INK_SuperShell实现&#34;,&#34;url&#34;:&#34;/zh/posts/ink-super-shell实现/&#34;},{&#34;slug&#34;:&#34;ls&#34;,&#34;title&#34;:&#34;ls实现&#34;,&#34;url&#34;:&#34;/zh/posts/ls/&#34;},{&#34;slug&#34;:&#34;linux2022&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2022纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2022/&#34;},{&#34;slug&#34;:&#34;linux2023&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2023纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2023/&#34;},{&#34;slug&#34;:&#34;linux2024&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2024纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2024/&#34;}]" aria-label="Aether 的互动终端" aria-hidden="true" data-astro-cid-2bbsq65f> <div class="terminal-bar" data-astro-cid-2bbsq65f> <div class="controls" aria-hidden="true" data-astro-cid-2bbsq65f><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i></div> <span data-astro-cid-2bbsq65f>ink@aether:~</span> <span class="online" data-astro-cid-2bbsq65f><i aria-hidden="true" data-astro-cid-2bbsq65f></i> live</span> </div> <div class="terminal-body" data-astro-cid-2bbsq65f> <div class="history" aria-live="polite" data-astro-cid-2bbsq65f> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> whoami</p> <p class="output" data-astro-cid-2bbsq65f>Aether</p> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> status --now</p> <p class="output" data-astro-cid-2bbsq65f>分布式系统 · 存储引擎 · 工程实践</p> <p class="hint" data-astro-cid-2bbsq65f>输入 &#39;help&#39; 查看命令 · Tab 补全</p> </div> <form class="command-line" autocomplete="off" data-astro-cid-2bbsq65f> <label for="terminal-input-zh" data-astro-cid-2bbsq65f>输入终端命令</label> <span class="shell-prompt" aria-hidden="true" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> <input id="terminal-input-zh" name="command" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" data-astro-cid-2bbsq65f> </form> </div> </aside> <script type="module" src="/_astro/MiniTerminal.astro_astro_type_script_index_0_lang.DgFNcKDu.js"></script>  <footer data-astro-cid-sz7xmlte> <div class="container footer-inner" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>© 2026 Aether</p> <div data-astro-cid-sz7xmlte> <a href="/zh/rss.xml" data-astro-cid-sz7xmlte>RSS 订阅</a> <a href="https://github.com/Aetherance" rel="me noopener" target="_blank" data-astro-cid-sz7xmlte>GitHub</a>  </div> </div> </footer>  </body></html> 

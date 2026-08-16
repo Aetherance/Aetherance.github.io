@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aetherance.github.io/sitemap-index.xml

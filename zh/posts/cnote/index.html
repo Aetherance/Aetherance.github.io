@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.18.2"><meta name="description" content="func2(int a,int b = 10)具有一个默认参数，这使得func2(10)具有二义性"><meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1018" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://aetherance.github.io/zh/posts/cnote/"><link rel="alternate" type="application/rss+xml" title="AETHER RSS" href="/zh/rss.xml"><meta property="og:type" content="article"><meta property="og:title" content="C++ Note — AETHER"><meta property="og:description" content="func2(int a,int b = 10)具有一个默认参数，这使得func2(10)具有二义性"><meta property="og:url" content="https://aetherance.github.io/zh/posts/cnote/"><meta property="og:site_name" content="AETHER"><meta property="og:locale" content="zh_CN"><meta property="article:published_time" content="2025-01-05T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="C++ Note — AETHER"><meta name="twitter:description" content="func2(int a,int b = 10)具有一个默认参数，这使得func2(10)具有二义性"><title>C++ Note — AETHER</title><script>
+      (() => { const saved = localStorage.getItem('theme'); if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved; })();
+    </script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"C++ Note","description":"func2(int a,int b = 10)具有一个默认参数，这使得func2(10)具有二义性","datePublished":"2025-01-05T00:00:00.000Z","dateModified":"2025-01-08T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Aether"},"mainEntityOfPage":"https://aetherance.github.io/zh/posts/cnote/"}</script><link rel="stylesheet" href="/_astro/_slug_.DGYMTEON.css">
+<link rel="stylesheet" href="/_astro/index.BjjNL9zW.css"></head> <body> <a class="skip-link" href="#main">跳到正文</a> <header class="site-header" data-astro-cid-3ef6ksr2> <div class="container header-inner" data-astro-cid-3ef6ksr2> <a class="brand" href="/zh/" aria-label="AETHER — 首页" data-astro-cid-3ef6ksr2> <strong data-astro-cid-3ef6ksr2>AETHER</strong> </a> <nav aria-label="主导航" data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a> <a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a> <a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a> <a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a> <a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> <div class="actions" data-astro-cid-3ef6ksr2> <a class="language" href="/en/" hreflang="en" data-astro-cid-3ef6ksr2>English</a> <button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题" data-astro-cid-3ef6ksr2> <svg class="sun" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="4" data-astro-cid-3ef6ksr2></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" data-astro-cid-3ef6ksr2></path></svg> <svg class="moon" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" data-astro-cid-3ef6ksr2></path></svg> </button> <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav" data-astro-cid-3ef6ksr2><span data-astro-cid-3ef6ksr2></span><span data-astro-cid-3ef6ksr2></span></button> </div> </div> <nav id="mobile-nav" class="mobile-nav container" aria-label="移动导航" hidden data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a><a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a><a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a><a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a><a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> </header> <script type="module">const c=document.querySelector(".theme-toggle");c?.addEventListener("click",()=>{const e=document.documentElement,t=(e.dataset.theme??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark"?"light":"dark";e.dataset.theme=t,localStorage.setItem("theme",t),document.dispatchEvent(new CustomEvent("theme-change",{detail:t}))});const n=document.querySelector(".menu-toggle"),o=document.querySelector("#mobile-nav");n?.addEventListener("click",()=>{const e=n.getAttribute("aria-expanded")==="true";n.setAttribute("aria-expanded",String(!e)),o&&(o.hidden=e)});</script>  <main id="main">  <article data-pagefind-body data-astro-cid-exdr3erf> <span hidden data-pagefind-filter="lang:zh" data-astro-cid-exdr3erf>zh</span> <div class="reading-progress" data-reading-progress data-pagefind-ignore data-copy-label="复制" data-copied-label="已复制" data-copy-failed-label="复制失败" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-astro-cid-rjvcnvx7> <span data-astro-cid-rjvcnvx7></span> </div> <button class="back-to-top" data-back-to-top data-pagefind-ignore type="button" aria-label="返回顶部" aria-hidden="true" tabindex="-1" data-astro-cid-rjvcnvx7> <span aria-hidden="true" data-astro-cid-rjvcnvx7>↑</span> <small data-astro-cid-rjvcnvx7>TOP</small> </button> <script type="module">const n=document.querySelector("[data-reading-progress]"),p=n?.querySelector("span"),c=document.querySelector("[data-back-to-top]"),u=document.querySelector(".article-body .prose"),o={copy:n?.dataset.copyLabel??"Copy",copied:n?.dataset.copiedLabel??"Copied",failed:n?.dataset.copyFailedLabel??"Copy failed"};let d;const b=()=>{if(d=void 0,!u)return;const t=document.querySelector(".site-header")?.getBoundingClientRect().height??0,a=u.getBoundingClientRect(),e=window.scrollY+a.top,i=window.scrollY+a.bottom,r=e-t,y=Math.max(r+1,i-window.innerHeight),l=Math.min(1,Math.max(0,(window.scrollY-r)/(y-r))),w=Math.round(l*100);p&&(p.style.transform=`scaleX(${l})`),n?.setAttribute("aria-valuenow",String(w));const s=window.scrollY>Math.max(500,window.innerHeight*.8);c?.toggleAttribute("data-visible",s),c?.setAttribute("aria-hidden",String(!s)),c?.setAttribute("tabindex",s?"0":"-1")},m=()=>{d===void 0&&(d=requestAnimationFrame(b))};addEventListener("scroll",m,{passive:!0});addEventListener("resize",m,{passive:!0});b();c?.addEventListener("click",()=>{const t=matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:t?"auto":"smooth"})});for(const t of document.querySelectorAll(".article-body .prose pre")){if(t.parentElement?.classList.contains("code-block"))continue;const a=document.createElement("div");a.className="code-block",t.before(a),a.append(t);const e=document.createElement("button");e.className="code-copy",e.type="button",e.textContent=o.copy,e.setAttribute("aria-label",o.copy),e.setAttribute("aria-live","polite"),a.append(e);let i;e.addEventListener("click",async()=>{const r=t.querySelector("code")?.textContent??t.textContent??"";try{if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");await navigator.clipboard.writeText(r),e.textContent=o.copied,e.setAttribute("aria-label",o.copied)}catch{e.textContent=o.failed,e.setAttribute("aria-label",o.failed)}clearTimeout(i),i=setTimeout(()=>{e.textContent=o.copy,e.setAttribute("aria-label",o.copy)},1800)})}</script>  <header class="article-header article-width" data-astro-cid-exdr3erf> <div class="meta" data-astro-cid-exdr3erf> <time datetime="2025-01-05T00:00:00.000Z" data-astro-cid-exdr3erf>发布于 2025年1月5日</time> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span><span data-astro-cid-exdr3erf>更新于 2025年1月8日</span> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span> <span data-astro-cid-exdr3erf>13 分钟阅读</span> </div> <h1 data-pagefind-meta="title" data-astro-cid-exdr3erf>C++ Note</h1> <p class="description" data-astro-cid-exdr3erf>func2(int a,int b = 10)具有一个默认参数，这使得func2(10)具有二义性</p> <div class="post-actions" data-astro-cid-exdr3erf> <ul aria-label="文章标签" data-astro-cid-exdr3erf> <li data-astro-cid-exdr3erf><a href="/zh/tags/c/" data-astro-cid-exdr3erf>#C++</a></li> </ul>  </div> </header> <div class="article-width article-body" data-astro-cid-exdr3erf> <aside class="toc" aria-label="本文目录" data-astro-cid-xvrfupwn><details open data-astro-cid-xvrfupwn><summary data-astro-cid-xvrfupwn>本文目录</summary><ol data-astro-cid-xvrfupwn><li data-astro-cid-xvrfupwn><a data-toc-link href="#cpp-learning" data-astro-cid-xvrfupwn>CPP LEARNING</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#1-new" data-astro-cid-xvrfupwn>1. new</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#2引用" data-astro-cid-xvrfupwn>2.引用</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#3函数" data-astro-cid-xvrfupwn>3.函数</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#类和对象" data-astro-cid-xvrfupwn>类和对象</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#c-面向对象三大特性-封装继承多态" data-astro-cid-xvrfupwn>C++ 面向对象三大特性 封装、继承、多态</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#1-封装" data-astro-cid-xvrfupwn>1. 封装</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#2-继承" data-astro-cid-xvrfupwn>2. 继承</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#3-多态" data-astro-cid-xvrfupwn>3. 多态</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#泛型和stl" data-astro-cid-xvrfupwn>泛型和STL</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#模板" data-astro-cid-xvrfupwn>模板</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#stl" data-astro-cid-xvrfupwn>STL</a></li></ol></details></aside><script type="module">const s=Array.from(document.querySelectorAll("[data-toc-link]")),r=s.flatMap(i=>{const t=i.getAttribute("href")?.slice(1);if(!t)return[];let n=t;try{n=decodeURIComponent(t)}catch{}const e=document.getElementById(n);return e?[{heading:e,link:i}]:[]});let o;const a=()=>{if(o=void 0,!r.length)return;const t=(document.querySelector(".site-header")?.getBoundingClientRect().height??0)+24;let n=r[0];for(const e of r){if(e.heading.getBoundingClientRect().top>t)break;n=e}for(const e of r){const c=e===n;e.link.classList.toggle("active",c),c?e.link.setAttribute("aria-current","location"):e.link.removeAttribute("aria-current")}},d=()=>{o===void 0&&(o=requestAnimationFrame(a))};addEventListener("scroll",d,{passive:!0});addEventListener("resize",d,{passive:!0});a();</script> <div class="prose" data-astro-cid-exdr3erf><h2 id="cpp-learning">CPP LEARNING</h2>
+<h3 id="1-new">1. new</h3>
+<ol>
+<li>使用new来开辟内存空间 delete来删除已开辟的空间</li>
+<li>new返回的是该数据类型的指针</li>
+<li>使用delete释放数组时需要用 delete[]</li>
+</ol>
+<h3 id="2引用">2.引用</h3>
+<ol>
+<li>引用必须要初始化</li>
+<li>初始化后引用就不能改了</li>
+<li>不要返回局部变量的引用</li>
+<li>返回值是引用的函数可以作左值</li>
+<li>引用的本质在C++内部的实现就是一个指针常量</li>
+<li>可以用const修饰防止形参修改实参</li>
+</ol>
+<h3 id="3函数">3.函数</h3>
+<h4 id="1-函数的默认参数">1. 函数的默认参数</h4>
+<ol>
+<li>C++的函数可以有默认参数，但是从第一个默认参数开始，后面的参数都必须有默认值</li>
+<li>函数的声明和实现只能有一个有默认参数</li>
+</ol>
+<h4 id="2函数的重载">2.函数的重载</h4>
+<ol>
+<li>
+<p>C++的函数可以同名，提高函数的复用性。</p>
+</li>
+<li>
+<p>函数的重载必须在同一个作用域下，且名称相同。</p>
+</li>
+<li>
+<p>函数的重载要求满足函数的参数或者类型不同，或者个数不同，或者顺序不同。</p>
+<p>函数的返回值不能做函数重载的条件</p>
+</li>
+<li>
+<p>引用可以做函数重载的条件 (const修饰与无const修饰) 传入常量区数据，调用const引用，传入其他数据，调用非const引用。</p>
+<p>5.当重载函数有默认参数时，默认参数可能会无法重载</p>
+</li>
+</ol>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="c"><code><span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#E36209;--shiki-dark:#FFAB70"> a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func2()的调用"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#E36209;--shiki-dark:#FFAB70"> a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func2()的调用"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p><code>func2(int a,int b = 10)</code>具有一个默认参数，这使得func2(10)具有<code>二义性</code></p>
+<hr>
+<h2 id="类和对象">类和对象</h2>
+<h3 id="c-面向对象三大特性-封装继承多态">C++ 面向对象三大特性 封装、继承、多态</h3>
+<h3 id="1-封装">1. 封装</h3>
+<h4 id="将属性和行为写在一起并加入一些权限控制--类">将属性和行为写在一起，并加入一些权限控制。 ———— 类</h4>
+<p>与<code>struct</code>不同的是 类——<code>class</code>的权限是默认私有的。<br>
+通过一个类来创建一个对象的过程称为 “实例化” 。</p>
+<h4 id="访问权限">访问权限</h4>
+<ol>
+<li>公共 成员在类内可以访问 类外也可以访问</li>
+<li>保护 成员在类内可以访问 类外不可以访问 父类的保护权限，子可以访问</li>
+<li>私有 成员在类内可以访问 类外不可以访问 父类的私有权限，子也不可以访问 (继承)</li>
+</ol>
+<h4 id="构造函数和析构函数">构造函数和析构函数</h4>
+<h5 id="使用构造函数来初始化析构函数来清理-构造函数和析构函数由编译器自动调用-但如果不自己实现调用的是空实现">使用<code>构造函数</code>来初始化，<code>析构函数</code>来清理。 构造函数和析构函数由编译器自动调用 但如果不自己实现，调用的是空实现。</h5>
+<h6 id="构造函数">构造函数</h6>
+<p>不需要写返回值类型，函数名称与类相同，可以有参数，可以发生重载。</p>
+<p>在创建对象时，程序会自动调用构造函数，不需要手动调用,并且只会调用一次</p>
+<h6 id="析构函数">析构函数</h6>
+<p>没有返回值，没有参数，函数名前要加上<code>~</code></p>
+<p>由于不可以有参数，所以不能发生重载。</p>
+<p>和构造函数一样，析构函数会在对象销毁前自动调用析构函数。</p>
+<p><strong>构造和析构函数都是必须要有的</strong> 如果自己不提供，程序会提供空实现</p>
+<h4 id="构造函数的分类">构造函数的分类</h4>
+<p>按参数：有参构造和无参构造<br>
+按类型：普通构造和拷贝构造</p>
+<h4 id="构造函数的调用方式">构造函数的调用方式</h4>
+<ol>
+<li>
+<p>括号法</p>
+<p>person p(10);</p>
+</li>
+<li>
+<p>显示法</p>
+<p>person p = person(10);</p>
+</li>
+<li>
+<p>隐式转换法</p>
+<p>person p = {10,“name”};</p>
+</li>
+</ol>
+<p><code>person(10)</code>创建的是一个匿名对象,匿名对象在当前行结束后就会被释放。显示法相当于给匿名对象找到一个名字。</p>
+<p><strong>不要利用拷贝构造函数来初始化一个匿名的对象。</strong></p>
+<h4 id="拷贝构造函数的调用时机">拷贝构造函数的调用时机</h4>
+<p>C++中拷贝构造函数的调用时机通常有三种情况</p>
+<ul>
+<li>
+<p>使用一个已经创建完的对象来初始化一个新对象</p>
+<p>person p(p0);</p>
+</li>
+<li>
+<p>以值传递的方式给函数参数传参</p>
+<p>doWorK(p);</p>
+<p>值传递的本质会拷贝一个临时副本 这个过程会调用拷贝构造函数</p>
+</li>
+<li>
+<p>以值方式返回局部对象</p>
+</li>
+</ul>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Person</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    person p1;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> p1;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>函数内的p1在函数运行完就会被是放掉,return 的p1是创建的新变量。</p>
+<h4 id="构造函数的调用规则">构造函数的调用规则</h4>
+<p>C++会为一个类提供至少三个默认函数</p>
+<ol>
+<li>默认构造函数(空实现)</li>
+<li>默认析构函数(空实现)</li>
+<li>默认拷贝构造函数 => 有默认内容(值拷贝)</li>
+</ol>
+<p><strong>如果你写了一个有参构造函数,C++不会提供默认无参构造，但会提供拷贝构造函数</strong><br>
+<em><strong>如果你写了一个拷贝构造函数，C++就不会再提供默认的其他构造函数了</strong></em></p>
+<h4 id="深浅拷贝">深浅拷贝</h4>
+<p>深拷贝 重新申请空间</p>
+<p>浅拷贝 直接赋值</p>
+<h4 id="初始化列表">初始化列表</h4>
+<p>传统操作:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Person</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a_,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b_,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c_)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    a </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a_;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    b </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b_;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    c </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c_;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c;</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Person</span><span style="color:#24292E;--shiki-dark:#E1E4E8">():</span><span style="color:#6F42C1;--shiki-dark:#B392F0">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">),</span><span style="color:#6F42C1;--shiki-dark:#B392F0">b</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">20</span><span style="color:#24292E;--shiki-dark:#E1E4E8">),</span><span style="color:#6F42C1;--shiki-dark:#B392F0">c</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">30</span><span style="color:#24292E;--shiki-dark:#E1E4E8">){}</span><span style="color:#6A737D;--shiki-dark:#6A737D">  //行参列表</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c;</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Person</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a_,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b_,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c_):</span><span style="color:#6F42C1;--shiki-dark:#B392F0">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(a_),</span><span style="color:#6F42C1;--shiki-dark:#B392F0">b</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(b_),</span><span style="color:#6F42C1;--shiki-dark:#B392F0">c</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(c_){}</span><span style="color:#6A737D;--shiki-dark:#6A737D">  //更灵活的写法</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> c;</span></span></code></pre>
+<h4 id="类对象作为类成员">类对象作为类成员</h4>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> A</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{};</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> B</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    A a;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>当A作为B的成员时,创建一个类B的对象,会先创建一个类A的对象 <strong>[先有手机后有人]</strong></p>
+<h4 id="静态成员变量">静态成员变量</h4>
+<ul>
+<li>
+<p>所有对象共享同一份数据</p>
+</li>
+<li>
+<p>在编译阶段就分配内存 (还没有运行可执行文件前已经分好了)</p>
+</li>
+<li>
+<p>类内声明，类外初始化 (必需操作)</p>
+<p>(static修饰的成员变量在类外初始化时分配内存)</p>
+<p>(静态成员并不具体作用在某个对象上)</p>
+</li>
+<li>
+<p>静态成员不能在类内初始化</p>
+</li>
+<li>
+<p>C++中声明和定义是有区别的，在类内进行的是成员变量的声明，而不是定义。所以在类外初始化静态成员变量时仍然要加上数据类型。</p>
+</li>
+<li>
+<p>由于静态成员变量不属于某个类，所以他有两种访问方式</p>
+</li>
+<li>
+<p>1.通过对象访问</p>
+</li>
+<li>
+<p>2.通过类名访问</p>
+</li>
+</ul>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">person</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::static_member_</span></span></code></pre>
+<ul>
+<li>静态成员变量也是有访问权限的 (类外访问不到静态成员变量的内容)</li>
+</ul>
+<h4 id="静态成员函数">静态成员函数</h4>
+<ul>
+<li>所有对象共享同一个函数</li>
+<li>静态成员函数只能访问静态成员变量</li>
+</ul>
+<p>成员函数的大小并不算在类里！成员变量和成员函数在存储上是分离的</p>
+<p>静态成员变量的调用有两种访问方式</p>
+<ol>
+<li>通过对象</li>
+<li>通过类名</li>
+</ol>
+<p><strong>静态成员函数只能访问静态成员变量</strong></p>
+<ul>
+<li>静态成员函数也是有访问权限的</li>
+</ul>
+<h4 id="c对象模型和this指针">C++对象模型和this指针</h4>
+<p>C++中 只有非静态成员变量才属于类的对象上</p>
+<h5 id="空对象占用的内存大小为-1-字节">空对象占用的内存大小为 1 字节</h5>
+<p>C++编译器会给每个空对象也分配一个字节的空间，是为了区分每个对象占用的位置</p>
+<p><em>不是存储对象的地址，而是把对象的地址占用住，防止别的对象存在同一地址</em></p>
+<p><strong>在C++中,空结构体的大小也是 1</strong>&#x3C;br$$><br>
+<strong>在C语言中 空结构体的大小是 0</strong></p>
+<p>static成员变量和对象中的成员变量是分开存储的，不算在对象的大小里 (存储在全局区)</p>
+<h4 id="this指针"><code>this</code>指针</h4>
+<p>非静态成员函数的实例只有一份，它通过this指针来区分是哪个对象调用的自己。<br>
+用途</p>
+<ul>
+<li>
+<p>当形参和成员变量同名时，可以用this指针来区分</p>
+</li>
+<li>
+<p>在类的非静态成员函数中返回对象本身，可用 return *this</p>
+<p>静态成员函数不具备</p>
+<p>this</p>
+<p>指针</p>
+</li>
+</ul>
+<h4 id="空指针访问成员函数">空指针访问成员函数</h4>
+<p>C++的空指针也是可以访问成员函数的<br>
+但是要判断this指针是否为空 加强代码的健壮性</p>
+<h4 id="const修饰成员函数">const修饰成员函数</h4>
+<h5 id="常函数">常函数:</h5>
+<ul>
+<li>
+<p>成员函数后加</p>
+<p>const</p>
+<p>的函数叫做常函数</p>
+</li>
+<li>
+<p>常函数内不可以修改成员属性</p>
+</li>
+<li>
+<p>成员属性声明时加关键字</p>
+<p>mutable</p>
+<p>后，在常函数中依然可以修改</p>
+</li>
+</ul>
+<h5 id="常对象">常对象:</h5>
+<ul>
+<li>
+<p>在声明对象时，在对象前面加</p>
+<p>const</p>
+<p>来定义一个常对象</p>
+</li>
+<li>
+<p>常对象只能调用常函数</p>
+</li>
+<li>
+<p>mutable</p>
+<p>在常对象下也适用</p>
+</li>
+</ul>
+<p>在成员函数后加const修饰的其实是this指针，让指针指向的值也不可以修改</p>
+<p><strong>常对象只能调用常函数的原理：常对象的<code>this</code>指针是常量指针，而<code>this</code>指针是作为<code>隐含参数</code>传给类内函数的，只有常函数的<code>this</code>指针是常量指针常量，可以接收常对象的<code>this</code>指针</strong> <em>(其实就是普通指针可以向const修饰的指针转换，而const修饰的指针不能向普通指针转换)</em></p>
+<h4 id="友元-friend">友元 <code>friend</code></h4>
+<p>通过关键字<code>friend</code>可以让类外访问类内的私有属性 可以让一个函数或者类 访问另一个类中的私有成员</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Friend</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">friend</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">friend</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Friend;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">friend</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Friend</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::</span><span style="color:#6F42C1;--shiki-dark:#B392F0">func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span></code></pre>
+<h4 id="运算符重载">运算符重载</h4>
+<p><strong>可以对已经存在的运算符进行重新定义，赋予另一种功能</strong></p>
+<ol>
+<li>
+<p>加号运算符重载</p>
+</li>
+<li>
+<p>左移运算符重载</p>
+</li>
+<li>
+<p>递增运算符重载</p>
+</li>
+<li>
+<p>赋值运算符重载</p>
+</li>
+<li>
+<p>关系运算符重载</p>
+</li>
+<li>
+<p>函数调用运算符重载 (仿函数)</p>
+<p>运算符可以以全局函数或成员函数的形式重载，拓展更多使用方法</p>
+<p>cout是 ostream 类的一个对象 通过成员函数 operator</p>
+<p>&#x3C;&#x3C;</p>
+<p>来输出内容</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">my_integer</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#D73A49;--shiki-dark:#F97583"> operator</span><span style="color:#6F42C1;--shiki-dark:#B392F0">++</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#6A737D;--shiki-dark:#6A737D">  //在()里写int以表明这是一个后置递增</span></span></code></pre>
+</li>
+</ol>
+<h3 id="2-继承">2. 继承</h3>
+<h4 id="基本语法">基本语法</h4>
+<p><em>继承可以减少重复的代码。</em></p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Base</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // 父类 (基类)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func()"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> byBase</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> : </span><span style="color:#D73A49;--shiki-dark:#F97583">public</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Base</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 子类 (派生类)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    void</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"func2()"</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">endl;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre>
+<p>类 <code>byBase</code> 会继承 类 <code>Base</code> 的函数 <code>func()</code> 从而拥有两个成员函数 <code>func()</code> 和 <code>func2()</code></p>
+<h4 id="继承方式">继承方式</h4>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>protected（受保护）成员变量或函数与私有成员十分相似，但有一点不同，protected（受保护）成员在派生类（即子类）中是可访问的。</span></span></code></pre>
+<p><strong>使用共有继承方式，最大权限为公有</strong></p>
+<p><strong>使用保护继承方式，最大权限为保护</strong></p>
+<p><strong>使用私有继承方式，最大权限为私有</strong></p>
+<p>以私有方式继承，子类的子类什么都访问不到</p>
+<h4 id="继承的对象模型">继承的对象模型</h4>
+<p>不管怎样继承，父类中的非静态成员属性都会被子类继承下去。</p>
+<p>每个子类都会有一份继承自父类的成员</p>
+<h4 id="构造和析构顺序">构造和析构顺序</h4>
+<p>当创建子类对象时，先有父类对象还是子类对象?</p>
+<p>先构造 父类 ， 后构造 子类 。</p>
+<p>析构的顺序和构造的顺序相反。</p>
+<h4 id="继承中同名成员的处理方式">继承中同名成员的处理方式</h4>
+<p>在继承中遇到同名成员变量 需要在<code>.</code>后加父类的作用域</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">s.Base::a </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span><span style="color:#6A737D;--shiki-dark:#6A737D"> // 表示使用的是继承自父类的成员变量</span></span></code></pre>
+<p>对于成员函数 同理</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">s.Base::</span><span style="color:#6F42C1;--shiki-dark:#B392F0">func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span></code></pre>
+<p>如果子类中出现了和父类中同名的成员函数，那么子类会将父类中的所有成员函数隐藏掉，<strong>包括重载的函数</strong><br>
+必须加作用域才可以访问。</p>
+<h4 id="继承中静态成员变量的处理方式">继承中静态成员变量的处理方式</h4>
+<p>静态成员变量可以通过类名访问。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// 通过子类访问父类继承的静态成员变量</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Son</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::</span><span style="color:#6F42C1;--shiki-dark:#B392F0">Base</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::m_A;</span></span></code></pre>
+<h4 id="c多继承">C++多继承</h4>
+<p>C++允许一个类继承多个类</p>
+<p>当父类中出现同名成员 需要加作用域区分</p>
+<p><strong>在开发中不建议采用多继承写法</strong></p>
+<h4 id="菱形继承-virtual">菱形继承 (virtual)</h4>
+<p>两个派生类继承同一个基类，又被同一个派生类继承。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>   A</span></span>
+<span class="line"><span> /   \</span></span>
+<span class="line"><span>C     D</span></span>
+<span class="line"><span> \   /</span></span>
+<span class="line"><span>   E</span></span></code></pre>
+<p>E通过C，D继承A的成员时，只需要一份，却继承了两份，造成资源浪费</p>
+<p>此时可以通过<code>虚继承</code>实现</p>
+<p>继承时加上<code>virtual</code> 后，继承方式变为虚继承 , 数据只存一份</p>
+<p>并且虚继承默认访问的是第一个基类</p>
+<p>虚继承的派生类中存的是<code>vbptr</code> <strong>『虚基类指针』</strong> 指向 <code>vbtable</code> <strong>『虚基类表』</strong> 记录了派生类成员相对基类成员的偏移量</p>
+<h3 id="3-多态">3. 多态</h3>
+<h4 id="静态多态和动态多态">静态多态和动态多态</h4>
+<p>静态多态：函数重载和运算符重载</p>
+<p>动态多态：派生类和虚函数来实现动态多态</p>
+<p>区别:</p>
+<ul>
+<li>静态多态的函数地址早绑定 => 在编译阶段就确定了函数的地址</li>
+<li>动态多态的函数地址晚绑定 => 程序运行时才能确定函数地址</li>
+</ul>
+<p>C++允许父类的引用指向一个子类对象 不需要进行类型转换</p>
+<p>通过在基类的函数前加入关键字<code>virtual</code>，可以实现地址晚绑定，使一个函数表现出不同的效果</p>
+<p>动态多态的条件：</p>
+<ol>
+<li>有基础关系</li>
+<li>子类要重写父类的虚函数</li>
+</ol>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>重写:函数的返回值，形参和函数名都要相同</span></span>
+<span class="line"><span>重载:根据形参的不同区分两个函数</span></span></code></pre>
+<p>动态多态的使用: 要用父类的指针或引用指向子类的对象 调用虚函数</p>
+<h4 id="多态的原理">多态的原理</h4>
+<p>有虚函数的基类中会存一个被称为<code>vfptr</code>的指针 即<code>虚函数指针</code> (aka虚函数表指针)<br>
+它会指向一个虚函数表<code>vftable</code> 该表内部会记录一个虚函数的地址</p>
+<p>子类会继承父类的<code>vfptr</code>指向自己的虚函数表 父类和子类不会共享一个虚函数表</p>
+<p>类的对象的隐藏成员保存的类的虚函数指针(vfptr)，指向类的虚函数表 虚函数表是一个顺序表 表中有许多槽(slot),每个槽中存放的是一个虚函数的指针(地址)</p>
+<p>如果派生类重写了基类的虚函数，派生虚函数表将基类虚函数的地址替换为派生类虚函数的地址，<br>
+如果派生类中没有重写虚函数，派生虚函数表将保存基类虚函数的地址。如果派生类中还定义了虚函数，那么该虚函数的地址也会被添加到虚派生类表里去。</p>
+<p>为了保证虚函数表的性能，C++会保证虚函数表的指针存在于对象实例的最前面的位置。</p>
+<p>当父类的指针或者引用指向子类对象时，就会发生<code>多态</code></p>
+<p>在创建派生类的对象时，虚函数指针会被指向派生类虚函数表。</p>
+<h4 id="纯虚函数和抽象类">纯虚函数和抽象类</h4>
+<p>多态中父类的虚函数大多没什么用,可以将虚函数改为纯虚函数。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">virtual</span><span style="color:#D73A49;--shiki-dark:#F97583"> int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> func</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#E36209;--shiki-dark:#FFAB70"> a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#E36209;--shiki-dark:#FFAB70"> b</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 定义一个纯虚函数</span></span></code></pre>
+<p>只要类中有一个纯虚函数，类就会成为<code>抽象类</code> 无法实例化一个对象</p>
+<p>抽象类的子类必须重写抽象类的纯虚函数，否则该子类也属于抽象类，无法实例化对象</p>
+<h4 id="虚析构和纯虚析构">虚析构和纯虚析构</h4>
+<p>多态使用时，父类的指针无法释放子类中的析构代码，所以子类数据无法释放，会造成内存泄漏。</p>
+<p>此时需要利用<code>虚析构</code>和<code>纯虚析构</code> 虚析构和纯虚析构都需要函数的实现</p>
+<p>如果类中有了纯虚析构，该类也会属于抽象类</p>
+<p>只要在父类的析构函数前加上<code>virtual</code> 即可调用子类的析构函数</p>
+<p>纯虚析构也能有这个效果,但是纯虚析构必须在类外实现函数体</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">Animal</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::</span><span style="color:#D73A49;--shiki-dark:#F97583">~</span><span style="color:#6F42C1;--shiki-dark:#B392F0">Animal</span><span style="color:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    /* 实现 */</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<h2 id="泛型和stl">泛型和STL</h2>
+<p>C++支持<code>泛型编程</code> 和 <code>STL</code></p>
+<p><code>泛型编程</code>主要靠<code>模板</code>实现,可大大提高复用性。</p>
+<h3 id="模板">模板</h3>
+<ol>
+<li>模板不可以直接使用，它只是一个框架。</li>
+<li>模板的通用并不是万能的。</li>
+</ol>
+<h4 id="模板的语法">模板的语法</h4>
+<ul>
+<li>函数模板</li>
+<li>类模板</li>
+</ul>
+<h5 id="函数模板">函数模板</h5>
+<p>语法:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">template</span><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#D73A49;--shiki-dark:#F97583">typename</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> T</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// 函数声明或定义</span></span></code></pre>
+<p>写模板时可以先不指定返回值和形参是什么数据类型 使用的时候再确定数据类型</p>
+<p>template: 声明创建模板<br>
+typename: 表明T是数据类型的名称 可以用class替代<br>
+T 是可以替换的数据类型 (自定义)</p>
+<p>***36_STL</p>
+<hr>
+<h3 id="stl">STL</h3>
+<p><code>STL</code> 即 <code>Standard Template Library</code> 标准模板库</p>
+<p>STL 从广义上分为 <strong><code>容器(container)</code></strong> <strong><code>算法(algorithm)</code></strong> <strong><code>迭代器(iterator)</code></strong></p>
+<p>迭代器连接了容器与算法</p>
+<p>STL中的所有类基本上都使用了模板类和模板函数</p>
+<p>STL的六大组件 – 容器、算法、迭代器、仿函数、适配器、空间配置器</p>
+<ol>
+<li>容器 是各种数据结构 用来存储数据</li>
+<li>算法 各种常用的算法 (sort,find,copy,for_each)</li>
+<li>迭代器 迭代器 交流容器和算法</li>
+<li>仿函数 函数调用运算符的重载</li>
+<li>适配器 用来修饰容器或者仿函数或迭代器接口</li>
+<li>空间配置器 负责空间的配置和管理</li>
+</ol>
+<p><strong>容器</strong>分为序列式容器和关联式容器</p>
+<p>序列式容器强调值的排序，每个元素都有固定的位置</p>
+<p>关联式容器各元素之间没有严格的物理上的顺序关系</p>
+<p><strong>算法</strong>分为质变算法和非质变算法</p>
+<p>质变算法在运行期间会更改元素的内容 (增，删，改)</p>
+<p>非质变算法在运行期间不会改变元素的内容 (查找，计数)</p>
+<p>算法要通过迭代器才能访问容器里的元素 每种容器都有自己专属的迭代器</p>
+<p>迭代器非常类似于指针</p>
+<p>迭代器的种类: 输入、输出、向前、双向、随机访问</p>
+<p><code>输入迭代器</code>对数据进行只读访问</p>
+<p><code>输出迭代器</code>对数据进行只写访问</p>
+<p><code>前向迭代器</code>可以向前推进，并且可以进行读写操作</p>
+<p>**<code>双向迭代器</code>**可以进行读写操作，并且可以向前和向后操作</p>
+<p>**<code>随机访问迭代器</code>**支持读写操作，并且可以以跳跃的方式访问任意数据</p>
+<h4 id="vector容器">vector容器</h4>
+<p>vector容器可以理解为一个数组。</p>
+<h4 id="string容器">string容器</h4>
+<p>封装了C语言的字符串</p></div> <nav class="post-nav" aria-label="文章导航" data-astro-cid-exdr3erf> <a href="/zh/posts/ink-super-shell实现/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>上一篇</small><strong data-astro-cid-exdr3erf>INK_SuperShell实现</strong></a> <a class="next" href="/zh/posts/pthread-note/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>下一篇</small><strong data-astro-cid-exdr3erf>pthread_notes</strong></a> </nav> <section class="comments" aria-labelledby="comments-title" data-astro-cid-jvxsf75u> <h2 id="comments-title" data-astro-cid-jvxsf75u>评论</h2>  </section> <script type="module">const t=e=>{document.querySelector("iframe.giscus-frame")?.contentWindow?.postMessage({giscus:{setConfig:{theme:e}}},"https://giscus.app")};document.addEventListener("theme-change",(e=>t(e.detail)));const s=new MutationObserver(()=>{if(!document.querySelector("iframe.giscus-frame"))return;const e=document.documentElement.dataset.theme;t(e==="light"||e==="dark"?e:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),s.disconnect()});s.observe(document.body,{childList:!0,subtree:!0});</script>  </div> </article> </main> <aside class="terminal terminal-floating is-stowed" data-terminal data-floating="true" data-lang="zh" data-about="Aether — 使用 Go 与 C++ 构建系统。" data-home="/zh/" data-archive="/zh/archive/" data-posts="[{&#34;slug&#34;:&#34;cpp-ref-ref&#34;,&#34;title&#34;:&#34;万能引用、完美转发和移动语义&#34;,&#34;url&#34;:&#34;/zh/posts/cpp-ref-ref/&#34;},{&#34;slug&#34;:&#34;smart-ptr&#34;,&#34;title&#34;:&#34;C++智能指针&#34;,&#34;url&#34;:&#34;/zh/posts/smart-ptr/&#34;},{&#34;slug&#34;:&#34;tcp-ip&#34;,&#34;title&#34;:&#34;TCP/IP&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-ip/&#34;},{&#34;slug&#34;:&#34;c-lr-val&#34;,&#34;title&#34;:&#34;C++左右值&#34;,&#34;url&#34;:&#34;/zh/posts/c-lr-val/&#34;},{&#34;slug&#34;:&#34;c-c-buff&#34;,&#34;title&#34;:&#34;小发现&#34;,&#34;url&#34;:&#34;/zh/posts/c-c-buff/&#34;},{&#34;slug&#34;:&#34;tcp-connect&#34;,&#34;title&#34;:&#34;TCP三次握手四次挥手&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-connect/&#34;},{&#34;slug&#34;:&#34;diff-cout-printf&#34;,&#34;title&#34;:&#34;cout和printf差异&#34;,&#34;url&#34;:&#34;/zh/posts/diff-cout-printf/&#34;},{&#34;slug&#34;:&#34;avl-tree&#34;,&#34;title&#34;:&#34;AVL-Tree&#34;,&#34;url&#34;:&#34;/zh/posts/avl-tree/&#34;},{&#34;slug&#34;:&#34;hashtable&#34;,&#34;title&#34;:&#34;哈希表原理及实现&#34;,&#34;url&#34;:&#34;/zh/posts/hashtable/&#34;},{&#34;slug&#34;:&#34;pthreads-pool&#34;,&#34;title&#34;:&#34;简单线程池(pthread实现)&#34;,&#34;url&#34;:&#34;/zh/posts/pthreads-pool/&#34;},{&#34;slug&#34;:&#34;thread-mergersort&#34;,&#34;title&#34;:&#34;多线程归并排序与clock()&#34;,&#34;url&#34;:&#34;/zh/posts/thread-mergersort/&#34;},{&#34;slug&#34;:&#34;pthread-note&#34;,&#34;title&#34;:&#34;pthread_notes&#34;,&#34;url&#34;:&#34;/zh/posts/pthread-note/&#34;},{&#34;slug&#34;:&#34;cnote&#34;,&#34;title&#34;:&#34;C++ Note&#34;,&#34;url&#34;:&#34;/zh/posts/cnote/&#34;},{&#34;slug&#34;:&#34;ink-super-shell实现&#34;,&#34;title&#34;:&#34;INK_SuperShell实现&#34;,&#34;url&#34;:&#34;/zh/posts/ink-super-shell实现/&#34;},{&#34;slug&#34;:&#34;ls&#34;,&#34;title&#34;:&#34;ls实现&#34;,&#34;url&#34;:&#34;/zh/posts/ls/&#34;},{&#34;slug&#34;:&#34;linux2022&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2022纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2022/&#34;},{&#34;slug&#34;:&#34;linux2023&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2023纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2023/&#34;},{&#34;slug&#34;:&#34;linux2024&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2024纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2024/&#34;}]" aria-label="Aether 的互动终端" aria-hidden="true" data-astro-cid-2bbsq65f> <div class="terminal-bar" data-astro-cid-2bbsq65f> <div class="controls" aria-hidden="true" data-astro-cid-2bbsq65f><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i></div> <span data-astro-cid-2bbsq65f>ink@aether:~</span> <span class="online" data-astro-cid-2bbsq65f><i aria-hidden="true" data-astro-cid-2bbsq65f></i> live</span> </div> <div class="terminal-body" data-astro-cid-2bbsq65f> <div class="history" aria-live="polite" data-astro-cid-2bbsq65f> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> whoami</p> <p class="output" data-astro-cid-2bbsq65f>Aether</p> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> status --now</p> <p class="output" data-astro-cid-2bbsq65f>分布式系统 · 存储引擎 · 工程实践</p> <p class="hint" data-astro-cid-2bbsq65f>输入 &#39;help&#39; 查看命令 · Tab 补全</p> </div> <form class="command-line" autocomplete="off" data-astro-cid-2bbsq65f> <label for="terminal-input-zh" data-astro-cid-2bbsq65f>输入终端命令</label> <span class="shell-prompt" aria-hidden="true" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> <input id="terminal-input-zh" name="command" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" data-astro-cid-2bbsq65f> </form> </div> </aside> <script type="module" src="/_astro/MiniTerminal.astro_astro_type_script_index_0_lang.DgFNcKDu.js"></script>  <footer data-astro-cid-sz7xmlte> <div class="container footer-inner" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>© 2026 Aether</p> <div data-astro-cid-sz7xmlte> <a href="/zh/rss.xml" data-astro-cid-sz7xmlte>RSS 订阅</a> <a href="https://github.com/Aetherance" rel="me noopener" target="_blank" data-astro-cid-sz7xmlte>GitHub</a>  </div> </div> </footer>  </body></html> 

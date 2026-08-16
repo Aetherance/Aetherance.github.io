@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.18.2"><meta name="description" content="TCP/IP协议将网络分为4层"><meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b1018" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://aetherance.github.io/zh/posts/tcp-ip/"><link rel="alternate" type="application/rss+xml" title="AETHER RSS" href="/zh/rss.xml"><meta property="og:type" content="article"><meta property="og:title" content="TCP/IP — AETHER"><meta property="og:description" content="TCP/IP协议将网络分为4层"><meta property="og:url" content="https://aetherance.github.io/zh/posts/tcp-ip/"><meta property="og:site_name" content="AETHER"><meta property="og:locale" content="zh_CN"><meta property="article:published_time" content="2025-03-04T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="TCP/IP — AETHER"><meta name="twitter:description" content="TCP/IP协议将网络分为4层"><title>TCP/IP — AETHER</title><script>
+      (() => { const saved = localStorage.getItem('theme'); if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved; })();
+    </script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"TCP/IP","description":"TCP/IP协议将网络分为4层","datePublished":"2025-03-04T00:00:00.000Z","dateModified":"2025-03-09T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Aether"},"mainEntityOfPage":"https://aetherance.github.io/zh/posts/tcp-ip/"}</script><link rel="stylesheet" href="/_astro/_slug_.DGYMTEON.css">
+<link rel="stylesheet" href="/_astro/index.BjjNL9zW.css"></head> <body> <a class="skip-link" href="#main">跳到正文</a> <header class="site-header" data-astro-cid-3ef6ksr2> <div class="container header-inner" data-astro-cid-3ef6ksr2> <a class="brand" href="/zh/" aria-label="AETHER — 首页" data-astro-cid-3ef6ksr2> <strong data-astro-cid-3ef6ksr2>AETHER</strong> </a> <nav aria-label="主导航" data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a> <a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a> <a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a> <a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a> <a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> <div class="actions" data-astro-cid-3ef6ksr2> <a class="language" href="/en/" hreflang="en" data-astro-cid-3ef6ksr2>English</a> <button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题" data-astro-cid-3ef6ksr2> <svg class="sun" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="4" data-astro-cid-3ef6ksr2></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" data-astro-cid-3ef6ksr2></path></svg> <svg class="moon" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-3ef6ksr2><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" data-astro-cid-3ef6ksr2></path></svg> </button> <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav" data-astro-cid-3ef6ksr2><span data-astro-cid-3ef6ksr2></span><span data-astro-cid-3ef6ksr2></span></button> </div> </div> <nav id="mobile-nav" class="mobile-nav container" aria-label="移动导航" hidden data-astro-cid-3ef6ksr2> <a href="/zh/" data-astro-cid-3ef6ksr2>首页</a><a href="/zh/archive/" data-astro-cid-3ef6ksr2>归档</a><a href="/zh/tags/" data-astro-cid-3ef6ksr2>标签</a><a href="/zh/search/" data-astro-cid-3ef6ksr2>搜索</a><a href="/zh/about/" data-astro-cid-3ef6ksr2>关于</a> </nav> </header> <script type="module">const c=document.querySelector(".theme-toggle");c?.addEventListener("click",()=>{const e=document.documentElement,t=(e.dataset.theme??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark"?"light":"dark";e.dataset.theme=t,localStorage.setItem("theme",t),document.dispatchEvent(new CustomEvent("theme-change",{detail:t}))});const n=document.querySelector(".menu-toggle"),o=document.querySelector("#mobile-nav");n?.addEventListener("click",()=>{const e=n.getAttribute("aria-expanded")==="true";n.setAttribute("aria-expanded",String(!e)),o&&(o.hidden=e)});</script>  <main id="main">  <article data-pagefind-body data-astro-cid-exdr3erf> <span hidden data-pagefind-filter="lang:zh" data-astro-cid-exdr3erf>zh</span> <div class="reading-progress" data-reading-progress data-pagefind-ignore data-copy-label="复制" data-copied-label="已复制" data-copy-failed-label="复制失败" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-astro-cid-rjvcnvx7> <span data-astro-cid-rjvcnvx7></span> </div> <button class="back-to-top" data-back-to-top data-pagefind-ignore type="button" aria-label="返回顶部" aria-hidden="true" tabindex="-1" data-astro-cid-rjvcnvx7> <span aria-hidden="true" data-astro-cid-rjvcnvx7>↑</span> <small data-astro-cid-rjvcnvx7>TOP</small> </button> <script type="module">const n=document.querySelector("[data-reading-progress]"),p=n?.querySelector("span"),c=document.querySelector("[data-back-to-top]"),u=document.querySelector(".article-body .prose"),o={copy:n?.dataset.copyLabel??"Copy",copied:n?.dataset.copiedLabel??"Copied",failed:n?.dataset.copyFailedLabel??"Copy failed"};let d;const b=()=>{if(d=void 0,!u)return;const t=document.querySelector(".site-header")?.getBoundingClientRect().height??0,a=u.getBoundingClientRect(),e=window.scrollY+a.top,i=window.scrollY+a.bottom,r=e-t,y=Math.max(r+1,i-window.innerHeight),l=Math.min(1,Math.max(0,(window.scrollY-r)/(y-r))),w=Math.round(l*100);p&&(p.style.transform=`scaleX(${l})`),n?.setAttribute("aria-valuenow",String(w));const s=window.scrollY>Math.max(500,window.innerHeight*.8);c?.toggleAttribute("data-visible",s),c?.setAttribute("aria-hidden",String(!s)),c?.setAttribute("tabindex",s?"0":"-1")},m=()=>{d===void 0&&(d=requestAnimationFrame(b))};addEventListener("scroll",m,{passive:!0});addEventListener("resize",m,{passive:!0});b();c?.addEventListener("click",()=>{const t=matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:t?"auto":"smooth"})});for(const t of document.querySelectorAll(".article-body .prose pre")){if(t.parentElement?.classList.contains("code-block"))continue;const a=document.createElement("div");a.className="code-block",t.before(a),a.append(t);const e=document.createElement("button");e.className="code-copy",e.type="button",e.textContent=o.copy,e.setAttribute("aria-label",o.copy),e.setAttribute("aria-live","polite"),a.append(e);let i;e.addEventListener("click",async()=>{const r=t.querySelector("code")?.textContent??t.textContent??"";try{if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");await navigator.clipboard.writeText(r),e.textContent=o.copied,e.setAttribute("aria-label",o.copied)}catch{e.textContent=o.failed,e.setAttribute("aria-label",o.failed)}clearTimeout(i),i=setTimeout(()=>{e.textContent=o.copy,e.setAttribute("aria-label",o.copy)},1800)})}</script>  <header class="article-header article-width" data-astro-cid-exdr3erf> <div class="meta" data-astro-cid-exdr3erf> <time datetime="2025-03-04T00:00:00.000Z" data-astro-cid-exdr3erf>发布于 2025年3月4日</time> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span><span data-astro-cid-exdr3erf>更新于 2025年3月9日</span> <span aria-hidden="true" data-astro-cid-exdr3erf>·</span> <span data-astro-cid-exdr3erf>6 分钟阅读</span> </div> <h1 data-pagefind-meta="title" data-astro-cid-exdr3erf>TCP/IP</h1> <p class="description" data-astro-cid-exdr3erf>TCP/IP协议将网络分为4层</p> <div class="post-actions" data-astro-cid-exdr3erf> <ul aria-label="文章标签" data-astro-cid-exdr3erf> <li data-astro-cid-exdr3erf><a href="/zh/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" data-astro-cid-exdr3erf>#网络编程</a></li> </ul>  </div> </header> <div class="article-width article-body" data-astro-cid-exdr3erf> <aside class="toc" aria-label="本文目录" data-astro-cid-xvrfupwn><details open data-astro-cid-xvrfupwn><summary data-astro-cid-xvrfupwn>本文目录</summary><ol data-astro-cid-xvrfupwn><li data-astro-cid-xvrfupwn><a data-toc-link href="#tcpip网络模型" data-astro-cid-xvrfupwn>TCP/IP网络模型</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#ip" data-astro-cid-xvrfupwn>IP</a></li><li class="nested" data-astro-cid-xvrfupwn><a data-toc-link href="#ip核心机制" data-astro-cid-xvrfupwn>IP核心机制</a></li><li data-astro-cid-xvrfupwn><a data-toc-link href="#tcp" data-astro-cid-xvrfupwn>TCP</a></li></ol></details></aside><script type="module">const s=Array.from(document.querySelectorAll("[data-toc-link]")),r=s.flatMap(i=>{const t=i.getAttribute("href")?.slice(1);if(!t)return[];let n=t;try{n=decodeURIComponent(t)}catch{}const e=document.getElementById(n);return e?[{heading:e,link:i}]:[]});let o;const a=()=>{if(o=void 0,!r.length)return;const t=(document.querySelector(".site-header")?.getBoundingClientRect().height??0)+24;let n=r[0];for(const e of r){if(e.heading.getBoundingClientRect().top>t)break;n=e}for(const e of r){const c=e===n;e.link.classList.toggle("active",c),c?e.link.setAttribute("aria-current","location"):e.link.removeAttribute("aria-current")}},d=()=>{o===void 0&&(o=requestAnimationFrame(a))};addEventListener("scroll",d,{passive:!0});addEventListener("resize",d,{passive:!0});a();</script> <div class="prose" data-astro-cid-exdr3erf><h2 id="tcpip网络模型">TCP/IP网络模型</h2>
+<p>TCP/IP协议将网络分为4层</p>
+<p>从上到下依次是 应用层 传输层 网络层 数据链路层</p>
+<p>TCP/IP 分别为传输层和网络层的协议。</p>
+<p><img src="/legacy-blog/res/TCP-IP.png" alt="TCP IP"></p>
+<p>一个应用A向应用B传输信息的大致过程</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>             封装为 包      封装为 帧               检查 IP 头部 若匹配，剥离 IP 头部，将段交给传输层。</span></span>
+<span class="line"><span>             添加 IP 头部   添加 帧头和帧尾          若不匹配且本机为路由器，则重新路由转发</span></span>
+<span class="line"><span>             |             |                     |</span></span>
+<span class="line"><span>应用A->传输层->网络层->数据链路层->网络介质->数据链路层->网络层->传输层->应用B(接收数据)</span></span>
+<span class="line"><span>       |                       |       |                |</span></span>
+<span class="line"><span>       添加 传输层头部           比特流   剥离帧头和帧尾      检查端口号，确定目标应用    </span></span>
+<span class="line"><span>       封装为 段 或 数据报。              校验帧完整性       剥离传输层头部，将原始数据交给应用层。</span></span>
+<span class="line"><span>高层                        低层      低层                        高层</span></span></code></pre>
+<h2 id="ip">IP</h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>IP（Internet Protocol，互联网协议）是用于在计算机网络中标识和定位设备的一组规则。</span></span>
+<span class="line"><span>它是互联网通信的基础协议之一，主要作用是为每个连接到网络的设备分配一个唯一的地址（称为IP地址），确保数据能够准确地在设备之间传输。</span></span></code></pre>
+<p>IP协议是一种 <strong>无连接</strong> 和 <strong>不可靠</strong> 的协议。</p>
+<p>无连接：IP协议在发送数据之前不会建立连接。</p>
+<p>不可靠：IP协议不保证数据按顺序到达，不保证数据不重复，也不保证数据不丢失。</p>
+<p>IP协议会通过IP地址标识网络中的设备，在一个网络中，设备的IP地址是唯一的。</p>
+<p>IP协议会根据网络最大传输单元(MTU)拆分数据包，并在接收端重组。</p>
+<p>IP会将数据包封装成有固定20字节头部的数据包</p>
+<p><img src="/legacy-blog/res/ipv4head.png" alt="ipv4head"></p>
+<p>IP协议的两个版本</p>
+<ol>
+<li>IPv4</li>
+<li>IPv6</li>
+</ol>
+<p>IPv4地址由32位二进制数组成，可表示约43亿地址。为方便阅读，IPv4地址可用点分十进制表示。如<code>192.168.0.1</code></p>
+<p>IPv4目前是主流的IP表示方案，但也存在着能够表示的地址不够的问题。</p>
+<p>IPv6解决了这一问题。其地址为128位的二进制数，可以表示约<code>3.4×10³⁸</code>地址个地址。</p>
+<p>IPv6的头部为固定的40字节，每个设备都可以有公网地址。IPv6的地址还可以表示为十六进制冒号分隔的形式 如 <code>2001:0db8:85a3::8a2e:0370:7334</code>。</p>
+<h3 id="ip核心机制">IP核心机制</h3>
+<h4 id="1-分片和重组机制">1. 分片和重组机制</h4>
+<p>IP会将数据包分片与重组，当数据包的大小超过MTU，数据包会被拆分成多个分片，到达接收端后，数据包会被根据标志和片位移重组。</p>
+<h4 id="2-ttl机制">2. TTL机制</h4>
+<p>TTL，即<code>Time to Live</code>(生存时间)。没经过一个路由器，TTL值会减1。当一个数据包的TTL值为0时，这个数据包会被路由器丢弃。</p>
+<p>设定TTL值并在其为0时丢弃是为了防止数据包在网络中无限循环。</p>
+<h4 id="3-路由机制">3. 路由机制</h4>
+<p>每个路由器都有一张路由表，存储目标网络和下一跳的映射。</p>
+<p>如果目标IP和路由器在同一个子网，数据包会被直接发给目标设备。</p>
+<p>如果目标IP和路由器不在同一个子网，数据包会被发送到默认网关。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>判断是否在同一子网——子网掩码</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>IPv4地址 = 网络地址 + 主机号</span></span>
+<span class="line"><span>如果两个IP的网络地址相同，那么可以确定这两个IP在同一个子网</span></span>
+<span class="line"><span>通过子网掩码便可以确定一个IP地址的网络地址。</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>网络地址 = IP地址 &#x26; 子网掩码</span></span></code></pre>
+<h2 id="tcp">TCP</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>特性</th><th>TCP</th><th>UDP</th></tr></thead><tbody><tr><td><strong>连接方式</strong></td><td>面向连接（三次握手建立，四次挥手释放 ）</td><td>无连接，直接发送数据</td></tr><tr><td><strong>可靠性</strong></td><td>可靠传输（确认、重传、校验）</td><td>不可靠传输（无确认、无重传）</td></tr><tr><td><strong>流量控制</strong></td><td>通过滑动窗口动态调节发送速率</td><td>无流量控制</td></tr><tr><td><strong>拥塞控制</strong></td><td>有（慢启动、拥塞避免等算法）</td><td>无</td></tr><tr><td><strong>数据顺序</strong></td><td>保证数据按顺序到达</td><td>不保证顺序</td></tr><tr><td><strong>头部开销</strong></td><td>较大（20 字节固定 + 可选字段）</td><td>较小（固定 8 字节）</td></tr><tr><td><strong>传输方式</strong></td><td>基于字节流（无明确边界）</td><td>基于数据报（有明确边界）</td></tr><tr><td><strong>传输效率</strong></td><td>低（握手、重传、控制机制）</td><td>高（无额外控制）</td></tr><tr><td><strong>延迟</strong></td><td>较高（可靠性机制引入延迟）</td><td>较低（适合实时应用）</td></tr><tr><td><strong>广播/多播支持</strong></td><td>仅支持单播</td><td>支持广播和多播</td></tr><tr><td><strong>典型应用场景</strong></td><td>HTTP、FTP、电子邮件、文件传输</td><td>视频流、在线游戏、DNS、VoIP、实时通信</td></tr></tbody></table>
+<p>TCP是一种 <strong>面向连接</strong> 的 <strong>可靠</strong> 传输协议。 并且TCP协议支持流量控制和拥塞控制，可以进行全双工通信。</p>
+<p>使用TCP协议通信前需要先建立连接，通信结束后也需要断开连接。</p>
+<h4 id="可靠传输机制">可靠传输机制</h4>
+<ol>
+<li>校验和</li>
+</ol>
+<p>每个TCP报文都带校验和字段，通过校验和可以验证数据的完整性。</p>
+<ol start="2">
+<li>确认应答机制</li>
+</ol>
+<p>接收方在成功接收数据后，会向发送方发送一个带ACK标志位的数据包，该数据包中包含了<code>确认号</code></p>
+<p>确认号是成功接收的这个数据包下一个数据包的序列号，表示以确认号为序列号的数据包之前的数据包都收到了。</p>
+<ol start="3">
+<li>超时重传机制</li>
+</ol>
+<p>在一定时间后，如果还没有收到某个数据包的ACK，发送方会重传该数据包。</p>
+<ul>
+<li>快速重传：接收方检测到乱序包，会重新发送前一个ACK。当发送方收到三次重复ACK时，会立即重传。</li>
+</ul>
+<ol start="4">
+<li>滑动窗口</li>
+</ol>
+<p>使用TCP协议的发送方和接收方各维护了一个滑动窗口。 通过这两个滑动窗口TCP可以实现流量控制和拥塞控制。</p>
+<p><img src="/legacy-blog/res/tcphead.png" alt="tcphead"></p>
+<h4 id="tcp三次握手四次挥手">TCP三次握手四次挥手</h4>
+<h5 id="三次握手">三次握手</h5>
+<ol>
+<li>客户端向服务器发送一个带有标志位SYN的数据包，表明自己希望与服务器建立连接。 客户端的TCP状态变为SYN_SENT</li>
+<li>服务器回复一个带有标志位SYN和ACK的数据包，表示同意建立连接。 服务器的TCP状态变为SYN_RECEIVED</li>
+<li>客户端接收到服务器的SYN-ACK包后，回应一个ACK包，表示连接建立。 服务器和客户端的TCP状态都变为ESTABLISHED，连接建立。</li>
+</ol>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>三次握手</span></span>
+<span class="line"><span>服务器: LISTEN -> SYN_R可靠传输四大机制、握手/挥手状态转换、滑动窗口原理CVD -> ESTABLISHED</span></span>
+<span class="line"><span>客户端:     CLOSED -> SYN_SENT -> ESTABLISHED</span></span></code></pre>
+<p><img src="/legacy-blog/res/tcp-connect.png" alt="tcp connect"></p>
+<h5 id="四次挥手">四次挥手</h5>
+<ol>
+<li>主动方向被动方发送一个带标志位FIN的数据包，表示自己想要终止连接。 主动方进入FIN_WAIT_1状态。</li>
+<li>被动方收到FIN包，回应一个ACK包，表示确认收到关闭请求。 被动关闭方进入CLOSE_WAIT状态。 主动方接收ACK后进入FIN_WAIT_2状态</li>
+<li>被动方在数据发送完毕后，向主动方发送一个带FIN标识位的数据包，表示被动方也要终止连接。 被动方进入LAST_ACK状态。</li>
+<li>主动方收到FIN包后，向被动方发送一个ACK包，并进入TIME_WAIT状态。被动方接收ACK后终止连接，主动方一段时间后终止连接。</li>
+</ol>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>                        发送FIN          接收ACK        接收FIN并发送ACK</span></span>
+<span class="line"><span>四次挥手                    |             |             |</span></span>
+<span class="line"><span>主动方:     ESTABLISHED -> FIN_WAIT_1 -> FIN_WAIT_2 -> TIME_WAIT -> CLOSED</span></span>
+<span class="line"><span>被动方:     ESTABLISHED -> CLOSE_WAIT -> LAST_ACK   -> CLOSED</span></span>
+<span class="line"><span>                         |              |           |</span></span>
+<span class="line"><span>                        接收FIN,回应ACK  数据发送完毕   接收ACK</span></span></code></pre>
+<p><img src="/legacy-blog/res/tcp-disconnect.png" alt="tcp disconnect"></p>
+<p>利用TCP/IP协议，我们可以实现服务器和客户端之间的通信。</p>
+<p><img src="/legacy-blog/res/socket.png" alt="socket"></p>
+<p>服务器：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;iostream></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;memory.h></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;arpa/inet.h></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> lfd </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> socket</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(AF_INET,SOCK_STREAM,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sockaddr_in sin;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    memset</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">sin,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#D73A49;--shiki-dark:#F97583">sizeof</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sockaddr_in));</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sin.sin_family </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> AF_INET;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sin.sin_port </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> htons</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1234</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sin.sin_addr.s_addr </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> INADDR_ANY;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    if</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#6F42C1;--shiki-dark:#B392F0">bind</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(lfd,(sockaddr</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">sin,</span><span style="color:#D73A49;--shiki-dark:#F97583">sizeof</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sockaddr_in)) </span><span style="color:#D73A49;--shiki-dark:#F97583">==</span><span style="color:#D73A49;--shiki-dark:#F97583"> -</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">        perror</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"bind"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    listen</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(lfd,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sockaddr_in client_sin;</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    socklen_t</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> client_sin_len </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#D73A49;--shiki-dark:#F97583"> sizeof</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sockaddr_in);</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> sock </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> accept</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(lfd,(sockaddr</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">client_sin,</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">client_sin_len);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    send</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sock,</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Hello World!"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">13</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    close</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sock);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    close</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(lfd);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>客户端：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;iostream></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;arpa/inet.h></span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">#include</span><span style="color:#032F62;--shiki-dark:#9ECBFF">&#x3C;memory.h></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">int</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> main</span><span style="color:#24292E;--shiki-dark:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sockaddr_in sin;</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    memset</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">sin,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#D73A49;--shiki-dark:#F97583">sizeof</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sockaddr_in));</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sin.sin_family </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> AF_INET;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    sin.sin_port </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> htons</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1234</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    inet_pton</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(AF_INET,</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"localhost"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">sin.sin_addr);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    int</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> sock </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> socket</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(AF_INET,SOCK_STREAM,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    connect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sock,(sockaddr</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">sin,</span><span style="color:#D73A49;--shiki-dark:#F97583">sizeof</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sockaddr_in));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    char</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> buff[</span><span style="color:#005CC5;--shiki-dark:#79B8FF">13</span><span style="color:#24292E;--shiki-dark:#E1E4E8">] </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    recv</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sock,buff,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">13</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    std</span><span style="color:#24292E;--shiki-dark:#E1E4E8">::cout</span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8">buff;    </span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    close</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sock);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>通过TCP/IP协议，服务器可以向客户端发送一条消息<code>Hello World!</code>。客户端接收<code>Hello World!</code>后将其打印在客户端的屏幕上。</p></div> <nav class="post-nav" aria-label="文章导航" data-astro-cid-exdr3erf> <a href="/zh/posts/c-lr-val/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>上一篇</small><strong data-astro-cid-exdr3erf>C++左右值</strong></a> <a class="next" href="/zh/posts/smart-ptr/" data-astro-cid-exdr3erf><small data-astro-cid-exdr3erf>下一篇</small><strong data-astro-cid-exdr3erf>C++智能指针</strong></a> </nav> <section class="comments" aria-labelledby="comments-title" data-astro-cid-jvxsf75u> <h2 id="comments-title" data-astro-cid-jvxsf75u>评论</h2>  </section> <script type="module">const t=e=>{document.querySelector("iframe.giscus-frame")?.contentWindow?.postMessage({giscus:{setConfig:{theme:e}}},"https://giscus.app")};document.addEventListener("theme-change",(e=>t(e.detail)));const s=new MutationObserver(()=>{if(!document.querySelector("iframe.giscus-frame"))return;const e=document.documentElement.dataset.theme;t(e==="light"||e==="dark"?e:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),s.disconnect()});s.observe(document.body,{childList:!0,subtree:!0});</script>  </div> </article> </main> <aside class="terminal terminal-floating is-stowed" data-terminal data-floating="true" data-lang="zh" data-about="Aether — 使用 Go 与 C++ 构建系统。" data-home="/zh/" data-archive="/zh/archive/" data-posts="[{&#34;slug&#34;:&#34;cpp-ref-ref&#34;,&#34;title&#34;:&#34;万能引用、完美转发和移动语义&#34;,&#34;url&#34;:&#34;/zh/posts/cpp-ref-ref/&#34;},{&#34;slug&#34;:&#34;smart-ptr&#34;,&#34;title&#34;:&#34;C++智能指针&#34;,&#34;url&#34;:&#34;/zh/posts/smart-ptr/&#34;},{&#34;slug&#34;:&#34;tcp-ip&#34;,&#34;title&#34;:&#34;TCP/IP&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-ip/&#34;},{&#34;slug&#34;:&#34;c-lr-val&#34;,&#34;title&#34;:&#34;C++左右值&#34;,&#34;url&#34;:&#34;/zh/posts/c-lr-val/&#34;},{&#34;slug&#34;:&#34;c-c-buff&#34;,&#34;title&#34;:&#34;小发现&#34;,&#34;url&#34;:&#34;/zh/posts/c-c-buff/&#34;},{&#34;slug&#34;:&#34;tcp-connect&#34;,&#34;title&#34;:&#34;TCP三次握手四次挥手&#34;,&#34;url&#34;:&#34;/zh/posts/tcp-connect/&#34;},{&#34;slug&#34;:&#34;diff-cout-printf&#34;,&#34;title&#34;:&#34;cout和printf差异&#34;,&#34;url&#34;:&#34;/zh/posts/diff-cout-printf/&#34;},{&#34;slug&#34;:&#34;avl-tree&#34;,&#34;title&#34;:&#34;AVL-Tree&#34;,&#34;url&#34;:&#34;/zh/posts/avl-tree/&#34;},{&#34;slug&#34;:&#34;hashtable&#34;,&#34;title&#34;:&#34;哈希表原理及实现&#34;,&#34;url&#34;:&#34;/zh/posts/hashtable/&#34;},{&#34;slug&#34;:&#34;pthreads-pool&#34;,&#34;title&#34;:&#34;简单线程池(pthread实现)&#34;,&#34;url&#34;:&#34;/zh/posts/pthreads-pool/&#34;},{&#34;slug&#34;:&#34;thread-mergersort&#34;,&#34;title&#34;:&#34;多线程归并排序与clock()&#34;,&#34;url&#34;:&#34;/zh/posts/thread-mergersort/&#34;},{&#34;slug&#34;:&#34;pthread-note&#34;,&#34;title&#34;:&#34;pthread_notes&#34;,&#34;url&#34;:&#34;/zh/posts/pthread-note/&#34;},{&#34;slug&#34;:&#34;cnote&#34;,&#34;title&#34;:&#34;C++ Note&#34;,&#34;url&#34;:&#34;/zh/posts/cnote/&#34;},{&#34;slug&#34;:&#34;ink-super-shell实现&#34;,&#34;title&#34;:&#34;INK_SuperShell实现&#34;,&#34;url&#34;:&#34;/zh/posts/ink-super-shell实现/&#34;},{&#34;slug&#34;:&#34;ls&#34;,&#34;title&#34;:&#34;ls实现&#34;,&#34;url&#34;:&#34;/zh/posts/ls/&#34;},{&#34;slug&#34;:&#34;linux2022&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2022纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2022/&#34;},{&#34;slug&#34;:&#34;linux2023&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2023纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2023/&#34;},{&#34;slug&#34;:&#34;linux2024&#34;,&#34;title&#34;:&#34;西邮Linux兴趣小组2024纳新题解&#34;,&#34;url&#34;:&#34;/zh/posts/linux2024/&#34;}]" aria-label="Aether 的互动终端" aria-hidden="true" data-astro-cid-2bbsq65f> <div class="terminal-bar" data-astro-cid-2bbsq65f> <div class="controls" aria-hidden="true" data-astro-cid-2bbsq65f><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i><i data-astro-cid-2bbsq65f></i></div> <span data-astro-cid-2bbsq65f>ink@aether:~</span> <span class="online" data-astro-cid-2bbsq65f><i aria-hidden="true" data-astro-cid-2bbsq65f></i> live</span> </div> <div class="terminal-body" data-astro-cid-2bbsq65f> <div class="history" aria-live="polite" data-astro-cid-2bbsq65f> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> whoami</p> <p class="output" data-astro-cid-2bbsq65f>Aether</p> <p data-astro-cid-2bbsq65f><span class="shell-prompt" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> status --now</p> <p class="output" data-astro-cid-2bbsq65f>分布式系统 · 存储引擎 · 工程实践</p> <p class="hint" data-astro-cid-2bbsq65f>输入 &#39;help&#39; 查看命令 · Tab 补全</p> </div> <form class="command-line" autocomplete="off" data-astro-cid-2bbsq65f> <label for="terminal-input-zh" data-astro-cid-2bbsq65f>输入终端命令</label> <span class="shell-prompt" aria-hidden="true" data-astro-cid-2bbsq65f><strong data-astro-cid-2bbsq65f>ink</strong><span data-astro-cid-2bbsq65f>@aether</span>&nbsp;<em data-astro-cid-2bbsq65f>~</em><b data-astro-cid-2bbsq65f>&gt;</b></span> <input id="terminal-input-zh" name="command" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" data-astro-cid-2bbsq65f> </form> </div> </aside> <script type="module" src="/_astro/MiniTerminal.astro_astro_type_script_index_0_lang.DgFNcKDu.js"></script>  <footer data-astro-cid-sz7xmlte> <div class="container footer-inner" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>© 2026 Aether</p> <div data-astro-cid-sz7xmlte> <a href="/zh/rss.xml" data-astro-cid-sz7xmlte>RSS 订阅</a> <a href="https://github.com/Aetherance" rel="me noopener" target="_blank" data-astro-cid-sz7xmlte>GitHub</a>  </div> </div> </footer>  </body></html> 
