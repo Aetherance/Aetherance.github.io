@@ -9,7 +9,7 @@ export const siteConfig = {
   },
   intro: {
     zh: '享受 coding，对分布式存储感兴趣。',
-    en: 'Enjoy coding. Interested in distributed storage.',
+    en: '享受 coding，对分布式存储感兴趣。',
   },
   siteUrl: 'https://aetherance.github.io',
   defaultLanguage: 'zh',
