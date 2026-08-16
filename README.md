@@ -56,8 +56,8 @@ draft: false
 
 ## 部署
 
-1. 将默认分支命名为 `main` 并推送到 GitHub。
-2. 在仓库 Settings → Pages 中选择 **GitHub Actions** 作为 Source。
-3. 添加 `SITE_URL` Actions variable，然后运行 **Deploy to GitHub Pages** 工作流。
+1. 将源码推送到 `main` 分支。
+2. 在仓库 Settings → Pages 中选择 **Deploy from a branch**，发布分支设为 `master`、目录设为 `/ (root)`。
+3. 添加 `SITE_URL` Actions variable；以后每次推送 `main`，工作流都会验证并构建站点，然后更新 `master` 上的静态文件。
 
 当前配置面向 `username.github.io` 或自定义域名的根路径部署。

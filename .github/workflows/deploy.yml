@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Check project
+        run: npm run check
+      - name: Run tests
+        run: npm test
+      - name: Build site and search index
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: npm run build
+      - name: Deploy to Pages branch
+        env:
+          DEPLOY_BRANCH: master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$DEPLOY_BRANCH"
+          git worktree add "$RUNNER_TEMP/pages" "origin/$DEPLOY_BRANCH"
+          cd "$RUNNER_TEMP/pages"
+          git rm -r .
+          cp -a "$GITHUB_WORKSPACE/dist/." .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Static site is already up to date."
+            exit 0
+          fi
+          git commit -m "Deploy Astro site (${GITHUB_SHA::7})"
+          git push origin "HEAD:$DEPLOY_BRANCH"
