@@ -8,8 +8,8 @@ export const siteConfig = {
     en: "Aether's notes on distributed systems, storage engines, and software engineering.",
   },
   intro: {
-    zh: '记录分布式系统、存储引擎、Go、C++ 与工程实践。',
-    en: 'Notes on distributed systems, storage engines, Go, C++, and engineering practice.',
+    zh: '享受 coding，对分布式存储感兴趣。',
+    en: 'Enjoy coding. Interested in distributed storage.',
   },
   siteUrl: 'https://aetherance.github.io',
   defaultLanguage: 'zh',
