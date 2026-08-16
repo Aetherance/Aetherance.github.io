@@ -1,0 +1,54 @@
+---
+import { homePagePath } from '../lib/pagination';
+import type { Language } from '../i18n';
+
+interface Props {
+  lang: Language;
+  page: number;
+  totalPages: number;
+}
+
+const { lang, page, totalPages } = Astro.props;
+const previousLabel = lang === 'zh' ? '上一页' : 'Previous';
+const nextLabel = lang === 'zh' ? '下一页' : 'Next';
+---
+{totalPages > 1 && (
+  <nav class="pagination" aria-label={lang === 'zh' ? '文章分页' : 'Post pagination'}>
+    {page > 1
+      ? <a class="step" href={homePagePath(lang, page - 1)} rel="prev">← {previousLabel}</a>
+      : <span class="step disabled" aria-hidden="true">← {previousLabel}</span>}
+    <ol>
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+        <li>
+          <a
+            href={homePagePath(lang, pageNumber)}
+            aria-label={lang === 'zh' ? `第 ${pageNumber} 页` : `Page ${pageNumber}`}
+            aria-current={pageNumber === page ? 'page' : undefined}
+          >
+            {String(pageNumber).padStart(2, '0')}
+          </a>
+        </li>
+      ))}
+    </ol>
+    {page < totalPages
+      ? <a class="step next" href={homePagePath(lang, page + 1)} rel="next">{nextLabel} →</a>
+      : <span class="step next disabled" aria-hidden="true">{nextLabel} →</span>}
+  </nav>
+)}
+<style>
+  .pagination { display: grid; grid-template-columns: minmax(7rem, 1fr) auto minmax(7rem, 1fr); align-items: center; gap: 1rem; margin-top: 2rem; padding-top: 1.25rem; }
+  .step { justify-self: start; color: var(--muted); font-family: ui-monospace, monospace; font-size: .7rem; text-decoration: none; }
+  .step:hover { color: var(--text); }
+  .step.next { justify-self: end; }
+  .disabled { opacity: .35; }
+  ol { display: flex; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+  li a { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease; }
+  li a:hover { border-color: var(--glass-line); color: var(--text); }
+  li a[aria-current='page'] { border-color: var(--text); background: var(--text); color: var(--bg); }
+  @media (max-width: 580px) {
+    .pagination { grid-template-columns: 1fr 1fr; }
+    ol { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
+    .step { grid-column: 1; grid-row: 2; }
+    .step.next { grid-column: 2; }
+  }
+</style>

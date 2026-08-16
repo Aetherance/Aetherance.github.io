@@ -1,0 +1,94 @@
+---
+import { languageNames, ui, type Language } from '../i18n';
+import { siteConfig } from '../config';
+
+interface Props {
+  lang: Language;
+  alternatePath?: string;
+}
+
+const { lang, alternatePath } = Astro.props;
+const t = ui[lang];
+const otherLang: Language = lang === 'zh' ? 'en' : 'zh';
+const path = Astro.url.pathname;
+const isActive = (section: string) => section === 'home' ? path === `/${lang}/` : path.startsWith(`/${lang}/${section}`);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={`/${lang}/`} aria-label={`${siteConfig.title} — ${t.nav.home}`}>
+      <strong>{siteConfig.title}</strong>
+    </a>
+    <nav aria-label={lang === 'zh' ? '主导航' : 'Primary navigation'}>
+      <a href={`/${lang}/`} aria-current={isActive('home') ? 'page' : undefined}>{t.nav.home}</a>
+      <a href={`/${lang}/archive/`} aria-current={isActive('archive') ? 'page' : undefined}>{t.nav.archive}</a>
+      <a href={`/${lang}/tags/`} aria-current={isActive('tags') ? 'page' : undefined}>{t.nav.tags}</a>
+      <a href={`/${lang}/search/`} aria-current={isActive('search') ? 'page' : undefined}>{t.nav.search}</a>
+      <a href={`/${lang}/about/`} aria-current={isActive('about') ? 'page' : undefined}>{t.nav.about}</a>
+    </nav>
+    <div class="actions">
+      <a class="language" href={alternatePath ?? `/${otherLang}/`} hreflang={otherLang}>{languageNames[otherLang]}</a>
+      <button class="theme-toggle" type="button" aria-label={t.theme} title={t.theme}>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"></path></svg>
+      </button>
+      <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button>
+    </div>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav container" aria-label={lang === 'zh' ? '移动导航' : 'Mobile navigation'} hidden>
+    <a href={`/${lang}/`}>{t.nav.home}</a><a href={`/${lang}/archive/`}>{t.nav.archive}</a><a href={`/${lang}/tags/`}>{t.nav.tags}</a><a href={`/${lang}/search/`}>{t.nav.search}</a><a href={`/${lang}/about/`}>{t.nav.about}</a>
+  </nav>
+</header>
+
+<script>
+  const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  themeButton?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    document.dispatchEvent(new CustomEvent('theme-change', { detail: next }));
+  });
+
+  const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
+  menuButton?.addEventListener('click', () => {
+    const open = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!open));
+    if (mobileNav) mobileNav.hidden = open;
+  });
+</script>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 30; overflow: clip; border-top: 2px solid var(--accent); border-bottom: 1px solid var(--glass-line); background: var(--header-bg); box-shadow: 0 18px 48px rgb(29 44 64 / 18%), inset 0 1px rgb(255 255 255 / 70%), inset 0 -1px rgb(94 119 151 / 16%); backdrop-filter: blur(32px) saturate(145%); -webkit-backdrop-filter: blur(32px) saturate(145%); }
+  .site-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, var(--glass-shine), transparent 24%, transparent 68%, var(--glass-glint)); pointer-events: none; }
+  .site-header::after { content: ''; position: absolute; right: 8%; bottom: -1px; width: 28%; height: 1px; background: linear-gradient(90deg, transparent, rgb(255 255 255 / 82%), transparent); pointer-events: none; }
+  .header-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 4.2rem; }
+  .brand { display: inline-flex; align-items: center; width: max-content; text-decoration: none; }
+  .brand strong { font-family: ui-monospace, monospace; font-size: .78rem; font-weight: 650; letter-spacing: .08em; }
+  nav { display: flex; align-items: center; gap: 1.4rem; }
+  .header-inner > nav { padding: .38rem .8rem; border: 1px solid var(--glass-line); background: color-mix(in srgb, var(--surface) 42%, transparent); box-shadow: inset 0 1px rgb(255 255 255 / 36%), 0 7px 20px rgb(28 43 62 / 9%); backdrop-filter: blur(18px) saturate(135%); -webkit-backdrop-filter: blur(18px) saturate(135%); }
+  nav a, .language { color: var(--muted); font-size: .78rem; font-weight: 500; text-decoration: none; }
+  nav a:hover, .language:hover { color: var(--text); }
+  nav a[aria-current='page'] { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .55rem; }
+  .actions { display: flex; justify-content: flex-end; align-items: center; gap: .8rem; }
+  .language { padding-right: .8rem; border-right: 1px solid var(--line); }
+  .theme-toggle, .menu-toggle { display: grid; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .theme-toggle svg { width: 1.15rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+  .moon { display: none; }
+  :global(:root[data-theme='dark']) .sun { display: none; }
+  :global(:root[data-theme='dark']) .moon { display: block; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .sun { display: none; } :global(:root:not([data-theme='light'])) .moon { display: block; } }
+  .menu-toggle { display: none; gap: 4px; align-content: center; }
+  .menu-toggle span { display: block; width: 1.1rem; height: 1px; background: currentColor; }
+  .mobile-nav { padding-block: .6rem 1rem; flex-wrap: wrap; }
+  .mobile-nav[hidden] { display: none; }
+  @media (max-width: 760px) {
+    .header-inner { grid-template-columns: 1fr auto; }
+    .header-inner > nav { display: none; }
+    .menu-toggle { display: grid; }
+    .brand strong { display: block; }
+    .mobile-nav { display: flex; }
+  }
+</style>

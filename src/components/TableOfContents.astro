@@ -1,0 +1,68 @@
+---
+import type { MarkdownHeading } from 'astro';
+import { ui, type Language } from '../i18n';
+interface Props { headings: MarkdownHeading[]; lang: Language }
+const { headings, lang } = Astro.props;
+const visible = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+{visible.length > 1 && (
+  <aside class="toc" aria-label={ui[lang].toc}>
+    <details open>
+      <summary>{ui[lang].toc}</summary>
+      <ol>
+        {visible.map((heading) => <li class:list={{ nested: heading.depth === 3 }}><a data-toc-link href={`#${heading.slug}`}>{heading.text}</a></li>)}
+      </ol>
+    </details>
+  </aside>
+)}
+<script>
+  const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  const headingLinks = tocLinks.flatMap((link) => {
+    const rawId = link.getAttribute('href')?.slice(1);
+    if (!rawId) return [];
+    let id = rawId;
+    try { id = decodeURIComponent(rawId); } catch { /* Keep the original ID. */ }
+    const heading = document.getElementById(id);
+    return heading ? [{ heading, link }] : [];
+  });
+  let tocFrame: number | undefined;
+
+  const updateCurrentHeading = () => {
+    tocFrame = undefined;
+    if (!headingLinks.length) return;
+    const headerHeight = document.querySelector<HTMLElement>('.site-header')?.getBoundingClientRect().height ?? 0;
+    const threshold = headerHeight + 24;
+    let current = headingLinks[0];
+    for (const candidate of headingLinks) {
+      if (candidate.heading.getBoundingClientRect().top > threshold) break;
+      current = candidate;
+    }
+    for (const candidate of headingLinks) {
+      const active = candidate === current;
+      candidate.link.classList.toggle('active', active);
+      if (active) candidate.link.setAttribute('aria-current', 'location');
+      else candidate.link.removeAttribute('aria-current');
+    }
+  };
+
+  const scheduleTocUpdate = () => {
+    if (tocFrame !== undefined) return;
+    tocFrame = requestAnimationFrame(updateCurrentHeading);
+  };
+
+  addEventListener('scroll', scheduleTocUpdate, { passive: true });
+  addEventListener('resize', scheduleTocUpdate, { passive: true });
+  updateCurrentHeading();
+</script>
+<style>
+  .toc { position: relative; overflow: hidden; width: min(100%, var(--reading)); margin: 0 0 clamp(2.5rem, 5vw, 4rem); padding: 1rem; border: 1px solid var(--glass-line); background: var(--glass-bg); box-shadow: var(--glass-shadow); backdrop-filter: blur(30px) saturate(145%); -webkit-backdrop-filter: blur(30px) saturate(145%); }
+  .toc::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, var(--glass-shine), transparent 34%, transparent 76%, var(--glass-glint)); pointer-events: none; }
+  details { position: relative; }
+  summary { font-family: ui-monospace, monospace; font-size: .7rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; cursor: pointer; }
+  ol { margin: .75rem 0 0; padding-left: 1.2rem; }
+  li { margin: .3rem 0; color: var(--muted); font-size: .86rem; }
+  .nested { margin-left: .8rem; }
+  a { display: block; text-decoration: none; transition: color 140ms ease, transform 140ms ease; }
+  a:hover { color: var(--text); }
+  a.active { color: var(--text); font-weight: 600; transform: translateX(.2rem); }
+</style>

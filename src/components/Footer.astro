@@ -1,0 +1,23 @@
+---
+import { siteConfig } from '../config';
+import { ui, type Language } from '../i18n';
+interface Props { lang: Language }
+const { lang } = Astro.props;
+---
+<footer>
+  <div class="container footer-inner">
+    <p>© {new Date().getFullYear()} {siteConfig.author}</p>
+    <div>
+      <a href={`/${lang}/rss.xml`}>{ui[lang].rss}</a>
+      <a href={siteConfig.social.github} rel="me noopener" target="_blank">GitHub</a>
+      {siteConfig.social.email && <a href={`mailto:${siteConfig.social.email}`}>Email</a>}
+    </div>
+  </div>
+</footer>
+<style>
+  footer { margin-top: clamp(4rem, 10vw, 7rem); border-top: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; }
+  .footer-inner { display: flex; justify-content: space-between; gap: 1rem; padding-block: 2.4rem; }
+  p { margin: 0; }
+  div div { display: flex; gap: 1.2rem; }
+  @media (max-width: 520px) { .footer-inner { align-items: flex-start; flex-direction: column; } }
+</style>

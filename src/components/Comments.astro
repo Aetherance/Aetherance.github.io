@@ -1,0 +1,50 @@
+---
+import { siteConfig } from '../config';
+import { ui, type Language } from '../i18n';
+interface Props { lang: Language }
+const { lang } = Astro.props;
+const configured = siteConfig.giscus.enabled && siteConfig.giscus.repoId && siteConfig.giscus.categoryId;
+---
+<section class="comments" aria-labelledby="comments-title">
+  <h2 id="comments-title">{ui[lang].comments}</h2>
+  {configured ? (
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo={siteConfig.giscus.repo}
+      data-repo-id={siteConfig.giscus.repoId}
+      data-category={siteConfig.giscus.category}
+      data-category-id={siteConfig.giscus.categoryId}
+      data-mapping="pathname"
+      data-strict="1"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang={lang === 'zh' ? 'zh-CN' : 'en'}
+      crossorigin="anonymous"
+      async>
+    </script>
+  ) : import.meta.env.DEV ? (
+    <p class="setup">Giscus 尚未启用。请在 <code>src/config.ts</code> 中填写仓库标识并将 <code>enabled</code> 设为 <code>true</code>。</p>
+  ) : null}
+</section>
+<script>
+  const setCommentTheme = (theme: 'light' | 'dark') => {
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
+  };
+  document.addEventListener('theme-change', ((event: CustomEvent<'light' | 'dark'>) => setCommentTheme(event.detail)) as EventListener);
+  const observer = new MutationObserver(() => {
+    if (!document.querySelector('iframe.giscus-frame')) return;
+    const selected = document.documentElement.dataset.theme;
+    setCommentTheme(selected === 'light' || selected === 'dark' ? selected : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    observer.disconnect();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+<style>
+  .comments { margin-top: clamp(3.5rem, 7vw, 5.5rem); padding-top: 2rem; border-top: 1px solid var(--line); }
+  h2 { margin: 0 0 1.5rem; font-size: 1rem; font-weight: 600; }
+  .setup { padding: 1rem; border: 1px dashed var(--line); color: var(--muted); font-size: .9rem; }
+</style>

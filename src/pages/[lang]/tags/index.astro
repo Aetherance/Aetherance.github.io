@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { languages, ui, type Language } from '../../../i18n';
+import { getTags } from '../../../lib/posts';
+export function getStaticPaths() { return languages.map((lang) => ({ params: { lang }, props: { lang } })); }
+const { lang } = Astro.props as { lang: Language };
+const tags = await getTags(lang);
+---
+<BaseLayout {lang} title={ui[lang].tagsTitle} alternatePath={`/${lang === 'zh' ? 'en' : 'zh'}/tags/`}>
+  <header class="page-hero"><div class="container"><p class="eyebrow">{tags.length} {lang === 'zh' ? '个主题' : 'topics'}</p><h1 class="page-title">{ui[lang].tagsTitle}</h1></div></header>
+  <section class="container tag-cloud">
+    {tags.map((tag) => <a href={`/${lang}/tags/${encodeURIComponent(tag.slug)}/`}><span>{tag.name}</span><small>{tag.count}</small></a>)}
+  </section>
+</BaseLayout>
+<style>
+  .tag-cloud { display: grid; grid-template-columns: repeat(3, 1fr); padding-top: 3rem; border-top: 1px solid var(--line); }
+  a { display: flex; justify-content: space-between; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  a:nth-child(3n + 2) { margin-inline: 2rem; }
+  small { color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; }
+  @media (max-width: 700px) { .tag-cloud { grid-template-columns: 1fr; } a:nth-child(3n + 2) { margin-inline: 0; } }
+</style>

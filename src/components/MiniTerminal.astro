@@ -1,0 +1,514 @@
+---
+import type { Language } from '../i18n';
+
+interface Props {
+  lang: Language;
+  posts: Array<{ slug: string; title: string; url: string }>;
+  floating?: boolean;
+}
+
+const { lang, posts, floating = false } = Astro.props;
+const status = lang === 'zh' ? '分布式系统 · 存储引擎 · 工程实践' : 'distributed systems · storage engines · engineering';
+const about = lang === 'zh' ? 'Aether — 使用 Go 与 C++ 构建系统。' : 'Aether — building systems with Go and C++.';
+---
+
+<aside
+  class:list={['terminal', { 'terminal-floating': floating, 'is-stowed': floating }]}
+  data-terminal
+  data-floating={floating ? 'true' : 'false'}
+  data-lang={lang}
+  data-about={about}
+  data-home={`/${lang}/`}
+  data-archive={`/${lang}/archive/`}
+  data-posts={JSON.stringify(posts)}
+  aria-label={lang === 'zh' ? 'Aether 的互动终端' : "Aether's interactive terminal"}
+  aria-hidden={floating ? 'true' : undefined}>
+  <div class="terminal-bar">
+    <div class="controls" aria-hidden="true"><i></i><i></i><i></i></div>
+    <span>ink@aether:~</span>
+    <span class="online"><i aria-hidden="true"></i> live</span>
+  </div>
+  <div class="terminal-body">
+    <div class="history" aria-live="polite">
+      <p><span class="shell-prompt"><strong>ink</strong><span>@aether</span>&nbsp;<em>~</em><b>&gt;</b></span> whoami</p>
+      <p class="output">Aether</p>
+      <p><span class="shell-prompt"><strong>ink</strong><span>@aether</span>&nbsp;<em>~</em><b>&gt;</b></span> status --now</p>
+      <p class="output">{status}</p>
+      <p class="hint">{lang === 'zh' ? "输入 'help' 查看命令 · Tab 补全" : "type 'help' for commands · Tab to complete"}</p>
+    </div>
+    <form class="command-line" autocomplete="off">
+      <label for={`terminal-input-${lang}`}>{lang === 'zh' ? '输入终端命令' : 'Enter a terminal command'}</label>
+      <span class="shell-prompt" aria-hidden="true"><strong>ink</strong><span>@aether</span>&nbsp;<em>~</em><b>&gt;</b></span>
+      <input id={`terminal-input-${lang}`} name="command" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" />
+    </form>
+  </div>
+</aside>
+
+<script>
+  const terminal = document.querySelector<HTMLElement>('[data-terminal]');
+  if (terminal) {
+    const form = terminal.querySelector<HTMLFormElement>('.command-line');
+    const input = terminal.querySelector<HTMLInputElement>('input[name="command"]');
+    const history = terminal.querySelector<HTMLElement>('.history');
+    const body = terminal.querySelector<HTMLElement>('.terminal-body');
+    const isFloating = terminal.dataset.floating === 'true';
+    const previousCommands: string[] = [];
+    const commands = ['help', 'about', 'ls', 'cd', 'posts', 'theme', 'date', 'clear'];
+    const themeOptions = ['light', 'dark', 'system'];
+    let terminalPosts: Array<{ slug: string; title: string; url: string }> = [];
+    try {
+      terminalPosts = JSON.parse(terminal.dataset.posts ?? '[]');
+    } catch {
+      terminalPosts = [];
+    }
+    let historyIndex = 0;
+    let closed = false;
+    let focusTimer: number | undefined;
+    const terminalNavigationKey = 'aether:terminal-navigation';
+    let focusAfterNavigation = false;
+    try {
+      focusAfterNavigation = sessionStorage.getItem(terminalNavigationKey) === 'focus';
+      sessionStorage.removeItem(terminalNavigationKey);
+    } catch {
+      focusAfterNavigation = false;
+    }
+
+    const navigateFromTerminal = (url: string) => {
+      try {
+        sessionStorage.setItem(terminalNavigationKey, 'focus');
+      } catch {
+        // Navigation still works when session storage is unavailable.
+      }
+      window.location.assign(url);
+    };
+
+    const appendLine = (text: string, className = 'output') => {
+      const line = document.createElement('p');
+      line.className = className;
+      line.textContent = text;
+      history?.append(line);
+      if (body) body.scrollTop = body.scrollHeight;
+      return line;
+    };
+
+    const appendCommand = (text: string) => {
+      const line = document.createElement('p');
+      line.className = 'entered';
+      const prompt = document.createElement('span');
+      prompt.className = 'shell-prompt';
+      const user = document.createElement('strong');
+      user.textContent = 'ink';
+      const host = document.createElement('span');
+      host.textContent = '@aether';
+      const cwd = document.createElement('em');
+      cwd.textContent = '~';
+      const chevron = document.createElement('b');
+      chevron.textContent = '>';
+      prompt.append(user, host, document.createTextNode(' '), cwd, chevron);
+      line.append(prompt, document.createTextNode(` ${text}`));
+      history?.append(line);
+      if (body) body.scrollTop = body.scrollHeight;
+    };
+
+    const appendPostList = () => {
+      if (!history) return;
+      if (!terminalPosts.length) {
+        appendLine(terminal.dataset.lang === 'zh' ? '没有文章' : 'no posts');
+        return;
+      }
+      const list = document.createElement('div');
+      list.className = 'post-listing';
+      for (const post of terminalPosts) {
+        const row = document.createElement('p');
+        const link = document.createElement('a');
+        const title = document.createElement('span');
+        link.href = post.url;
+        link.textContent = `${post.slug}/`;
+        title.textContent = post.title;
+        row.append(link, title);
+        list.append(row);
+      }
+      history.append(list);
+      if (body) body.scrollTop = body.scrollHeight;
+    };
+
+    const setTheme = (choice: string) => {
+      const root = document.documentElement;
+      if (choice === 'system') {
+        root.removeAttribute('data-theme');
+        localStorage.removeItem('theme');
+      } else {
+        root.dataset.theme = choice;
+        localStorage.setItem('theme', choice);
+      }
+      const resolved = choice === 'system'
+        ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : choice;
+      document.dispatchEvent(new CustomEvent('theme-change', { detail: resolved }));
+    };
+
+    const showParentDirectory = () => {
+      if (document.querySelector('.fs-overlay')) return;
+      const overlay = document.createElement('div');
+      overlay.className = 'fs-overlay';
+      overlay.setAttribute('role', 'status');
+      overlay.setAttribute('aria-label', terminal.dataset.lang === 'zh' ? '上级目录' : 'Parent directory');
+
+      const window = document.createElement('section');
+      const bar = document.createElement('header');
+      const location = document.createElement('span');
+      const permission = document.createElement('span');
+      const tree = document.createElement('pre');
+      location.textContent = 'ink@aether:/home';
+      permission.textContent = 'drwxr-xr-x';
+      tree.textContent = [
+        '/home',
+        '└── ink/',
+        '    └── aether.blog/',
+        '        ├── posts/',
+        '        │   ├── zh/',
+        '        │   └── en/',
+        '        ├── tags/',
+        '        ├── about/',
+        '        └── index.html',
+      ].join('\n');
+      bar.append(location, permission);
+      window.append(bar, tree);
+      overlay.append(window);
+      document.body.append(overlay);
+
+      const close = () => {
+        overlay.classList.add('leaving');
+        setTimeout(() => overlay.remove(), 280);
+      };
+      const escape = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          close();
+          document.removeEventListener('keydown', escape);
+        }
+      };
+      document.addEventListener('keydown', escape);
+      setTimeout(() => {
+        close();
+        document.removeEventListener('keydown', escape);
+      }, 4200);
+    };
+
+    const purgeSite = () => {
+      if (closed) return;
+      closed = true;
+      if (input) input.disabled = true;
+      document.documentElement.classList.add('purge-mode');
+    };
+
+    const run = (raw: string) => {
+      const [command = '', ...args] = raw.trim().toLowerCase().split(/\s+/);
+      appendCommand(raw);
+      switch (command) {
+        case 'help':
+          appendLine('help · about · ls · cd [~|<post>] · posts · theme [light|dark|system] · date · clear');
+          break;
+        case 'about':
+          appendLine(terminal.dataset.about ?? 'Aether');
+          break;
+        case 'posts': {
+          const line = appendLine('', 'output');
+          const link = document.createElement('a');
+          link.href = terminal.dataset.archive ?? '/';
+          link.textContent = terminal.dataset.lang === 'zh' ? '打开文章归档 →' : 'Open the archive →';
+          line.append(link);
+          break;
+        }
+        case 'ls':
+          appendPostList();
+          break;
+        case 'cd': {
+          const target = args.join(' ').replace(/\/$/, '');
+          if (!target || target === '~') {
+            appendLine('~/');
+            navigateFromTerminal(terminal.dataset.home ?? `/${terminal.dataset.lang ?? 'zh'}/`);
+            break;
+          }
+          if (target === '..') {
+            showParentDirectory();
+            break;
+          }
+          const post = terminalPosts.find((item) => item.slug.toLowerCase() === target);
+          if (post) {
+            appendLine(`${post.slug}/`);
+            navigateFromTerminal(post.url);
+          } else {
+            appendLine(`cd: no such post: ${target}`, 'error');
+          }
+          break;
+        }
+        case 'rm':
+          if (args[0] === '-rf') purgeSite();
+          else appendLine(`rm: unsupported option: ${args.join(' ')}`, 'error');
+          break;
+        case 'theme':
+          if (['light', 'dark', 'system'].includes(args[0])) {
+            setTheme(args[0]);
+            appendLine(`theme: ${args[0]}`);
+          } else {
+            appendLine('usage: theme [light|dark|system]', 'error');
+          }
+          break;
+        case 'date':
+          appendLine(new Intl.DateTimeFormat(terminal.dataset.lang === 'zh' ? 'zh-CN' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date()));
+          break;
+        case 'clear':
+          if (history) history.innerHTML = '';
+          break;
+        case '':
+          break;
+        default:
+          appendLine(`command not found: ${command}. try 'help'`, 'error');
+      }
+    };
+
+    const commonPrefix = (values: string[]) => {
+      if (!values.length) return '';
+      return values.reduce((prefix, value) => {
+        let index = 0;
+        while (index < prefix.length && prefix[index] === value[index]) index += 1;
+        return prefix.slice(0, index);
+      });
+    };
+
+    const complete = () => {
+      if (!input) return;
+      const value = input.value.toLowerCase();
+      const themeMatch = value.match(/^theme\s+(.*)$/);
+      const cdMatch = value.match(/^cd\s+(.*)$/);
+      const pool = themeMatch ? themeOptions : cdMatch ? ['~', ...terminalPosts.map((post) => post.slug)] : commands;
+      const prefix = themeMatch ? themeMatch[1].trim() : cdMatch ? cdMatch[1].trim() : value.trim();
+      const matches = pool.filter((candidate) => candidate.toLowerCase().startsWith(prefix));
+
+      if (matches.length === 1) {
+        input.value = themeMatch
+          ? `theme ${matches[0]}`
+          : cdMatch
+            ? `cd ${matches[0]}`
+            : `${matches[0]}${matches[0] === 'theme' || matches[0] === 'cd' ? ' ' : ''}`;
+      } else if (matches.length > 1) {
+        const shared = commonPrefix(matches);
+        if (shared.length > prefix.length) {
+          input.value = themeMatch ? `theme ${shared}` : cdMatch ? `cd ${shared}` : shared;
+        } else {
+          appendLine(matches.join('   '), 'suggestions');
+        }
+      }
+      input.setSelectionRange(input.value.length, input.value.length);
+    };
+
+    const closeTerminal = () => {
+      if (closed) return;
+      closed = true;
+      if (history) {
+        history.innerHTML = '';
+        for (const text of ['ink@ae̷t̷h̷e̷r̷ ~> ^D', '▓▓░▒ 0000:00ff ▒░▓', '⟟  ⟟⟟   _  _  ⟟']) {
+          appendLine(text, 'corrupt-line');
+        }
+      }
+      terminal.classList.add('is-closed');
+      terminal.setAttribute('aria-disabled', 'true');
+      const title = terminal.querySelector<HTMLElement>('.terminal-bar > span:first-of-type');
+      if (title) title.textContent = 'i̷n̶k̵@a̴e̷t̶h̸e̵r̴:~';
+      const online = terminal.querySelector<HTMLElement>('.online');
+      if (online) {
+        online.classList.add('offline');
+        online.textContent = '×';
+      }
+      if (input) {
+        input.value = '';
+        input.disabled = true;
+      }
+      form?.setAttribute('aria-hidden', 'true');
+    };
+
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const command = input?.value.trim() ?? '';
+      if (!command) return;
+      previousCommands.push(command);
+      historyIndex = previousCommands.length;
+      run(command);
+      if (input) input.value = '';
+    });
+
+    input?.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey && event.key.toLowerCase() === 'd') {
+        event.preventDefault();
+        if (isFloating) setTerminalOpen(false);
+        else closeTerminal();
+        return;
+      }
+      if (event.key === 'Tab' && !event.shiftKey) {
+        event.preventDefault();
+        complete();
+        return;
+      }
+      if (isFloating && event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) return;
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      historyIndex += event.key === 'ArrowUp' ? -1 : 1;
+      historyIndex = Math.max(0, Math.min(previousCommands.length, historyIndex));
+      input.value = previousCommands[historyIndex] ?? '';
+      requestAnimationFrame(() => input.setSelectionRange(input.value.length, input.value.length));
+    });
+
+    terminal.addEventListener('click', (event) => {
+      if (!closed && !(event.target instanceof HTMLAnchorElement)) input?.focus();
+    });
+
+    function setTerminalOpen(open: boolean) {
+      if (!terminal) return;
+      terminal.classList.toggle('is-summoned', open);
+      terminal.classList.toggle('is-stowed', !open);
+      terminal.setAttribute('aria-hidden', String(!open));
+      if (focusTimer !== undefined) {
+        window.clearTimeout(focusTimer);
+        focusTimer = undefined;
+      }
+      if (!open) {
+        input?.blur();
+        return;
+      }
+      if (!closed) focusTimer = window.setTimeout(() => input?.focus(), 180);
+    }
+
+    if (isFloating) {
+      document.addEventListener('keydown', (event) => {
+        const shortcut = event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey;
+        if (!shortcut || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown')) return;
+        event.preventDefault();
+        setTerminalOpen(event.key === 'ArrowUp');
+      });
+    }
+
+    if (focusAfterNavigation) {
+      if (isFloating) {
+        setTerminalOpen(true);
+      } else {
+        requestAnimationFrame(() => input?.focus());
+      }
+    }
+
+    const secretSequence = [...Array(10).fill('ArrowUp'), 'ArrowDown'];
+    let secretIndex = 0;
+    document.addEventListener('keydown', (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
+        secretIndex = 0;
+        return;
+      }
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      if (key === secretSequence[secretIndex]) {
+        secretIndex += 1;
+      } else {
+        secretIndex = key === secretSequence[0] ? 1 : 0;
+      }
+      if (secretIndex !== secretSequence.length) return;
+      secretIndex = 0;
+      event.preventDefault();
+      document.documentElement.classList.toggle('signal-mode');
+      requestAnimationFrame(() => { if (input) input.value = ''; });
+    });
+  }
+</script>
+
+<style>
+  .terminal { overflow: hidden; width: 100%; border: 1px solid var(--line); background: var(--code-bg); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .7rem; }
+  .terminal.is-summoned, .terminal.is-stowed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 80;
+    width: min(20rem, calc(100vw - 2.5rem));
+    box-shadow: 0 24px 64px rgb(17 27 42 / 26%), 0 0 0 1px color-mix(in srgb, var(--text) 4%, transparent);
+    transition: opacity 180ms ease, transform 220ms cubic-bezier(.2, .8, .2, 1), visibility 180ms;
+  }
+  .terminal.is-summoned { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+  .terminal.is-stowed { opacity: 0; visibility: hidden; transform: translate(-50%, calc(-50% - .8rem)) scale(.975); pointer-events: none; }
+  .terminal-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 2rem; padding-inline: .75rem; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .6rem; }
+  .terminal-bar > span:first-of-type { justify-self: center; }
+  .terminal-bar > span:last-child { justify-self: end; }
+  .controls { display: flex; gap: .3rem; }
+  .controls i { width: .4rem; height: .4rem; border: 1px solid var(--muted); border-radius: 50%; }
+  .controls i:first-child { background: var(--muted); }
+  .online { display: flex; align-items: center; gap: .3rem; font-size: .55rem; text-transform: uppercase; }
+  .online i { width: .35rem; height: .35rem; border-radius: 50%; background: var(--accent); }
+  .online.offline { color: var(--text); font-size: .8rem; }
+  .terminal-body { overflow-y: auto; height: 12.25rem; padding: 1rem; line-height: 1.65; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  .history :global(p) { margin: 0; white-space: nowrap; }
+  .history :global(p + p) { margin-top: .2rem; }
+  .history :global(.output) { margin-bottom: .6rem; padding-left: 1rem; color: var(--muted); }
+  .history :global(.entered) { margin-top: .65rem; }
+  .history :global(.error) { padding-left: 1rem; color: var(--muted); text-decoration: underline; text-decoration-style: dotted; }
+  .history :global(.corrupt-line) { color: var(--muted); letter-spacing: .12em; }
+  .history :global(.corrupt-line:first-child) { color: var(--text); transform: translateX(-3px); }
+  .history :global(.corrupt-line:nth-child(2)) { transform: translateX(7px); }
+  .history :global(.suggestions) { margin-top: .65rem; color: var(--muted); word-spacing: .4rem; }
+  .history :global(.post-listing) { margin-block: .55rem .7rem; }
+  .history :global(.post-listing p) { display: grid; grid-template-columns: minmax(7rem, auto) 1fr; gap: .65rem; }
+  .history :global(.post-listing a) { overflow: hidden; color: var(--text); text-overflow: ellipsis; text-decoration: underline; text-decoration-color: var(--line); }
+  .history :global(.post-listing span) { overflow: hidden; color: var(--muted); text-overflow: ellipsis; }
+  .history :global(a) { color: var(--text); text-underline-offset: .2em; }
+  .hint { margin-block: .7rem .15rem !important; color: var(--muted); font-size: .6rem; }
+  .shell-prompt { display: inline-flex; align-items: baseline; white-space: nowrap; font-style: normal; }
+  .shell-prompt strong { color: var(--accent); font-weight: 700; }
+  .shell-prompt span { color: var(--muted); }
+  .shell-prompt em { color: var(--text); font-style: normal; font-weight: 650; }
+  .shell-prompt b { margin-left: .18rem; color: var(--accent); font-weight: 800; }
+  .history :global(.shell-prompt) { display: inline-flex; align-items: baseline; white-space: nowrap; font-style: normal; }
+  .history :global(.shell-prompt strong) { color: var(--accent); font-weight: 700; }
+  .history :global(.shell-prompt span) { color: var(--muted); }
+  .history :global(.shell-prompt em) { color: var(--text); font-style: normal; font-weight: 650; }
+  .history :global(.shell-prompt b) { margin-left: .18rem; color: var(--accent); font-weight: 800; }
+  .command-line { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .45rem; margin-top: .2rem; }
+  .command-line label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  input { min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text); font: inherit; caret-color: var(--accent); }
+  input:focus-visible { outline: 0; }
+  .terminal.is-closed { position: relative; cursor: not-allowed; transform: rotate(-.12deg); }
+  .terminal.is-closed::before { content: ''; position: absolute; inset: 0; z-index: 3; background: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--text) 7%, transparent) 3px 4px); pointer-events: none; }
+  .terminal.is-closed::after { content: ''; position: absolute; z-index: 4; top: 58%; left: -3%; width: 106%; height: 1px; background: var(--text); opacity: .45; box-shadow: 0 -2.7rem 0 var(--accent), 0 1.45rem 0 var(--muted); pointer-events: none; }
+  .terminal.is-closed .terminal-bar { border-color: var(--text); transform: translateX(-2px); }
+  .terminal.is-closed .terminal-body { filter: contrast(1.25); animation: terminal-glitch 140ms steps(2) 4; }
+  .terminal.is-closed .history { transform: skewX(-1.5deg); }
+  .terminal.is-closed .command-line { display: none; }
+  .terminal.is-summoned.is-closed { position: fixed; transform: translate(-50%, -50%) rotate(-.12deg); }
+  .terminal.is-stowed.is-closed { position: fixed; transform: translate(-50%, calc(-50% - .8rem)) rotate(-.12deg) scale(.975); }
+  @keyframes terminal-glitch {
+    0%, 100% { transform: translate(0); }
+    25% { transform: translate(4px, -1px); }
+    50% { transform: translate(-5px, 2px); }
+    75% { transform: translate(2px, 1px); }
+  }
+  :global(.fs-overlay) { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 1.5rem; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(14px); animation: directory-enter 320ms cubic-bezier(.2,.7,.2,1) both; }
+  :global(.fs-overlay.leaving) { animation: directory-leave 280ms ease both; }
+  :global(.fs-overlay section) { width: min(100%, 36rem); border: 1px solid var(--line); background: var(--code-bg); box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 3%, transparent); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  :global(.fs-overlay header) { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem .85rem; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .65rem; }
+  :global(.fs-overlay pre) { overflow: auto; margin: 0; padding: 1.5rem; color: var(--text); font: .78rem/1.8 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  :global(html.purge-mode) { overflow: hidden; }
+  :global(html.purge-mode .site-header) { animation: purge-out 280ms steps(3) .12s forwards; }
+  :global(html.purge-mode main) { animation: purge-out 360ms steps(4) .38s forwards; }
+  :global(html.purge-mode footer) { animation: purge-out 280ms steps(3) .98s forwards; }
+  :global(html.purge-mode .terminal) { animation: purge-out 320ms steps(4) .7s forwards; }
+  :global(html.purge-mode body) { cursor: none; }
+  @keyframes directory-enter { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
+  @keyframes directory-leave { to { opacity: 0; transform: scale(.94); } }
+  @keyframes purge-out {
+    0% { opacity: 1; transform: translate(0); filter: none; }
+    35% { opacity: .8; transform: translate(6px, -2px); filter: contrast(1.6); }
+    70% { opacity: .3; transform: translate(-9px, 3px); filter: contrast(2); }
+    100% { opacity: 0; visibility: hidden; transform: translateY(8px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .terminal.is-closed .terminal-body { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.fs-overlay), :global(.fs-overlay.leaving) { animation: none; }
+    :global(html.purge-mode .site-header), :global(html.purge-mode main), :global(html.purge-mode .terminal), :global(html.purge-mode footer) { animation-duration: .01ms; }
+  }
+  @media (max-width: 520px) {
+    .terminal.is-summoned, .terminal.is-stowed { width: calc(100vw - 1.5rem); }
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { languages, ui, type Language } from '../../i18n';
+import { getPosts } from '../../lib/posts';
+export function getStaticPaths() { return languages.map((lang) => ({ params: { lang }, props: { lang } })); }
+const { lang } = Astro.props as { lang: Language };
+const posts = await getPosts(lang);
+const groups = Object.entries(Object.groupBy(posts, (post) => String(post.data.pubDate.getFullYear()))).sort(([a], [b]) => Number(b) - Number(a));
+---
+<BaseLayout lang={lang} title={ui[lang].archiveTitle} alternatePath={`/${lang === 'zh' ? 'en' : 'zh'}/archive/`}>
+  <header class="page-hero"><div class="container"><p class="eyebrow">{posts.length} {lang === 'zh' ? '篇文章' : 'posts'}</p><h1 class="page-title">{ui[lang].archiveTitle}</h1></div></header>
+  <div class="container archive">
+    {groups.map(([year, yearPosts]) => <section><h2>{year}</h2><div>{yearPosts?.map((post) => <PostCard {post} {lang} />)}</div></section>)}
+  </div>
+</BaseLayout>
+<style>
+  .archive { padding-top: 3rem; }
+  section { display: grid; grid-template-columns: 7rem 1fr; gap: 2rem; }
+  section + section { margin-top: 2rem; }
+  h2 { margin: 2rem 0 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: .75rem; font-weight: 500; }
+  @media (max-width: 620px) { section { grid-template-columns: 1fr; gap: 0; } }
+</style>

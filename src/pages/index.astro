@@ -1,0 +1,18 @@
+---
+import { siteConfig } from '../config';
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,follow" />
+    <title>{siteConfig.title}</title>
+    <script is:inline>
+      const language = navigator.languages?.[0] ?? navigator.language ?? 'zh';
+      location.replace(language.toLowerCase().startsWith('zh') ? '/zh/' : '/en/');
+    </script>
+    <style>body{display:grid;place-items:center;min-height:100vh;margin:0;font-family:Arial,sans-serif;background:#f7f9fc;color:#172033}main{text-align:center}h1{font:600 1rem ui-monospace,monospace;letter-spacing:.08em}a{color:inherit;margin:.75rem;font-size:.85rem}</style>
+  </head>
+  <body><main><h1>{siteConfig.title}</h1><p><a href="/zh/">中文</a><a href="/en/">English</a></p></main></body>
+</html>

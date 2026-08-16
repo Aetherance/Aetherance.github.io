@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Search from '../../components/Search.astro';
+import { languages, ui, type Language } from '../../i18n';
+export function getStaticPaths() { return languages.map((lang) => ({ params: { lang }, props: { lang } })); }
+const { lang } = Astro.props as { lang: Language };
+---
+<BaseLayout {lang} title={ui[lang].searchTitle} alternatePath={`/${lang === 'zh' ? 'en' : 'zh'}/search/`}>
+  <header class="page-hero"><div class="container"><p class="eyebrow">{lang === 'zh' ? '全文检索' : 'Full-text search'}</p><h1 class="page-title">{ui[lang].searchTitle}</h1></div></header>
+  <section class="container search-section"><Search {lang} /></section>
+</BaseLayout>
+<style>.search-section { padding-top: 3.5rem; }</style>

@@ -1,0 +1,85 @@
+---
+import { ui, type Language } from '../i18n';
+interface Props { lang: Language }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+<div class="search" data-search-root data-lang={lang} data-empty={t.searchEmpty} data-loading={t.searchLoading} data-pagefind-ignore>
+  <label for="site-search">{t.searchHelp}</label>
+  <div class="field">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+    <input id="site-search" type="search" placeholder={t.searchPlaceholder} autocomplete="off" />
+    <kbd>⌘ K</kbd>
+  </div>
+  <p class="status" aria-live="polite"></p>
+  <ol class="results"></ol>
+</div>
+
+<script is:inline type="module">
+  const root = document.querySelector('[data-search-root]');
+  const input = root?.querySelector('input');
+  const status = root?.querySelector('.status');
+  const results = root?.querySelector('.results');
+  let pagefind;
+  let timer;
+
+  const escapeHtml = (value) => {
+    const node = document.createElement('span');
+    node.textContent = value;
+    return node.innerHTML;
+  };
+
+  async function loadSearch() {
+    if (pagefind) return pagefind;
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      status.textContent = root.dataset.loading + ' (run `npm run build && npm run preview`)';
+    }
+    try {
+      pagefind = await import('/pagefind/pagefind.js');
+      await pagefind.init();
+      status.textContent = '';
+      return pagefind;
+    } catch {
+      status.textContent = root.dataset.loading;
+      return null;
+    }
+  }
+
+  async function runSearch(query) {
+    if (!query.trim()) { results.innerHTML = ''; status.textContent = ''; return; }
+    status.textContent = root.dataset.loading;
+    const api = await loadSearch();
+    if (!api) return;
+    const response = await api.search(query, { filters: { lang: root.dataset.lang } });
+    const items = await Promise.all(response.results.slice(0, 12).map((result) => result.data()));
+    status.textContent = items.length ? '' : root.dataset.empty;
+    results.innerHTML = items.map((item) => `
+      <li><a href="${item.url}"><strong>${escapeHtml(item.meta.title || '')}</strong><p>${item.excerpt}</p></a></li>
+    `).join('');
+  }
+
+  input?.addEventListener('focus', loadSearch, { once: true });
+  input?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => runSearch(input.value), 180); });
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); input?.focus(); }
+  });
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial && input) { input.value = initial; runSearch(initial); }
+</script>
+<style>
+  .search { max-width: 46rem; }
+  label { display: block; margin-bottom: .7rem; color: var(--muted); }
+  .field { position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .8rem; padding: .3rem 1rem; border: 1px solid var(--glass-line); background: var(--glass-bg); box-shadow: var(--glass-shadow); backdrop-filter: blur(30px) saturate(145%); -webkit-backdrop-filter: blur(30px) saturate(145%); }
+  .field::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, var(--glass-shine), transparent 30%, transparent 72%, var(--glass-glint)); pointer-events: none; }
+  svg { width: 1.2rem; fill: none; stroke: var(--muted); stroke-width: 1.7; }
+  input { width: 100%; padding: .85rem 0; border: 0; outline: 0; background: transparent; color: var(--text); }
+  input::placeholder { color: var(--muted); }
+  kbd { color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; }
+  .status { color: var(--muted); font-size: .88rem; }
+  .results { margin: 1.75rem 0 0; padding: 0; list-style: none; }
+  .results :global(li) { border-bottom: 1px solid var(--line); }
+  .results :global(a) { display: block; padding: 1.25rem 0; text-decoration: none; }
+  .results :global(strong) { font-size: 1.12rem; font-weight: 600; }
+  .results :global(p) { margin: .35rem 0 0; color: var(--muted); font-size: .9rem; }
+  .results :global(mark) { background: var(--accent-soft); color: var(--accent); }
+</style>

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { languages, type Language } from '../../i18n';
+import { siteConfig } from '../../config';
+export function getStaticPaths() { return languages.map((lang) => ({ params: { lang }, props: { lang } })); }
+const { lang } = Astro.props as { lang: Language };
+---
+<BaseLayout {lang} title={lang === 'zh' ? '关于' : 'About'} alternatePath={`/${lang === 'zh' ? 'en' : 'zh'}/about/`}>
+  <header class="page-hero"><div class="reading-width"><p class="eyebrow">{siteConfig.author}</p><h1 class="page-title">{lang === 'zh' ? '关于' : 'About'}</h1></div></header>
+  <article class="reading-width prose about">
+    <div class="profile-card">
+      <img src={siteConfig.avatar} alt={`${siteConfig.author} GitHub avatar`} width="88" height="88" />
+      <div>
+        <strong>{siteConfig.author}</strong>
+        <span>@{siteConfig.handle}</span>
+        <a href={siteConfig.social.github} rel="me noopener" target="_blank">github.com/{siteConfig.handle} ↗</a>
+      </div>
+    </div>
+    {lang === 'zh' ? <>
+      <p>你好，我是 <strong>{siteConfig.author}</strong>。我关注分布式系统、存储引擎和后端基础设施，这个博客用于记录项目背后的设计、实现与思考。</p>
+      <p>我的 GitHub 主页置顶了 Apache Dubbo Go 相关项目，以及分布式键值存储 <code>taluskv</code> 和可嵌入式 LSM-tree 存储引擎 <code>talusdb</code>。</p>
+    </> : <>
+      <p>Hello, I’m <strong>{siteConfig.author}</strong>. I’m interested in distributed systems, storage engines, and backend infrastructure. This blog documents the design, implementation, and ideas behind that work.</p>
+      <p>My pinned GitHub projects include work around Apache Dubbo Go, the distributed key-value store <code>taluskv</code>, and the embeddable LSM-tree storage engine <code>talusdb</code>.</p>
+    </>}
+    <h2>{lang === 'zh' ? 'GitHub 项目' : 'Projects on GitHub'}</h2>
+    <div class="project-list">
+      {siteConfig.projects.map((project) => (
+        <a href={project.url} rel="noopener" target="_blank">
+          <span class="project-heading"><strong>{project.name}</strong><small>{project.language}</small></span>
+          <span>{project.description[lang]}</span>
+        </a>
+      ))}
+    </div>
+    <h2>{lang === 'zh' ? '保持联系' : 'Stay in touch'}</h2>
+    <p>{lang === 'zh' ? '你可以在 ' : 'Find me on '}<a href={siteConfig.social.github} rel="me noopener" target="_blank">GitHub</a>{lang === 'zh' ? ' 找到我。' : '.'}</p>
+  </article>
+</BaseLayout>
+<style>
+  .about { padding-top: 3.5rem; }
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-line);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(18px) saturate(125%);
+  }
+  .profile-card img { width: 5.5rem; height: 5.5rem; border: 1px solid var(--line); object-fit: cover; }
+  .profile-card div { display: grid; }
+  .profile-card strong { font-size: 1.12rem; line-height: 1.4; }
+  .profile-card span { color: var(--muted); font-family: ui-monospace, monospace; font-size: .76rem; }
+  .profile-card a { margin-top: .5rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .72rem; text-decoration: none; }
+  .profile-card a:hover { color: var(--text); }
+  .project-list { display: grid; gap: .8rem; }
+  .project-list > a {
+    display: grid;
+    gap: .35rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .86rem;
+    line-height: 1.55;
+    text-decoration: none;
+    transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+  }
+  .project-list > a:hover { border-color: var(--glass-line); background: var(--glass-glint); transform: translateX(3px); }
+  .project-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .project-heading strong { color: var(--text); font-family: ui-monospace, monospace; font-size: .82rem; }
+  .project-heading small { color: var(--muted); font-family: ui-monospace, monospace; font-size: .65rem; letter-spacing: .06em; text-transform: uppercase; }
+  @media (max-width: 460px) {
+    .profile-card img { width: 4.5rem; height: 4.5rem; }
+    .profile-card a { overflow-wrap: anywhere; }
+  }
+  @media (prefers-reduced-transparency: reduce) { .profile-card { backdrop-filter: none; } }
+</style>

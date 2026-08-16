@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ui } from '../i18n';
+const lang = 'zh';
+---
+<BaseLayout {lang} title="404">
+  <section class="not-found reading-width"><p class="eyebrow">404</p><h1>{ui[lang].notFound}</h1><p>{ui[lang].notFoundText}</p><a href="/zh/">← {ui[lang].backHome}</a></section>
+</BaseLayout>
+<style>.not-found { padding-block: 8rem; text-align:center; }.not-found h1 { margin:.5rem 0; font-size:clamp(2.5rem,8vw,5rem); font-weight:600; letter-spacing:-.055em; }.not-found > p:not(.eyebrow) { color:var(--muted); }.not-found a { display:inline-block; margin-top:1rem; }</style>

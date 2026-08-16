@@ -1,0 +1,141 @@
+---
+import type { Language } from '../i18n';
+
+interface Props { lang: Language }
+const { lang } = Astro.props;
+const labels = lang === 'zh'
+  ? { progress: '阅读进度', copy: '复制', copied: '已复制', copyFailed: '复制失败', backToTop: '返回顶部' }
+  : { progress: 'Reading progress', copy: 'Copy', copied: 'Copied', copyFailed: 'Copy failed', backToTop: 'Back to top' };
+---
+<div
+  class="reading-progress"
+  data-reading-progress
+  data-pagefind-ignore
+  data-copy-label={labels.copy}
+  data-copied-label={labels.copied}
+  data-copy-failed-label={labels.copyFailed}
+  role="progressbar"
+  aria-label={labels.progress}
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow="0"
+>
+  <span></span>
+</div>
+<button
+  class="back-to-top"
+  data-back-to-top
+  data-pagefind-ignore
+  type="button"
+  aria-label={labels.backToTop}
+  aria-hidden="true"
+  tabindex="-1"
+>
+  <span aria-hidden="true">↑</span>
+  <small>TOP</small>
+</button>
+
+<script>
+  const progress = document.querySelector<HTMLElement>('[data-reading-progress]');
+  const progressBar = progress?.querySelector<HTMLElement>('span');
+  const backToTop = document.querySelector<HTMLButtonElement>('[data-back-to-top]');
+  const prose = document.querySelector<HTMLElement>('.article-body .prose');
+  const copyLabels = {
+    copy: progress?.dataset.copyLabel ?? 'Copy',
+    copied: progress?.dataset.copiedLabel ?? 'Copied',
+    failed: progress?.dataset.copyFailedLabel ?? 'Copy failed',
+  };
+  let updateFrame: number | undefined;
+
+  const updateReadingTools = () => {
+    updateFrame = undefined;
+    if (!prose) return;
+
+    const headerHeight = document.querySelector<HTMLElement>('.site-header')?.getBoundingClientRect().height ?? 0;
+    const proseRect = prose.getBoundingClientRect();
+    const proseTop = window.scrollY + proseRect.top;
+    const proseBottom = window.scrollY + proseRect.bottom;
+    const start = proseTop - headerHeight;
+    const end = Math.max(start + 1, proseBottom - window.innerHeight);
+    const ratio = Math.min(1, Math.max(0, (window.scrollY - start) / (end - start)));
+    const percentage = Math.round(ratio * 100);
+
+    if (progressBar) progressBar.style.transform = `scaleX(${ratio})`;
+    progress?.setAttribute('aria-valuenow', String(percentage));
+
+    const visible = window.scrollY > Math.max(500, window.innerHeight * .8);
+    backToTop?.toggleAttribute('data-visible', visible);
+    backToTop?.setAttribute('aria-hidden', String(!visible));
+    backToTop?.setAttribute('tabindex', visible ? '0' : '-1');
+  };
+
+  const scheduleUpdate = () => {
+    if (updateFrame !== undefined) return;
+    updateFrame = requestAnimationFrame(updateReadingTools);
+  };
+
+  addEventListener('scroll', scheduleUpdate, { passive: true });
+  addEventListener('resize', scheduleUpdate, { passive: true });
+  updateReadingTools();
+
+  backToTop?.addEventListener('click', () => {
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+
+  for (const pre of document.querySelectorAll<HTMLElement>('.article-body .prose pre')) {
+    if (pre.parentElement?.classList.contains('code-block')) continue;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    pre.before(wrapper);
+    wrapper.append(pre);
+
+    const button = document.createElement('button');
+    button.className = 'code-copy';
+    button.type = 'button';
+    button.textContent = copyLabels.copy;
+    button.setAttribute('aria-label', copyLabels.copy);
+    button.setAttribute('aria-live', 'polite');
+    wrapper.append(button);
+
+    let resetTimer: ReturnType<typeof setTimeout> | undefined;
+    button.addEventListener('click', async () => {
+      const text = pre.querySelector('code')?.textContent ?? pre.textContent ?? '';
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+        await navigator.clipboard.writeText(text);
+        button.textContent = copyLabels.copied;
+        button.setAttribute('aria-label', copyLabels.copied);
+      } catch {
+        button.textContent = copyLabels.failed;
+        button.setAttribute('aria-label', copyLabels.failed);
+      }
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        button.textContent = copyLabels.copy;
+        button.setAttribute('aria-label', copyLabels.copy);
+      }, 1800);
+    });
+  }
+</script>
+
+<style>
+  .reading-progress { position: fixed; inset: 0 0 auto; z-index: 100; height: 3px; overflow: hidden; background: color-mix(in srgb, var(--line) 78%, transparent); pointer-events: none; }
+  .reading-progress span { display: block; width: 100%; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
+  .back-to-top { position: fixed; right: clamp(.85rem, 2.5vw, 2rem); bottom: clamp(.85rem, 2.5vw, 2rem); z-index: 25; display: grid; width: 3rem; height: 3rem; place-content: center; padding: 0; border: 1px solid var(--glass-line); background: var(--glass-bg); box-shadow: var(--glass-shadow); color: var(--muted); opacity: 0; transform: translateY(.75rem); transition: opacity 160ms ease, transform 160ms ease, color 160ms ease; pointer-events: none; cursor: pointer; backdrop-filter: blur(20px) saturate(135%); -webkit-backdrop-filter: blur(20px) saturate(135%); }
+  .back-to-top[data-visible] { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-to-top:hover { color: var(--text); }
+  .back-to-top span { font-size: 1rem; line-height: .9; }
+  .back-to-top small { margin-top: .2rem; font: 600 .52rem/1 ui-monospace, monospace; letter-spacing: .08em; }
+  :global(.article-body .prose .code-block) { position: relative; }
+  :global(.article-body .prose .code-block pre) { margin: 0; padding-top: 2.75rem; }
+  :global(.article-body .prose .code-copy) { position: absolute; top: .6rem; right: .6rem; z-index: 2; min-width: 3.4rem; height: 1.65rem; padding: 0 .55rem; border: 1px solid var(--line); background: color-mix(in srgb, var(--code-bg) 90%, var(--surface)); color: var(--muted); font: 500 .62rem/1 ui-monospace, monospace; cursor: pointer; }
+  :global(.article-body .prose .code-copy:hover) { border-color: var(--glass-line); color: var(--text); }
+  @media (max-width: 640px) {
+    .reading-progress { height: 2px; }
+    .back-to-top { width: 2.75rem; height: 2.75rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top { transition: none; }
+  }
+</style>

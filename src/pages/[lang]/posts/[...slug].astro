@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TableOfContents from '../../../components/TableOfContents.astro';
+import Comments from '../../../components/Comments.astro';
+import ReadingTools from '../../../components/ReadingTools.astro';
+import { formatDate, ui, type Language } from '../../../i18n';
+import { getAllPosts, getPosts, getTranslation, postPath, postSlug, type Post } from '../../../lib/posts';
+import { readingMinutes, tagSlug } from '../../../lib/content-utils';
+import { siteConfig } from '../../../config';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  return (await getAllPosts()).map((post) => ({ params: { lang: post.data.lang, slug: postSlug(post) }, props: { post } }));
+}
+const { post } = Astro.props as { post: Post };
+const lang = post.data.lang as Language;
+const { Content, headings } = await render(post);
+const translation = await getTranslation(post);
+const posts = await getPosts(lang);
+const index = posts.findIndex((candidate) => candidate.id === post.id);
+const newer = index > 0 ? posts[index - 1] : undefined;
+const older = index >= 0 && index < posts.length - 1 ? posts[index + 1] : undefined;
+const t = ui[lang];
+const canonicalPath = postPath(post);
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.data.title,
+  description: post.data.description, datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en', author: { '@type': 'Person', name: siteConfig.author },
+  mainEntityOfPage: new URL(canonicalPath, Astro.site ?? siteConfig.siteUrl).href,
+};
+---
+<BaseLayout {lang} title={post.data.title} description={post.data.description} {canonicalPath} alternatePath={translation && postPath(translation)} type="article" publishedTime={post.data.pubDate}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article data-pagefind-body>
+    <span hidden data-pagefind-filter={`lang:${lang}`}>{lang}</span>
+    <ReadingTools {lang} />
+    <header class="article-header article-width">
+      <div class="meta">
+        <time datetime={post.data.pubDate.toISOString()}>{t.published} {formatDate(post.data.pubDate, lang)}</time>
+        {post.data.updatedDate && <><span aria-hidden="true">·</span><span>{t.updated} {formatDate(post.data.updatedDate, lang)}</span></>}
+        <span aria-hidden="true">·</span>
+        <span>{readingMinutes(post.body ?? '', lang)} {t.minuteRead}</span>
+      </div>
+      <h1 data-pagefind-meta="title">{post.data.title}</h1>
+      <p class="description">{post.data.description}</p>
+      {(post.data.tags.length > 0 || translation) && (
+        <div class="post-actions">
+          {post.data.tags.length > 0 && (
+            <ul aria-label={lang === 'zh' ? '文章标签' : 'Post tags'}>
+              {post.data.tags.map((tag) => <li><a href={`/${lang}/tags/${encodeURIComponent(tagSlug(tag))}/`}>#{tag}</a></li>)}
+            </ul>
+          )}
+          {translation && <a class="translation" href={postPath(translation)}>{t.translation} ↗</a>}
+        </div>
+      )}
+    </header>
+    <div class="article-width article-body">
+      <TableOfContents {headings} {lang} />
+      <div class="prose"><Content /></div>
+      <nav class="post-nav" aria-label={lang === 'zh' ? '文章导航' : 'Post navigation'}>
+        {older ? <a href={postPath(older)}><small>{t.previous}</small><strong>{older.data.title}</strong></a> : <span></span>}
+        {newer && <a class="next" href={postPath(newer)}><small>{t.next}</small><strong>{newer.data.title}</strong></a>}
+      </nav>
+      <Comments {lang} />
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  .article-header { padding-block: clamp(3.5rem, 9vw, 6rem) clamp(2.5rem, 5vw, 3.5rem); border-bottom: 1px solid var(--line); }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .65rem; color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; }
+  h1 { width: 100%; margin: 1rem 0 .9rem; font-size: clamp(2.1rem, 6vw, 3.8rem); font-weight: 600; letter-spacing: -.055em; line-height: 1.08; }
+  .description { width: 100%; margin: 0; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.08rem); line-height: 1.7; }
+  .post-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem 1.25rem; margin-top: 1.75rem; }
+  ul { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+  li a { display: inline-flex; align-items: center; min-height: 1.8rem; padding: .2rem .55rem; border: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; line-height: 1; text-decoration: none; transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease; }
+  li a:hover { border-color: var(--glass-line); background: var(--accent-soft); color: var(--text); }
+  .translation { margin-left: auto; color: var(--muted); font-size: .78rem; text-decoration: none; }
+  .translation:hover { color: var(--text); }
+  .article-body { padding-top: clamp(2.5rem, 5vw, 3.75rem); }
+  .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: clamp(4rem, 7vw, 6rem); padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .post-nav a { display: flex; min-width: 0; flex-direction: column; padding-block: .25rem; text-decoration: none; }
+  .post-nav a:hover strong { color: var(--accent); }
+  .post-nav .next { text-align: right; }
+  .post-nav small { color: var(--muted); font-family: ui-monospace, monospace; font-size: .68rem; }
+  .post-nav strong { overflow-wrap: anywhere; margin-top: .35rem; font-weight: 600; }
+  @media (max-width: 640px) {
+    .meta span[aria-hidden] { display: none; }
+    .post-actions { align-items: flex-start; flex-direction: column; }
+    .translation { margin-left: 0; }
+    .post-nav { grid-template-columns: 1fr; gap: 1.5rem; }
+    .post-nav > span:empty { display: none; }
+    .post-nav .next { text-align: left; }
+  }
+</style>

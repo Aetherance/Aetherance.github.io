@@ -1,0 +1,20 @@
+---
+import HomePage from '../../../components/HomePage.astro';
+import { languages, type Language } from '../../../i18n';
+import { pageCount } from '../../../lib/pagination';
+import { getPosts } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(languages.map(async (lang) => {
+    const totalPages = pageCount((await getPosts(lang)).length);
+    return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+      const page = index + 2;
+      return { params: { lang, page: String(page) }, props: { lang, page } };
+    });
+  }));
+  return paths.flat();
+}
+
+const { lang, page } = Astro.props as { lang: Language; page: number };
+---
+<HomePage {lang} {page} />

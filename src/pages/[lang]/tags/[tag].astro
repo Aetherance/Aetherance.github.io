@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { languages, ui, type Language } from '../../../i18n';
+import { getPosts, getTags } from '../../../lib/posts';
+import { tagSlug } from '../../../lib/content-utils';
+
+export async function getStaticPaths() {
+  return (await Promise.all(languages.map(async (lang) => (await getTags(lang)).map((tag) => ({ params: { lang, tag: tag.slug }, props: { lang, tag } }))))).flat();
+}
+const { lang, tag } = Astro.props as { lang: Language; tag: { name: string; slug: string; count: number } };
+const posts = (await getPosts(lang)).filter((post) => post.data.tags.some((name) => tagSlug(name) === tag.slug));
+---
+<BaseLayout {lang} title={tag.name}>
+  <header class="page-hero"><div class="container"><p class="eyebrow">{posts.length} {ui[lang].postsTagged}</p><h1 class="page-title">#{tag.name}</h1></div></header>
+  <section class="container posts">{posts.map((post) => <PostCard {post} {lang} />)}</section>
+</BaseLayout>
+<style>.posts { padding-top: 2rem; }</style>
