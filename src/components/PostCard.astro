@@ -24,7 +24,7 @@ const minutes = readingMinutes(post.body ?? '', lang);
 </article>
 <style>
   .card { position: relative; display: grid; grid-template-columns: 8.5rem 1fr; column-gap: 1.5rem; padding: 1.75rem .85rem; margin-inline: -.85rem; border-bottom: 1px solid var(--line); cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
-  .card:hover, .card:focus-within { border-color: var(--glass-line); outline: 1px solid var(--glass-line); outline-offset: -1px; background: var(--glass-bg); box-shadow: var(--glass-shadow); backdrop-filter: blur(22px) saturate(130%); -webkit-backdrop-filter: blur(22px) saturate(130%); }
+  .card:hover, .card:focus-within { border-color: var(--glass-line); outline: 1px solid var(--glass-line); outline-offset: -1px; background: var(--glass-bg); box-shadow: var(--glass-shadow); backdrop-filter: blur(10px) saturate(110%); -webkit-backdrop-filter: blur(10px) saturate(110%); }
   .card::after { content: '↗'; position: absolute; z-index: 2; top: 1.7rem; right: 0; color: var(--muted); font-size: .85rem; pointer-events: none; transition: transform 160ms ease, color 160ms ease; }
   .card:hover::after, .card:focus-within::after { color: var(--accent); transform: translate(2px, -2px); }
   .aside { grid-column: 1; grid-row: 1 / span 3; }

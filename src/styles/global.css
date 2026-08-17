@@ -10,12 +10,12 @@
   --code-bg: #eef2f7;
   --header-bg: linear-gradient(105deg, rgb(255 255 255 / 86%), rgb(232 239 248 / 64%) 55%, rgb(248 251 255 / 78%));
   --glass-bg:
-    linear-gradient(125deg, rgb(255 255 255 / 88%), rgb(239 244 251 / 52%) 42%, rgb(218 229 241 / 58%) 100%),
-    repeating-linear-gradient(105deg, rgb(255 255 255 / 8%) 0 1px, transparent 1px 5px);
-  --glass-line: rgb(99 123 153 / 54%);
-  --glass-shadow: 0 22px 58px rgb(26 43 66 / 18%), inset 0 1px rgb(255 255 255 / 100%), inset 1px 0 rgb(255 255 255 / 62%), inset 0 -1px rgb(114 137 166 / 15%);
-  --glass-shine: rgb(255 255 255 / 48%);
-  --glass-glint: rgb(255 255 255 / 17%);
+    linear-gradient(125deg, rgb(255 255 255 / 84%), rgb(239 244 251 / 62%) 45%, rgb(224 233 244 / 64%) 100%),
+    repeating-linear-gradient(105deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 7px);
+  --glass-line: rgb(99 123 153 / 38%);
+  --glass-shadow: 0 14px 38px rgb(26 43 66 / 11%), inset 0 1px rgb(255 255 255 / 78%), inset 0 -1px rgb(114 137 166 / 9%);
+  --glass-shine: rgb(255 255 255 / 28%);
+  --glass-glint: rgb(255 255 255 / 8%);
   --shadow: none;
   --content: 64rem;
   --reading: 42rem;
@@ -36,12 +36,12 @@
   --code-bg: #111a28;
   --header-bg: linear-gradient(105deg, rgb(27 39 57 / 88%), rgb(9 15 24 / 68%) 55%, rgb(19 29 43 / 82%));
   --glass-bg:
-    linear-gradient(125deg, rgb(43 58 78 / 82%), rgb(20 30 44 / 58%) 42%, rgb(9 15 24 / 66%) 100%),
-    repeating-linear-gradient(105deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 5px);
-  --glass-line: rgb(149 172 204 / 48%);
-  --glass-shadow: 0 22px 58px rgb(0 0 0 / 50%), inset 0 1px rgb(255 255 255 / 16%), inset 1px 0 rgb(255 255 255 / 9%), inset 0 -1px rgb(0 0 0 / 28%);
-  --glass-shine: rgb(255 255 255 / 14%);
-  --glass-glint: rgb(255 255 255 / 5%);
+    linear-gradient(125deg, rgb(40 53 71 / 76%), rgb(20 30 44 / 64%) 45%, rgb(10 16 25 / 70%) 100%),
+    repeating-linear-gradient(105deg, rgb(255 255 255 / 1.5%) 0 1px, transparent 1px 7px);
+  --glass-line: rgb(149 172 204 / 34%);
+  --glass-shadow: 0 14px 38px rgb(0 0 0 / 34%), inset 0 1px rgb(255 255 255 / 10%), inset 0 -1px rgb(0 0 0 / 18%);
+  --glass-shine: rgb(255 255 255 / 9%);
+  --glass-glint: rgb(255 255 255 / 3%);
   --shadow: none;
 }
 
@@ -58,12 +58,12 @@
     --code-bg: #111a28;
     --header-bg: linear-gradient(105deg, rgb(27 39 57 / 88%), rgb(9 15 24 / 68%) 55%, rgb(19 29 43 / 82%));
     --glass-bg:
-      linear-gradient(125deg, rgb(43 58 78 / 82%), rgb(20 30 44 / 58%) 42%, rgb(9 15 24 / 66%) 100%),
-      repeating-linear-gradient(105deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 5px);
-    --glass-line: rgb(149 172 204 / 48%);
-    --glass-shadow: 0 22px 58px rgb(0 0 0 / 50%), inset 0 1px rgb(255 255 255 / 16%), inset 1px 0 rgb(255 255 255 / 9%), inset 0 -1px rgb(0 0 0 / 28%);
-    --glass-shine: rgb(255 255 255 / 14%);
-    --glass-glint: rgb(255 255 255 / 5%);
+      linear-gradient(125deg, rgb(40 53 71 / 76%), rgb(20 30 44 / 64%) 45%, rgb(10 16 25 / 70%) 100%),
+      repeating-linear-gradient(105deg, rgb(255 255 255 / 1.5%) 0 1px, transparent 1px 7px);
+    --glass-line: rgb(149 172 204 / 34%);
+    --glass-shadow: 0 14px 38px rgb(0 0 0 / 34%), inset 0 1px rgb(255 255 255 / 10%), inset 0 -1px rgb(0 0 0 / 18%);
+    --glass-shine: rgb(255 255 255 / 9%);
+    --glass-glint: rgb(255 255 255 / 3%);
     --shadow: none;
   }
 }
